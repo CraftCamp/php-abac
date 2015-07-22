@@ -1,0 +1,13 @@
+{
+    "name": "kilix/php-abac",
+    "description": "Library used to implement Attribute-Based Access Control in a PHP application",
+    "type": "library",
+    "authors": [
+        {
+            "name": "Axel Venet",
+            "email": "avenet@kilix.fr",
+            "homepage": "http://www.kilix.fr",
+            "role": "Developer"
+        }
+    ]
+}
