@@ -14,6 +14,6 @@ class AbacManager {
     public function __construct($connection)
     {
         $this->dataManager = new DataManager($connection);
-        $this->attributeManager = new AttributeManager();
+        $this->attributeManager = new AttributeManager($this);
     }
 }
