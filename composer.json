@@ -9,5 +9,10 @@
             "homepage": "http://www.kilix.fr",
             "role": "Developer"
         }
-    ]
+    ],
+    "autoload" : {
+        "psr-4" : {
+            "PhpAbac\\": "src/php-abac/"
+        }
+    }
 }
