@@ -7,6 +7,8 @@ class Attribute implements AttributeInterface {
     protected $table;
     /** @var string **/
     protected $column;
+    /** @var string **/
+    protected $idColumn;
     /** @var mixed **/
     protected $value;
     
@@ -42,6 +44,24 @@ class Attribute implements AttributeInterface {
      */
     public function getColumn() {
         return $this->column;
+    }
+    
+    
+    /**
+     * @param string $idColumn
+     * @return \PhpAbac\Model\Attribute
+     */
+    public function setIdColumn($idColumn) {
+        $this->idColumn = $idColumn;
+        
+        return $this;
+    }
+    
+    /**
+     * @return string
+     */
+    public function getIdColumn() {
+        return $this->idColumn;
     }
     
     /**

@@ -23,14 +23,15 @@ class AttributeRepository {
      */
     public function findAttribute($attributeId) {
         $statement = $this->dataManager->fetchQuery(
-            'SELECT table, column FROM abac_attributes WHERE id = :id'
+            'SELECT table, column, column_id FROM abac_attributes WHERE id = :id'
         , ['id' => $attributeId]);
         $data = $statement->fetch();
         
         return
             (new Attribute())
-            ->setColumn($data['column'])
             ->setTable($data['table'])
+            ->setColumn($data['column'])
+            ->setIdColumn($data['id_column'])
         ;
     }
     
@@ -40,11 +41,12 @@ class AttributeRepository {
      */
     public function retrieveAttribute(Attribute &$attribute, $id) {
         $statement = $this->dataManager->fetchQuery(
-            'SELECT :column FROM :table WHERE id = :id'
+            'SELECT :column FROM :table WHERE :id_column = :id'
         , [
             'column' => $attribute->getColumn(),
             'table' => $attribute->getTable(),
-            'id' => $id
+            'id' => $id,
+            'column_id' => $attribute->getIdColumn()
         ]);
         $data = $statement->fetch();
         $attribute->setValue($data[$attribute->getColumn()]);
