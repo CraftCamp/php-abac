@@ -2,7 +2,7 @@
 
 namespace PhpAbac\Model;
 
-class Attribute implements AttributeInterface {
+class Attribute {
     /** @var string **/
     protected $table;
     /** @var string **/
