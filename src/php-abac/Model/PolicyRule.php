@@ -3,6 +3,8 @@
 namespace PhpAbac\Model;
 
 class PolicyRule {
+    /** @var integer **/
+    protected $id;
     /** @var string **/
     protected $name;
     /** @var array<PhpAbac\Model\PolicyRuleAttribute> **/
@@ -10,6 +12,13 @@ class PolicyRule {
     
     public function __construct() {
         $this->policyRuleAttributes = [];
+    }
+    
+    /**
+     * @return integer
+     */
+    public function getId() {
+        return $this->id;
     }
     
     /**

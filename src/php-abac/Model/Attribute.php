@@ -3,6 +3,8 @@
 namespace PhpAbac\Model;
 
 class Attribute {
+    /** @var integer **/
+    protected $id;
     /** @var string **/
     protected $table;
     /** @var string **/
@@ -11,6 +13,13 @@ class Attribute {
     protected $idColumn;
     /** @var mixed **/
     protected $value;
+    
+    /**
+     * @return integer
+     */
+    public function getId() {
+        return $this->id;
+    }
     
     /**
      * @param string $table
