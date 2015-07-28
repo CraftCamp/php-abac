@@ -43,7 +43,7 @@ class PolicyRule {
      * @return \PhpAbac\Model\PolicyRule
      */
     public function addPolicyRuleAttribute(PolicyRuleAttribute $pra) {
-        if(!in_array($pra, $this->policyRuleAttributes)) {
+        if(!in_array($pra, $this->policyRuleAttributes, true)) {
             $this->policyRuleAttributes[] = $pra;
         }
         return $this;
