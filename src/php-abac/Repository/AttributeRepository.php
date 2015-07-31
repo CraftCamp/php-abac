@@ -51,4 +51,20 @@ class AttributeRepository {
         $data = $statement->fetch();
         $attribute->setValue($data[$attribute->getColumn()]);
     }
+    
+    /**
+     * @param string $table
+     * @param string $column
+     * @param string $criteriaColumn
+     */
+    public function createAttribute($table, $column, $criteriaColumn) {
+        $this->dataManager->insertQuery(
+            'INSERT INTO abac_attributes(table, column, id_column) ' .
+            'VALUES(:table, :column, :id_column)'
+        , [
+            'table' => $table,
+            'column' => $column,
+            'id_column' => $criteriaColumn
+        ]);
+    }
 }
