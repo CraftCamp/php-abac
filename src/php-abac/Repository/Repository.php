@@ -1,16 +1,18 @@
 <?php
 
-namespace PhpAbac\Manager;
+namespace PhpAbac\Repository;
 
-class DataManager {
+use PhpAbac\Abac;
+
+abstract class Repository {
     /** @var \PDO **/
     protected $connection;
     
     /**
      * @param \PDO $connection
      */
-    public function __construct($connection) {
-        $this->connection = $connection;
+    public function __construct() {
+        $this->connection = Abac::get('pdo-connection');
     }
     
     /**
@@ -48,7 +50,7 @@ class DataManager {
      * @param array $params
      * @return \PDOStatement
      */
-    public function fetchQuery($query, $params) {
+    public function query($query, $params) {
         $statement = $this->connection->prepare($query);
         $statement->execute($params);
         return $statement;
@@ -59,7 +61,7 @@ class DataManager {
      * @param array $params
      * @return boolean
      */
-    public function insertQuery($query, $params) {
+    public function insert($query, $params) {
         $statement = $this->connection->prepare($query);
         return $statement->execute($params);
     }

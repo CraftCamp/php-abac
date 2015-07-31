@@ -2,27 +2,15 @@
 
 namespace PhpAbac\Repository;
 
-use PhpAbac\Manager\DataManager;
-
 use PhpAbac\Model\Attribute;
 
-class AttributeRepository {
-    /** @var DataManager **/
-    private $dataManager;
-    
-    /**
-     * @param DataManager $dataManager
-     */
-    public function __construct($dataManager) {
-        $this->dataManager = $dataManager;
-    }
-    
+class AttributeRepository extends Repository {
     /**
      * @param integer $attributeId
      * @return Attribute
      */
     public function findAttribute($attributeId) {
-        $statement = $this->dataManager->fetchQuery(
+        $statement = $this->query(
             'SELECT table, column, column_id FROM abac_attributes WHERE id = :id'
         , ['id' => $attributeId]);
         $data = $statement->fetch();
@@ -40,7 +28,7 @@ class AttributeRepository {
      * @param integer $id
      */
     public function retrieveAttribute(Attribute &$attribute, $id) {
-        $statement = $this->dataManager->fetchQuery(
+        $statement = $this->query(
             'SELECT :column FROM :table WHERE :id_column = :id'
         , [
             'column' => $attribute->getColumn(),
@@ -58,7 +46,7 @@ class AttributeRepository {
      * @param string $criteriaColumn
      */
     public function createAttribute($table, $column, $criteriaColumn) {
-        $this->dataManager->insertQuery(
+        $this->insert(
             'INSERT INTO abac_attributes(table, column, id_column) ' .
             'VALUES(:table, :column, :id_column)'
         , [

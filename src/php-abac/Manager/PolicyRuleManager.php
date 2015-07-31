@@ -2,23 +2,18 @@
 
 namespace PhpAbac\Manager;
 
+use PhpAbac\Abac;
+
 use PhpAbac\Model\PolicyRule;
 use PhpAbac\Model\PolicyRuleAttribute;
 
 use PhpAbac\Repository\PolicyRuleRepository;
 
 class PolicyRuleManager {
-    /** @var AbacManager **/
-    protected $abacManager;
     /** @var PolicyRuleRepository **/
     protected $repository;
     
-    /**
-     * @param \PhpAbac\Manager\AbacManager $abacManager
-     */
-    public function __construct(AbacManager $abacManager) {
-        $this->abacManager = $abacManager;
-        
+    public function __construct() {
         $this->repository = new PolicyRuleRepository();
     }
     
@@ -61,7 +56,7 @@ class PolicyRuleManager {
             (new PolicyRuleAttribute())
             ->setComparison($data['comparison'])
             ->setValue('value')
-            ->setAttribute($this->abacManager->create(
+            ->setAttribute(Abac::get('attribute-manager')->create(
                 $data['attribute']['table'],
                 $data['attribute']['column'],
                 $data['attribute']['criteriaColumn']
