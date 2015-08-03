@@ -11,15 +11,15 @@ class AttributeRepository extends Repository {
      */
     public function findAttribute($attributeId) {
         $statement = $this->query(
-            'SELECT name, table, column, criteria_column, created_at, updated_at FROM abac_attributes WHERE id = :id'
+            'SELECT name, table_name, column_name, criteria_column, created_at, updated_at FROM abac_attributes WHERE id = :id'
         , ['id' => $attributeId]);
         $data = $statement->fetch();
         
         return
             (new Attribute())
             ->setName($data['name'])
-            ->setTable($data['table'])
-            ->setColumn($data['column'])
+            ->setTable($data['table_name'])
+            ->setColumn($data['column_name'])
             ->setCriteriaColumn($data['criteria_column'])
             ->setCreatedAt($data['created_at'])
             ->setUpdatedAt($data['updated_at'])
@@ -32,10 +32,10 @@ class AttributeRepository extends Repository {
      */
     public function retrieveAttribute(Attribute &$attribute, $criteria) {
         $statement = $this->query(
-            'SELECT :column FROM :table WHERE :criteria_column = :criteria'
+            'SELECT :column_name FROM :table_name WHERE :criteria_column = :criteria'
         , [
-            'column' => $attribute->getColumn(),
-            'table' => $attribute->getTable(),
+            'column_name' => $attribute->getColumn(),
+            'table_name' => $attribute->getTable(),
             'criteria' => $criteria,
             'criteria_column' => $attribute->getCriteriaColumn()
         ]);
@@ -50,15 +50,15 @@ class AttributeRepository extends Repository {
      * @param string $criteriaColumn
      */
     public function createAttribute($name, $table, $column, $criteriaColumn) {
-        $datetime = new DateTime();
+        $datetime = (new \DateTime())->format('Y-m-d H:i:s');
         
         $this->insert(
-            'INSERT INTO abac_attributes(name, table, column, criteria_column, created_at, updated_at) ' .
-            'VALUES(:name, :table, :column, :criteria_column, :created_at, :updated_at)'
+            'INSERT INTO abac_attributes (table_name, column_name, criteria_column, created_at, updated_at, name) ' .
+            'VALUES(:table_name, :column_name, :criteria_column, :created_at, :updated_at, :name)'
         , [
             'name' => $name,
-            'table' => $table,
-            'column' => $column,
+            'table_name' => $table,
+            'column_name' => $column,
             'criteria_column' => $criteriaColumn,
             'created_at' => $datetime,
             'updated_at' => $datetime
