@@ -22,10 +22,11 @@ SET time_zone = "+00:00";
 -- Structure de la table `abac_attributes`
 --
 
+DROP TABLE IF EXISTS `abac_attributes`;
 CREATE TABLE IF NOT EXISTS `abac_attributes` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
-  `table` varchar(65) COLLATE utf8_unicode_ci NOT NULL,
-  `column` varchar(40) COLLATE utf8_unicode_ci NOT NULL,
+  `table_name` varchar(65) COLLATE utf8_unicode_ci NOT NULL,
+  `column_name` varchar(40) COLLATE utf8_unicode_ci NOT NULL,
   `criteria_column` varchar(40) COLLATE utf8_unicode_ci NOT NULL,
   `created_at` datetime NOT NULL,
   `updated_at` datetime NOT NULL,
@@ -40,6 +41,7 @@ CREATE TABLE IF NOT EXISTS `abac_attributes` (
 -- Structure de la table `abac_policy_rules`
 --
 
+DROP TABLE IF EXISTS `abac_policy_rules`;
 CREATE TABLE IF NOT EXISTS `abac_policy_rules` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `name` varchar(45) COLLATE utf8_unicode_ci NOT NULL,
@@ -55,6 +57,7 @@ CREATE TABLE IF NOT EXISTS `abac_policy_rules` (
 -- Structure de la table `abac_policy_rules_attributes`
 --
 
+DROP TABLE IF EXISTS `abac_policy_rules_attributes`;
 CREATE TABLE IF NOT EXISTS `abac_policy_rules_attributes` (
   `policy_rule_id` int(11) NOT NULL,
   `attribute_id` int(11) NOT NULL,

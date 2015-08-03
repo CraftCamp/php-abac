@@ -28,8 +28,8 @@ SET time_zone = "+00:00";
 
 CREATE TABLE IF NOT EXISTS `abac_attributes` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
-  `table` varchar(65) COLLATE utf8_unicode_ci NOT NULL,
-  `column` varchar(40) COLLATE utf8_unicode_ci NOT NULL,
+  `table_name` varchar(65) COLLATE utf8_unicode_ci NOT NULL,
+  `column_name` varchar(40) COLLATE utf8_unicode_ci NOT NULL,
   `criteria_column` varchar(40) COLLATE utf8_unicode_ci NOT NULL,
   `created_at` datetime NOT NULL,
   `updated_at` datetime NOT NULL,
