@@ -2,6 +2,9 @@
 
 namespace PhpAbac;
 
+use PhpAbac\Manager\AttributeManager;
+use PhpAbac\Manager\PolicyRuleManager;
+
 class Abac {
     /** @var array **/
     private static $container;
@@ -9,11 +12,22 @@ class Abac {
     /**
      * @param \PDO $connection
      */
-    public function __construct($connection)
+    public function __construct(\PDO $connection)
     {
+        // Set the main managers
+        self::set('pdo-connection', $connection);
         self::set('policy-rule-manager', new PolicyRuleManager());
         self::set('attribute-manager', new AttributeManager());
-        self::set('pdo-connection', $connection);
+    }
+    
+    public static function resetSchema() {
+        self::get('pdo-connection')->exec(
+            file_get_contents(dirname(dirname(__DIR__)) . '/sql/schema.sql')
+        );
+    }
+    
+    public static function clearContainer() {
+        self::$container = null;
     }
     
     /**
