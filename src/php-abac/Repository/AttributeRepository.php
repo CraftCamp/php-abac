@@ -11,48 +11,57 @@ class AttributeRepository extends Repository {
      */
     public function findAttribute($attributeId) {
         $statement = $this->query(
-            'SELECT table, column, column_id FROM abac_attributes WHERE id = :id'
+            'SELECT name, table, column, criteria_column, created_at, updated_at FROM abac_attributes WHERE id = :id'
         , ['id' => $attributeId]);
         $data = $statement->fetch();
         
         return
             (new Attribute())
+            ->setName($data['name'])
             ->setTable($data['table'])
             ->setColumn($data['column'])
-            ->setIdColumn($data['id_column'])
+            ->setCriteriaColumn($data['criteria_column'])
+            ->setCreatedAt($data['created_at'])
+            ->setUpdatedAt($data['updated_at'])
         ;
     }
     
     /**
      * @param Attribute &$attribute
-     * @param integer $id
+     * @param mixed $criteria
      */
-    public function retrieveAttribute(Attribute &$attribute, $id) {
+    public function retrieveAttribute(Attribute &$attribute, $criteria) {
         $statement = $this->query(
-            'SELECT :column FROM :table WHERE :id_column = :id'
+            'SELECT :column FROM :table WHERE :criteria_column = :criteria'
         , [
             'column' => $attribute->getColumn(),
             'table' => $attribute->getTable(),
-            'id' => $id,
-            'column_id' => $attribute->getIdColumn()
+            'criteria' => $criteria,
+            'criteria_column' => $attribute->getCriteriaColumn()
         ]);
         $data = $statement->fetch();
         $attribute->setValue($data[$attribute->getColumn()]);
     }
     
     /**
+     * @param string $name
      * @param string $table
      * @param string $column
      * @param string $criteriaColumn
      */
-    public function createAttribute($table, $column, $criteriaColumn) {
+    public function createAttribute($name, $table, $column, $criteriaColumn) {
+        $datetime = new DateTime();
+        
         $this->insert(
-            'INSERT INTO abac_attributes(table, column, id_column) ' .
-            'VALUES(:table, :column, :id_column)'
+            'INSERT INTO abac_attributes(name, table, column, criteria_column, created_at, updated_at) ' .
+            'VALUES(:name, :table, :column, :criteria_column, :created_at, :updated_at)'
         , [
+            'name' => $name,
             'table' => $table,
             'column' => $column,
-            'id_column' => $criteriaColumn
+            'criteria_column' => $criteriaColumn,
+            'created_at' => $datetime,
+            'updated_at' => $datetime
         ]);
     }
 }

@@ -6,11 +6,17 @@ class Attribute {
     /** @var integer **/
     protected $id;
     /** @var string **/
+    protected $name;
+    /** @var string **/
     protected $table;
     /** @var string **/
     protected $column;
     /** @var string **/
-    protected $idColumn;
+    protected $criteriaColumn;
+    /** @var \DateTime **/
+    protected $createdAt;
+    /** @var \DateTime **/
+    protected $updatedAt;
     /** @var mixed **/
     protected $value;
     
@@ -19,6 +25,23 @@ class Attribute {
      */
     public function getId() {
         return $this->id;
+    }
+    
+    /**
+     * @param string $name
+     * @return \PhpAbac\Model\Attribute
+     */
+    public function setName($name) {
+        $this->name = $name;
+        
+        return $this;
+    }
+    
+    /**
+     * @return string
+     */
+    public function getName() {
+        return $this->name;
     }
     
     /**
@@ -57,11 +80,11 @@ class Attribute {
     
     
     /**
-     * @param string $idColumn
+     * @param string $criteriaColumn
      * @return \PhpAbac\Model\Attribute
      */
-    public function setIdColumn($idColumn) {
-        $this->idColumn = $idColumn;
+    public function setCriteriaColumn($criteriaColumn) {
+        $this->criteriaColumn = $criteriaColumn;
         
         return $this;
     }
@@ -69,8 +92,42 @@ class Attribute {
     /**
      * @return string
      */
-    public function getIdColumn() {
-        return $this->idColumn;
+    public function getCriteriaColumn() {
+        return $this->criteriaColumn;
+    }
+    
+    /**
+     * @param \DateTime $datetime
+     * @return \PhpAbac\Model\Attribute
+     */
+    public function setCreatedAt(\DateTime $datetime) {
+        $this->createdAt = $datetime;
+        
+        return $this;
+    }
+    
+    /**
+     * @return \DateTime
+     */
+    public function getCreatedAt() {
+        return $this->createdAt;
+    }
+    
+    /**
+     * @param \DateTime $datetime
+     * @return \PhpAbac\Model\Attribute
+     */
+    public function setUpdatedAt(\DateTime $datetime) {
+        $this->updatedAt = $datetime;
+        
+        return $this;
+    }
+    
+    /**
+     * @return \DateTime
+     */
+    public function getUpdatedAt() {
+        return $this->updatedAt;
     }
     
     /**
