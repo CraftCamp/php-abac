@@ -8,6 +8,7 @@ class AttributeTest extends \PHPUnit_Framework_TestCase {
     public function testEntity() {
         $attribute =
             (new Attribute())
+            ->setId(1)
             ->setName('test-attribute')
             ->setColumn('attribute_column')
             ->setTable('user_attributes')
@@ -16,7 +17,7 @@ class AttributeTest extends \PHPUnit_Framework_TestCase {
             ->setCreatedAt(new \DateTime())
             ->setUpdatedAt(new \DateTime())
         ;
-        $this->assertNull($attribute->getId());
+        $this->assertEquals(1, $attribute->getId());
         $this->assertEquals('test-attribute', $attribute->getName());
         $this->assertEquals('attribute_column', $attribute->getColumn());
         $this->assertEquals('user_attributes', $attribute->getTable());
