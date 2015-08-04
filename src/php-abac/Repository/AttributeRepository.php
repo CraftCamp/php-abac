@@ -48,9 +48,11 @@ class AttributeRepository extends Repository {
      * @param string $table
      * @param string $column
      * @param string $criteriaColumn
+     * @return Attribute
      */
     public function createAttribute($name, $table, $column, $criteriaColumn) {
-        $datetime = (new \DateTime())->format('Y-m-d H:i:s');
+        $datetime = new \DateTime();
+        $formattedDatetime = $datetime->format('Y-m-d H:i:s');
         
         $this->insert(
             'INSERT INTO abac_attributes (table_name, column_name, criteria_column, created_at, updated_at, name) ' .
@@ -60,8 +62,19 @@ class AttributeRepository extends Repository {
             'table_name' => $table,
             'column_name' => $column,
             'criteria_column' => $criteriaColumn,
-            'created_at' => $datetime,
-            'updated_at' => $datetime
+            'created_at' => $formattedDatetime,
+            'updated_at' => $formattedDatetime
         ]);
+        
+        return
+            (new Attribute())
+            ->setId($this->connection->lastInsertId('abac_attributes'))
+            ->setName($name)
+            ->setTable($table)
+            ->setColumn($column)
+            ->setCriteriaColumn($criteriaColumn)
+            ->setCreatedAt($datetime)
+            ->setUpdatedAt($datetime)
+        ;
     }
 }

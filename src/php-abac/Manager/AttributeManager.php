@@ -17,8 +17,9 @@ class AttributeManager {
      * @param string $table
      * @param string $column
      * @param string $criteriaColumn
+     * @return Attribute
      */
     public function create($name, $table, $column, $criteriaColumn) {
-        $this->repository->createAttribute($name, $table, $column, $criteriaColumn);
+        return $this->repository->createAttribute($name, $table, $column, $criteriaColumn);
     }
 }

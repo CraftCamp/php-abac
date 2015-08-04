@@ -5,7 +5,6 @@ namespace PhpAbac\Manager;
 use PhpAbac\Abac;
 
 use PhpAbac\Model\PolicyRule;
-use PhpAbac\Model\PolicyRuleAttribute;
 
 use PhpAbac\Repository\PolicyRuleRepository;
 
@@ -23,26 +22,22 @@ class PolicyRuleManager {
      * @return PolicyRule
      */
     public function create($name, $attributes) {
-        $policyRule =
-            (new PolicyRule())
-            ->setName($name)
-        ;
+        $policyRule = $this->repository->createPolicyRule($name);
         
         $nbAttributes = count($attributes);
         
         for($i = 0; $i < $nbAttributes; ++$i) {
-            $policyRule->addPolicyRuleAttribute(
-                $this->createPolicyRuleAttribute($attributes[$i])
-            );
+            $this->createPolicyRuleAttribute($policyRule, $attributes[$i]);
         }
+        return $policyRule;
     }
     
     /**
+     * @param PolicyRule $policyRule
      * @param array $data
      * @throws \InvalidArgumentException
-     * @return PhpAbac\Model\PolicyRuleAttribute
      */
-    public function createPolicyRuleAttribute($data) {
+    public function createPolicyRuleAttribute($policyRule, $data) {
         if(!isset($data['comparison'])) {
             throw new \InvalidArgumentException('The attribute must have a comparison');
         }
@@ -52,15 +47,19 @@ class PolicyRuleManager {
         if(!isset($data['attribute'])) {
             throw new \InvalidArgumentException('The attribute must have a key "attribute"');
         }
-        return
-            (new PolicyRuleAttribute())
-            ->setComparison($data['comparison'])
-            ->setValue('value')
-            ->setAttribute(Abac::get('attribute-manager')->create(
-                $data['attribute']['table'],
-                $data['attribute']['column'],
-                $data['attribute']['criteriaColumn']
-            ))
-        ;
+        $policyRule->addPolicyRuleAttribute($this
+            ->repository
+            ->createPolicyRuleAttribute(
+                $policyRule->getId(),
+                Abac::get('attribute-manager')->create(
+                    $data['attribute']['name'],
+                    $data['attribute']['table'],
+                    $data['attribute']['column'],
+                    $data['attribute']['criteria_column']
+                ),
+                $data['comparison'],
+                $data['value']
+            )
+        );
     }
 }
