@@ -21,6 +21,16 @@ class Attribute {
     protected $value;
     
     /**
+     * @param integer $id
+     * @return \PhpAbac\Model\Attribute
+     */
+    public function setId($id) {
+        $this->id = $id;
+        
+        return $this;
+    }
+    
+    /**
      * @return integer
      */
     public function getId() {

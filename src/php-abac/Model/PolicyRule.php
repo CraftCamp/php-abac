@@ -19,6 +19,16 @@ class PolicyRule {
     }
     
     /**
+     * @param integer $id
+     * @return \PhpAbac\Model\PolicyRule
+     */
+    public function setId($id) {
+        $this->id = $id;
+        
+        return $this;
+    }
+    
+    /**
      * @return integer
      */
     public function getId() {
