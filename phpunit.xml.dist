@@ -23,14 +23,7 @@
         <var name="MYSQL_DB_HOST" value="localhost" />
         <var name="MYSQL_DB_USER" value="root" />
         <var name="MYSQL_DB_PASSWD" value="vagrant" />
-        <var name="MYSQL_DB_DBNAME" value="kilix_abac_test" />
-
-        <var name="SQLITE_DB_HOST" value="" />
-        <var name="SQLITE_DB_USER" value="" />
-        <var name="SQLITE_DB_PASSWD" value="" />
-        <var name="SQLITE_DB_DBNAME" value=":memory:" />
-
-        <var name="DB_TABLE_PREFIX" value="kilix_abac_" />
+        <var name="MYSQL_DB_DBNAME" value="php_abac_test" />
     </php>
 
     <filter>

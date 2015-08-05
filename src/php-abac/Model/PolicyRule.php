@@ -9,9 +9,23 @@ class PolicyRule {
     protected $name;
     /** @var array<PhpAbac\Model\PolicyRuleAttribute> **/
     protected $policyRuleAttributes;
+    /** @var \DateTime **/
+    protected $createdAt;
+    /** @var \DateTime **/
+    protected $updatedAt;
     
     public function __construct() {
         $this->policyRuleAttributes = [];
+    }
+    
+    /**
+     * @param integer $id
+     * @return \PhpAbac\Model\PolicyRule
+     */
+    public function setId($id) {
+        $this->id = $id;
+        
+        return $this;
     }
     
     /**
@@ -65,5 +79,39 @@ class PolicyRule {
      */
     public function getPolicyRuleAttributes() {
         return $this->policyRuleAttributes;
+    }
+    
+    /**
+     * @param \DateTime $datetime
+     * @return \PhpAbac\Model\Attribute
+     */
+    public function setCreatedAt(\DateTime $datetime) {
+        $this->createdAt = $datetime;
+        
+        return $this;
+    }
+    
+    /**
+     * @return \DateTime
+     */
+    public function getCreatedAt() {
+        return $this->createdAt;
+    }
+    
+    /**
+     * @param \DateTime $datetime
+     * @return \PhpAbac\Model\Attribute
+     */
+    public function setUpdatedAt(\DateTime $datetime) {
+        $this->updatedAt = $datetime;
+        
+        return $this;
+    }
+    
+    /**
+     * @return \DateTime
+     */
+    public function getUpdatedAt() {
+        return $this->updatedAt;
     }
 }

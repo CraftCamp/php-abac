@@ -5,17 +5,21 @@ namespace PhpAbac\Manager;
 use PhpAbac\Repository\AttributeRepository;
 
 class AttributeManager {
-    /** @var AbacManager **/
-    protected $abacManager;
     /** @var AttributeRepository **/
     protected $repository;
     
+    public function __construct() {
+        $this->repository = new AttributeRepository();
+    }
+    
     /**
-     * @param AbacManager $abacManager
+     * @param string $name
+     * @param string $table
+     * @param string $column
+     * @param string $criteriaColumn
+     * @return Attribute
      */
-    public function __construct($abacManager) {
-        $this->abacManager = $abacManager;
-        
-        $this->repository = new AttributeRepository($abacManager->dataManager);
+    public function create($name, $table, $column, $criteriaColumn) {
+        return $this->repository->createAttribute($name, $table, $column, $criteriaColumn);
     }
 }

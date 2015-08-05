@@ -2,53 +2,79 @@
 
 namespace PhpAbac\Repository;
 
-use PhpAbac\Manager\DataManager;
-
 use PhpAbac\Model\Attribute;
 
-class AttributeRepository {
-    /** @var DataManager **/
-    private $dataManager;
-    
-    /**
-     * @param DataManager $dataManager
-     */
-    public function __construct($dataManager) {
-        $this->dataManager = $dataManager;
-    }
-    
+class AttributeRepository extends Repository {
     /**
      * @param integer $attributeId
      * @return Attribute
      */
     public function findAttribute($attributeId) {
-        $statement = $this->dataManager->fetchQuery(
-            'SELECT table, column, column_id FROM abac_attributes WHERE id = :id'
+        $statement = $this->query(
+            'SELECT name, table_name, column_name, criteria_column, created_at, updated_at FROM abac_attributes WHERE id = :id'
         , ['id' => $attributeId]);
         $data = $statement->fetch();
         
         return
             (new Attribute())
-            ->setTable($data['table'])
-            ->setColumn($data['column'])
-            ->setIdColumn($data['id_column'])
+            ->setName($data['name'])
+            ->setTable($data['table_name'])
+            ->setColumn($data['column_name'])
+            ->setCriteriaColumn($data['criteria_column'])
+            ->setCreatedAt($data['created_at'])
+            ->setUpdatedAt($data['updated_at'])
         ;
     }
     
     /**
      * @param Attribute &$attribute
-     * @param integer $id
+     * @param mixed $criteria
      */
-    public function retrieveAttribute(Attribute &$attribute, $id) {
-        $statement = $this->dataManager->fetchQuery(
-            'SELECT :column FROM :table WHERE :id_column = :id'
+    public function retrieveAttribute(Attribute &$attribute, $criteria) {
+        $statement = $this->query(
+            'SELECT :column_name FROM :table_name WHERE :criteria_column = :criteria'
         , [
-            'column' => $attribute->getColumn(),
-            'table' => $attribute->getTable(),
-            'id' => $id,
-            'column_id' => $attribute->getIdColumn()
+            'column_name' => $attribute->getColumn(),
+            'table_name' => $attribute->getTable(),
+            'criteria' => $criteria,
+            'criteria_column' => $attribute->getCriteriaColumn()
         ]);
         $data = $statement->fetch();
         $attribute->setValue($data[$attribute->getColumn()]);
+    }
+    
+    /**
+     * @param string $name
+     * @param string $table
+     * @param string $column
+     * @param string $criteriaColumn
+     * @return Attribute
+     */
+    public function createAttribute($name, $table, $column, $criteriaColumn) {
+        $datetime = new \DateTime();
+        $formattedDatetime = $datetime->format('Y-m-d H:i:s');
+        
+        $this->insert(
+            'INSERT INTO abac_attributes (table_name, column_name, criteria_column, created_at, updated_at, name) ' .
+            'VALUES(:table_name, :column_name, :criteria_column, :created_at, :updated_at, :name)'
+        , [
+            'name' => $name,
+            'table_name' => $table,
+            'column_name' => $column,
+            'criteria_column' => $criteriaColumn,
+            'created_at' => $formattedDatetime,
+            'updated_at' => $formattedDatetime
+        ]);
+        
+        return
+            (new Attribute())
+            ->setId($this->connection->lastInsertId('abac_attributes'))
+            ->setName($name)
+            ->setTable($table)
+            ->setColumn($column)
+            ->setCriteriaColumn($criteriaColumn)
+            ->setCreatedAt($datetime)
+            ->setUpdatedAt($datetime)
+        ;
     }
 }
