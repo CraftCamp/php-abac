@@ -17,6 +17,18 @@ class PolicyRuleManager {
     }
     
     /**
+     * @param string $ruleName
+     * @return PolicyRule
+     * @throws \InvalidArgumentException
+     */
+    public function getRuleByName($ruleName) {
+        if(($rule = $this->repository->findByName($ruleName)) === null) {
+            throw new \InvalidArgumentException('The rule "'.$ruleName.'" does not exists');
+        }
+        return $rule;
+    }
+    
+    /**
      * @param string $name
      * @param array $attributes
      * @return PolicyRule
