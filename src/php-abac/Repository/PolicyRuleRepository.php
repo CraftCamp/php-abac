@@ -35,6 +35,12 @@ class PolicyRuleRepository extends Repository {
             ->setName($name)
             ->setCreatedAt(new \DateTime($data['created_at']))
             ->setUpdatedAt(new \DateTime($data['updated_at']))
+        ;
+        // If there is no attributes for this rule, we simply return it
+        if($data['attribute_id'] === null) {
+            return $policyRule;
+        }
+        $policyRule
             ->addPolicyRuleAttribute(
                 (new PolicyRuleAttribute())
                 ->setComparison($data['comparison'])
