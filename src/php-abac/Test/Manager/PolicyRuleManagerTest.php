@@ -20,9 +20,7 @@ class PolicyRuleManagerTest extends AbacTestCase {
             ]
         ));
         
-        Abac::resetSchema();
-        
-        $this->loadFixture('rules');
+        $this->loadFixture('policy_rules');
         
         $this->manager = Abac::get('policy-rule-manager');
     }

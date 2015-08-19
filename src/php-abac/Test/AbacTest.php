@@ -18,8 +18,7 @@ class AbacTest extends AbacTestCase {
                 \PDO::ATTR_ERRMODE => \PDO::ERRMODE_EXCEPTION
             ]
         ));
-        $this->abac->resetSchema();
-        $this->loadFixture('rules');
+        $this->loadFixture('policy_rules');
     }
     
     public function tearDown() {

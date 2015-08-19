@@ -19,8 +19,6 @@ class AttributeManagerTest extends \PHPUnit_Framework_TestCase {
             ]
         ));
         
-        Abac::resetSchema();
-        
         $this->manager = Abac::get('attribute-manager');
     }
     
