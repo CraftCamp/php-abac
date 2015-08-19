@@ -3,8 +3,9 @@
 namespace PhpAbac\Test\Manager;
 
 use PhpAbac\Abac;
+use PhpAbac\Test\AbacTestCase;
 
-class PolicyRuleManagerTest extends \PHPUnit_Framework_TestCase {
+class PolicyRuleManagerTest extends AbacTestCase {
     /** @var \PhpAbac\Manager\PolicyRuleManager **/
     private $manager;
     
@@ -20,6 +21,8 @@ class PolicyRuleManagerTest extends \PHPUnit_Framework_TestCase {
         ));
         
         Abac::resetSchema();
+        
+        $this->loadFixture('rules');
         
         $this->manager = Abac::get('policy-rule-manager');
     }
@@ -78,5 +81,15 @@ class PolicyRuleManagerTest extends \PHPUnit_Framework_TestCase {
         $this->assertEquals('user', $attribute->getTable());
         $this->assertEquals('age', $attribute->getColumn());
         $this->assertEquals('id', $attribute->getCriteriaColumn());
+    }
+    
+    public function testGetRuleByName() {
+        $policyRule = $this->manager->getRuleByName('test-rule');
+        
+        $this->assertInstanceof('PhpAbac\Model\PolicyRule', $policyRule);
+        $this->assertEquals(2, $policyRule->getId(2));
+        $this->assertEquals('test-rule', $policyRule->getName());
+        $this->assertInstanceOf('DateTime', $policyRule->getCreatedAt());
+        $this->assertInstanceOf('DateTime', $policyRule->getUpdatedAt());
     }
 }
