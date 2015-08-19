@@ -4,6 +4,8 @@ namespace PhpAbac\Manager;
 
 use PhpAbac\Repository\AttributeRepository;
 
+use PhpAbac\Model\Attribute;
+
 class AttributeManager {
     /** @var AttributeRepository **/
     protected $repository;
@@ -21,5 +23,9 @@ class AttributeManager {
      */
     public function create($name, $table, $column, $criteriaColumn) {
         return $this->repository->createAttribute($name, $table, $column, $criteriaColumn);
+    }
+    
+    public function retrieveAttribute(Attribute $attribute, $criteria) {
+        $this->repository->retrieveAttribute($attribute, $criteria);
     }
 }
