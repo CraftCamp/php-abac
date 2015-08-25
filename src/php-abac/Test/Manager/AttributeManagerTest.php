@@ -29,7 +29,7 @@ class AttributeManagerTest extends \PHPUnit_Framework_TestCase {
     public function testCreate() {
         $this->manager->create('test-attribute', 'abac_policy_rules', 'name', 'id');
         
-        $data = Abac::get('pdo-connection')->query('SELECT * FROM abac_attributes')->fetchAll();
+        $data = Abac::get('pdo-connection')->query('SELECT * FROM abac_attributes WHERE name = "test-attribute"')->fetchAll();
         
         $this->assertCount(1, $data);
         $this->assertEquals('test-attribute', $data[0]['name']);
