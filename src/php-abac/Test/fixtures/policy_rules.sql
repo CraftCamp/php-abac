@@ -61,8 +61,7 @@ CREATE TABLE IF NOT EXISTS `abac_attributes` (
   `created_at` datetime NOT NULL,
   `updated_at` datetime NOT NULL,
   `name` varchar(45) COLLATE utf8_unicode_ci NOT NULL,
-  PRIMARY KEY (`id`),
-  UNIQUE KEY `name` (`name`)
+  PRIMARY KEY (`id`)
 ) ENGINE=InnoDB  DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci AUTO_INCREMENT=4 ;
 
 --
@@ -70,9 +69,9 @@ CREATE TABLE IF NOT EXISTS `abac_attributes` (
 --
 
 INSERT INTO `abac_attributes` (`id`, `table_name`, `column_name`, `criteria_column`, `created_at`, `updated_at`, `name`) VALUES
-(1, 'user', 'age', 'id', '2015-08-19 11:03:38', '2015-08-19 11:03:38', 'age'),
-(2, 'user', 'parent_nationality', 'id', '2015-08-19 11:03:38', '2015-08-19 11:03:38', 'nationalitÃ©'),
-(3, 'user', 'has_done_japd', 'id', '2015-08-19 11:03:38', '2015-08-19 11:03:38', 'JAPD');
+(1, 'abac_test_user', 'age', 'id', '2015-08-19 11:03:38', '2015-08-19 11:03:38', 'age'),
+(2, 'abac_test_user', 'parent_nationality', 'id', '2015-08-19 11:03:38', '2015-08-19 11:03:38', 'parents_nationality'),
+(3, 'abac_test_user', 'has_done_japd', 'id', '2015-08-19 11:03:38', '2015-08-19 11:03:38', 'JAPD');
 
 -- --------------------------------------------------------
 
@@ -84,6 +83,7 @@ DROP TABLE IF EXISTS `abac_policy_rules_attributes`;
 CREATE TABLE IF NOT EXISTS `abac_policy_rules_attributes` (
   `policy_rule_id` int(11) NOT NULL,
   `attribute_id` int(11) NOT NULL,
+  `type` VARCHAR(10) COLLATE utf8_unicode_ci NOT NULL,
   `comparison` varchar(60) COLLATE utf8_unicode_ci NOT NULL,
   `value` varchar(80) COLLATE utf8_unicode_ci NOT NULL,
   KEY `policy_rule_id` (`policy_rule_id`,`attribute_id`)
@@ -93,11 +93,34 @@ CREATE TABLE IF NOT EXISTS `abac_policy_rules_attributes` (
 -- Contenu de la table `abac_policy_rules_attributes`
 --
 
-INSERT INTO `abac_policy_rules_attributes` (`policy_rule_id`, `attribute_id`, `comparison`, `value`) VALUES
-(1, 1, 'greaterThan', '18'),
-(1, 2, 'equal', 'FR'),
-(1, 3, 'equal', '1');
+INSERT INTO `abac_policy_rules_attributes` (`policy_rule_id`, `attribute_id`, `type`, `comparison`, `value`) VALUES
+(1, 1, 'Numeric', 'isGreaterThan', '18'),
+(1, 2, 'String', 'isEqual', 'FR'),
+(1, 3, 'Numeric', 'isEqual', '1');
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
 /*!40101 SET CHARACTER_SET_RESULTS=@OLD_CHARACTER_SET_RESULTS */;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
+
+-- --------------------------------------------------------
+--
+-- Structure de la table `user`
+--
+
+DROP TABLE IF EXISTS `abac_test_user`;
+CREATE TABLE IF NOT EXISTS `abac_test_user` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `name` varchar(60) COLLATE utf8_unicode_ci NOT NULL,
+  `age` tinyint(4) NOT NULL,
+  `parent_nationality` varchar(50) COLLATE utf8_unicode_ci NOT NULL,
+  `has_done_japd` tinyint(1) NOT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci AUTO_INCREMENT=3 ;
+
+--
+-- Contenu de la table `user`
+--
+
+INSERT INTO `abac_test_user` (`id`, `name`, `age`, `parent_nationality`, `has_done_japd`) VALUES
+(1, 'John Doe', 36, 'FR', 1),
+(2, 'Thierry', 24, 'FR', 0);
