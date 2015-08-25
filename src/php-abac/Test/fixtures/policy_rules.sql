@@ -84,6 +84,7 @@ CREATE TABLE IF NOT EXISTS `abac_policy_rules_attributes` (
   `policy_rule_id` int(11) NOT NULL,
   `attribute_id` int(11) NOT NULL,
   `type` VARCHAR(10) COLLATE utf8_unicode_ci NOT NULL,
+  `comparison_type` varchar(10) COLLATE utf8_unicode_ci NOT NULL,
   `comparison` varchar(60) COLLATE utf8_unicode_ci NOT NULL,
   `value` varchar(80) COLLATE utf8_unicode_ci NOT NULL,
   KEY `policy_rule_id` (`policy_rule_id`,`attribute_id`)
@@ -93,10 +94,10 @@ CREATE TABLE IF NOT EXISTS `abac_policy_rules_attributes` (
 -- Contenu de la table `abac_policy_rules_attributes`
 --
 
-INSERT INTO `abac_policy_rules_attributes` (`policy_rule_id`, `attribute_id`, `type`, `comparison`, `value`) VALUES
-(1, 1, 'Numeric', 'isGreaterThan', '18'),
-(1, 2, 'String', 'isEqual', 'FR'),
-(1, 3, 'Numeric', 'isEqual', '1');
+INSERT INTO `abac_policy_rules_attributes` (`policy_rule_id`, `attribute_id`, `type`, `comparison_type`, `comparison`, `value`) VALUES
+(1, 1, 'user', 'Numeric', 'isGreaterThan', '18'),
+(1, 2, 'user', 'String', 'isEqual', 'FR'),
+(1, 3, 'user', 'Numeric', 'isEqual', '1');
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
 /*!40101 SET CHARACTER_SET_RESULTS=@OLD_CHARACTER_SET_RESULTS */;

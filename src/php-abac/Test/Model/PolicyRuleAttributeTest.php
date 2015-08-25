@@ -10,11 +10,15 @@ class PolicyRuleAttributeTest extends \PHPUnit_Framework_TestCase {
         $policyRuleAttribute =
             (new PolicyRuleAttribute())
             ->setAttribute(new Attribute())
-            ->setComparison('string:length')
+            ->setType('object')
+            ->setComparisonType('String')
+            ->setComparison('isEqual')
             ->setValue(true)
         ;
         $this->assertTrue($policyRuleAttribute->getValue());
         $this->assertInstanceof('PhpAbac\Model\Attribute', $policyRuleAttribute->getAttribute());
-        $this->assertEquals('string:length', $policyRuleAttribute->getComparison());
+        $this->assertEquals('object', $policyRuleAttribute->getType());
+        $this->assertEquals('String', $policyRuleAttribute->getComparisonType());
+        $this->assertEquals('isEqual', $policyRuleAttribute->getComparison());
     }
 }

@@ -40,7 +40,7 @@ class Abac {
             $expectedValue = $pra->getValue();
             $attributeManager->retrieveAttribute($attribute, $userId);
             
-            $comparisonClass = 'PhpAbac\\Comparison\\'. $pra->getType() . 'Comparison';
+            $comparisonClass = 'PhpAbac\\Comparison\\'. $pra->getComparisonType() . 'Comparison';
             $comparison = new $comparisonClass();
             
             $isEnforced *= $comparison->{$pra->getComparison()}($expectedValue, $attribute->getValue());

@@ -8,6 +8,8 @@ class PolicyRuleAttribute {
     /** @var string **/
     protected $type;
     /** @var string **/
+    protected $comparisonType;
+    /** @var string **/
     protected $comparison;
     /** @var mixed **/
     protected $value;
@@ -44,6 +46,23 @@ class PolicyRuleAttribute {
      */
     public function getType() {
         return $this->type;
+    }
+    
+    /**
+     * @param string $comparisonType
+     * @return \PhpAbac\Model\PolicyRuleAttribute
+     */
+    public function setComparisonType($comparisonType) {
+        $this->comparisonType = $comparisonType;
+        
+        return $this;
+    }
+    
+    /**
+     * @return string
+     */
+    public function getComparisonType() {
+        return $this->comparisonType;
     }
     
     /**
