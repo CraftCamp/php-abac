@@ -26,7 +26,8 @@ class AbacTest extends AbacTestCase {
     }
     
     public function testEnforce() {
-        $this->abac->enforce('nationality-access', 1);
+        $this->assertTrue($this->abac->enforce('nationality-access', 1));
+        $this->assertFalse($this->abac->enforce('nationality-access', 2));
     }
     
     public function testContainer() {
