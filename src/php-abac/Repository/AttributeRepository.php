@@ -32,13 +32,8 @@ class AttributeRepository extends Repository {
      */
     public function retrieveAttribute(Attribute $attribute, $criteria) {
         $statement = $this->query(
-            'SELECT :column_name FROM :table_name WHERE :criteria_column = :criteria'
-        , [
-            'column_name' => $attribute->getColumn(),
-            'table_name' => $attribute->getTable(),
-            'criteria' => $criteria,
-            'criteria_column' => $attribute->getCriteriaColumn()
-        ]);
+            "SELECT {$attribute->getColumn()} FROM {$attribute->getTable()} WHERE {$attribute->getCriteriaColumn()} = {$criteria}"
+        );
         $data = $statement->fetch();
         $attribute->setValue($data[$attribute->getColumn()]);
     }

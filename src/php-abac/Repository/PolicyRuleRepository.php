@@ -14,7 +14,7 @@ class PolicyRuleRepository extends Repository {
      */
     public function findByName($name) {
         $statement = $this->query(
-            'SELECT pr.id, pr.created_at, pr.updated_at, ' .
+            'SELECT pr.id, pr.created_at, pr.updated_at, pra.type, ' .
             'pra.comparison, pra.value, a.id AS attribute_id, a.name AS attribute_name, ' .
             'a.table_name, a.column_name, a.criteria_column, ' .
             'a.created_at AS attribute_created_at, a.updated_at AS attribute_updated_at ' .
@@ -43,6 +43,7 @@ class PolicyRuleRepository extends Repository {
         $policyRule
             ->addPolicyRuleAttribute(
                 (new PolicyRuleAttribute())
+                ->setType($data['type'])
                 ->setComparison($data['comparison'])
                 ->setValue($data['value'])
                 ->setAttribute(
@@ -62,6 +63,7 @@ class PolicyRuleRepository extends Repository {
             $policyRule
                 ->addPolicyRuleAttribute(
                     (new PolicyRuleAttribute())
+                    ->setType($data['type'])
                     ->setComparison($data['comparison'])
                     ->setValue($data['value'])
                     ->setAttribute(
