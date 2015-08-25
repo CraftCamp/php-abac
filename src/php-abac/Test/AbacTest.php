@@ -4,9 +4,12 @@ namespace PhpAbac\Test;
 
 use PhpAbac\Abac;
 
-class AbacTest extends \PHPUnit_Framework_TestCase {
+class AbacTest extends AbacTestCase {
+    /** @var Abac **/
+    protected $abac;
+    
     public function setUp() {
-        new Abac(new \PDO(
+        $this->abac = new Abac(new \PDO(
             'mysql:host=' . $GLOBALS['MYSQL_DB_HOST'] . ';' .
             'dbname=' . $GLOBALS['MYSQL_DB_DBNAME'],
             $GLOBALS['MYSQL_DB_USER'],
@@ -15,10 +18,16 @@ class AbacTest extends \PHPUnit_Framework_TestCase {
                 \PDO::ATTR_ERRMODE => \PDO::ERRMODE_EXCEPTION
             ]
         ));
+        $this->loadFixture('policy_rules');
     }
     
     public function tearDown() {
         Abac::clearContainer();
+    }
+    
+    public function testEnforce() {
+        $this->assertTrue($this->abac->enforce('nationality-access', 1));
+        $this->assertFalse($this->abac->enforce('nationality-access', 2));
     }
     
     public function testContainer() {

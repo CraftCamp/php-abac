@@ -15,15 +15,37 @@ class Abac {
     public function __construct(\PDO $connection)
     {
         // Set the main managers
-        self::set('pdo-connection', $connection);
-        self::set('policy-rule-manager', new PolicyRuleManager());
-        self::set('attribute-manager', new AttributeManager());
+        self::set('pdo-connection', $connection, true);
+        self::set('policy-rule-manager', new PolicyRuleManager(), true);
+        self::set('attribute-manager', new AttributeManager(), true);
     }
     
-    public static function resetSchema() {
-        self::get('pdo-connection')->exec(
-            file_get_contents(dirname(dirname(__DIR__)) . '/sql/schema.sql')
-        );
+    /**
+     * Return true if both user and object respects all the rules conditions
+     * If the objectId is null, policy rules about its attributes will be ignored
+     * 
+     * @param string $rule
+     * @param integer $userId
+     * @param integer $objectId
+     * @return boolean
+     */
+    public function enforce($ruleName, $userId, $objectId = null) {
+        $attributeManager = self::get('attribute-manager');
+        
+        $policyRule = self::get('policy-rule-manager')->getRuleByName($ruleName);
+        $isEnforced = true;
+        
+        foreach($policyRule->getPolicyRuleAttributes() as $pra) {
+            $attribute = $pra->getAttribute();
+            $expectedValue = $pra->getValue();
+            $attributeManager->retrieveAttribute($attribute, $userId);
+            
+            $comparisonClass = 'PhpAbac\\Comparison\\'. $pra->getType() . 'Comparison';
+            $comparison = new $comparisonClass();
+            
+            $isEnforced *= $comparison->{$pra->getComparison()}($expectedValue, $attribute->getValue());
+        }
+        return (bool) $isEnforced;
     }
     
     public static function clearContainer() {

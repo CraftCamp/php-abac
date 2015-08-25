@@ -6,6 +6,8 @@ class PolicyRuleAttribute {
     /** @var PhpAbac\Model\Attribute **/
     protected $attribute;
     /** @var string **/
+    protected $type;
+    /** @var string **/
     protected $comparison;
     /** @var mixed **/
     protected $value;
@@ -25,6 +27,23 @@ class PolicyRuleAttribute {
      */
     public function getAttribute() {
         return $this->attribute;
+    }
+    
+    /**
+     * @param string $type
+     * @return \PhpAbac\Model\PolicyRuleAttribute
+     */
+    public function setType($type) {
+        $this->type = $type;
+        
+        return $this;
+    }
+    
+    /**
+     * @return string
+     */
+    public function getType() {
+        return $this->type;
     }
     
     /**
