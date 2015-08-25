@@ -33,17 +33,19 @@ class Abac {
         $attributeManager = self::get('attribute-manager');
         
         $policyRule = self::get('policy-rule-manager')->getRuleByName($ruleName);
-        
-        var_dump($policyRule);die;
+        $isEnforced = true;
         
         foreach($policyRule->getPolicyRuleAttributes() as $pra) {
             $attribute = $pra->getAttribute();
             $expectedValue = $pra->getValue();
-            var_dump($attribute);
-            $attributeManager->retrieveAttribute($attribute, $expectedValue);
-            var_dump($attribute);
-            die;
+            $attributeManager->retrieveAttribute($attribute, $userId);
+            
+            $comparisonClass = 'PhpAbac\\Comparison\\'. $pra->getType() . 'Comparison';
+            $comparison = new $comparisonClass();
+            
+            $isEnforced *= $comparison->{$pra->getComparison()}($expectedValue, $attribute->getValue());
         }
+        return (bool) $isEnforced;
     }
     
     public static function clearContainer() {
