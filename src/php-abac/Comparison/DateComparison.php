@@ -15,4 +15,12 @@ class DateComparison {
     public function isBetween(\DateTime $start, \DateTime $end, \DateTime $value) {
         return $start <= $value && $end >= $value;
     }
+    
+    public function isMoreRecentThan(\DateTime $oldDate, \DateTime $value) {
+        return $oldDate >= $value;
+    }
+    
+    public function isLessRecentThan(\Datetime $recentDate, \DateTime $value) {
+        return $recentDate <= $value;
+    }
 }
