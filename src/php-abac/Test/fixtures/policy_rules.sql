@@ -42,7 +42,7 @@ CREATE TABLE IF NOT EXISTS `abac_policy_rules` (
 INSERT INTO `abac_policy_rules` (`id`, `name`, `created_at`, `updated_at`) VALUES
 (1, 'nationality-access', '2015-08-14 13:51:06', '2015-08-14 13:51:06');
 INSERT INTO `abac_policy_rules` (`id`, `name`, `created_at`, `updated_at`) VALUES
-(2, 'test-rule', '2015-07-27 05:45:00', '2015-07-27 05:45:00');
+(2, 'vehicle-homologation', '2015-07-27 05:45:00', '2015-07-27 05:45:00');
 INSERT INTO `abac_policy_rules` (`id`, `name`, `created_at`, `updated_at`) VALUES
 (3, 'gunlaw', '2015-08-16 16:21:10', '2015-08-16 16:21:10');
 
@@ -69,9 +69,13 @@ CREATE TABLE IF NOT EXISTS `abac_attributes` (
 --
 
 INSERT INTO `abac_attributes` (`id`, `table_name`, `column_name`, `criteria_column`, `created_at`, `updated_at`, `name`) VALUES
-(1, 'abac_test_user', 'age', 'id', '2015-08-19 11:03:38', '2015-08-19 11:03:38', 'age'),
-(2, 'abac_test_user', 'parent_nationality', 'id', '2015-08-19 11:03:38', '2015-08-19 11:03:38', 'parents_nationality'),
-(3, 'abac_test_user', 'has_done_japd', 'id', '2015-08-19 11:03:38', '2015-08-19 11:03:38', 'JAPD');
+(1, 'abac_test_user', 'age', 'id', '2015-08-19 11:03:38', '2015-08-19 11:03:38', 'Age'),
+(2, 'abac_test_user', 'parent_nationality', 'id', '2015-08-19 11:03:38', '2015-08-19 11:03:38', 'Nationalité des Parents'),
+(3, 'abac_test_user', 'has_done_japd', 'id', '2015-08-19 11:03:38', '2015-08-19 11:03:38', 'JAPD'),
+(4, 'abac_test_user', 'has_driving_license', 'id', '2015-08-19 11:03:38', '2015-08-19 11:03:38', 'Permis de Conduire'),
+(5, 'abac_test_vehicle', 'technical_review_date', 'id', '2015-08-19 11:03:38', '2015-08-19 11:03:38', 'Dernier Contrôle Technique'),
+(6, 'abac_test_vehicle', 'manufacture_date', 'id', '2015-08-19 11:03:38', '2015-08-19 11:03:38', 'Date de sortie usine'),
+(7, 'abac_test_vehicle', 'origin', 'id', '2015-08-19 11:03:38', '2015-08-19 11:03:38', 'Origine');
 
 -- --------------------------------------------------------
 
@@ -86,7 +90,7 @@ CREATE TABLE IF NOT EXISTS `abac_policy_rules_attributes` (
   `type` VARCHAR(10) COLLATE utf8_unicode_ci NOT NULL,
   `comparison_type` varchar(10) COLLATE utf8_unicode_ci NOT NULL,
   `comparison` varchar(60) COLLATE utf8_unicode_ci NOT NULL,
-  `value` varchar(80) COLLATE utf8_unicode_ci NOT NULL,
+  `value` varchar(255) COLLATE utf8_unicode_ci NOT NULL,
   KEY `policy_rule_id` (`policy_rule_id`,`attribute_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 
@@ -97,7 +101,11 @@ CREATE TABLE IF NOT EXISTS `abac_policy_rules_attributes` (
 INSERT INTO `abac_policy_rules_attributes` (`policy_rule_id`, `attribute_id`, `type`, `comparison_type`, `comparison`, `value`) VALUES
 (1, 1, 'user', 'Numeric', 'isGreaterThan', '18'),
 (1, 2, 'user', 'String', 'isEqual', 'FR'),
-(1, 3, 'user', 'Numeric', 'isEqual', '1');
+(1, 3, 'user', 'Numeric', 'isEqual', '1'),
+(2, 4, 'user', 'Boolean', 'boolAnd', '1'),
+(2, 5, 'object', 'Date', 'isMoreRecentThan', '2Y'),
+(2, 6, 'object', 'Date', 'isMoreRecentThan', '25Y'),
+(2, 7, 'object', 'Array', 'isIn', 'a:5:{i:0;s:2:"FR";i:1;s:2:"DE";i:2;s:2:"IT";i:3;s:1:"L";i:4;s:2:"GB";}');
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
 /*!40101 SET CHARACTER_SET_RESULTS=@OLD_CHARACTER_SET_RESULTS */;
@@ -105,7 +113,7 @@ INSERT INTO `abac_policy_rules_attributes` (`policy_rule_id`, `attribute_id`, `t
 
 -- --------------------------------------------------------
 --
--- Structure de la table `user`
+-- Structure de la table `abac_test_user`
 --
 
 DROP TABLE IF EXISTS `abac_test_user`;
@@ -115,13 +123,43 @@ CREATE TABLE IF NOT EXISTS `abac_test_user` (
   `age` tinyint(4) NOT NULL,
   `parent_nationality` varchar(50) COLLATE utf8_unicode_ci NOT NULL,
   `has_done_japd` tinyint(1) NOT NULL,
+  `has_driving_license` tinyint(1) NOT NULL,
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB  DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci AUTO_INCREMENT=3 ;
 
 --
--- Contenu de la table `user`
+-- Contenu de la table `abac_test_user`
 --
 
-INSERT INTO `abac_test_user` (`id`, `name`, `age`, `parent_nationality`, `has_done_japd`) VALUES
-(1, 'John Doe', 36, 'FR', 1),
-(2, 'Thierry', 24, 'FR', 0);
+INSERT INTO `abac_test_user` (`id`, `name`, `age`, `parent_nationality`, `has_done_japd`, `has_driving_license`) VALUES
+(1, 'John Doe', 36, 'FR', 1, 1),
+(2, 'Thierry', 24, 'FR', 0, 0),
+(3, 'Jason', 17, 'FR', 1, 1),
+(4, 'Bouddha', 556, 'FR', 1, 0);
+
+-- --------------------------------------------------------
+--
+-- Structure de la table `abac_test_vehicle`
+--
+
+DROP TABLE IF EXISTS `abac_test_vehicle`;
+CREATE TABLE IF NOT EXISTS `abac_test_vehicle` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `brand` varchar(40) COLLATE utf8_unicode_ci NOT NULL,
+  `model` varchar(60) COLLATE utf8_unicode_ci NOT NULL,
+  `technical_review_date` datetime NOT NULL,
+  `manufacture_date` datetime NOT NULL,
+  `origin` varchar(50) COLLATE utf8_unicode_ci NOT NULL,
+  `engine_type` varchar(15) NOT NULL,
+  `eco_class` varchar(1) NOT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci AUTO_INCREMENT=3 ;
+
+--
+-- Contenu de la table `abac_test_vehicle`
+--
+INSERT INTO `abac_test_vehicle` (`id`, `brand`, `model`, `technical_review_date`, `manufacture_date`, `origin`, `engine_type`, `eco_class`) VALUES
+(1, 'Renault', 'Mégane', '2014-08-19 11:03:38', '2015-08-19 11:03:38', 'FR', 'diesel', 'C'),
+(2, 'Fiat', 'Stilo', '2008-08-19 11:03:38', '2004-08-19 11:03:38', 'IT', 'diesel', 'C'),
+(3, 'Alpha Roméo', 'Mito', '2014-08-19 11:03:38', '2013-08-19 11:03:38', 'FR', 'gasoline', 'D'),
+(4, 'Fiat', 'Punto', '2015-08-19 11:03:38', '2010-08-19 11:03:38', 'FR', 'diesel', 'B');
