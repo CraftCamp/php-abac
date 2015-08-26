@@ -82,11 +82,11 @@ class PolicyRuleManagerTest extends AbacTestCase {
     }
     
     public function testGetRuleByName() {
-        $policyRule = $this->manager->getRuleByName('test-rule');
+        $policyRule = $this->manager->getRuleByName('vehicle-homologation');
         
         $this->assertInstanceof('PhpAbac\Model\PolicyRule', $policyRule);
         $this->assertEquals(2, $policyRule->getId(2));
-        $this->assertEquals('test-rule', $policyRule->getName());
+        $this->assertEquals('vehicle-homologation', $policyRule->getName());
         $this->assertInstanceOf('DateTime', $policyRule->getCreatedAt());
         $this->assertInstanceOf('DateTime', $policyRule->getUpdatedAt());
     }
