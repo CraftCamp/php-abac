@@ -25,7 +25,22 @@ class AttributeManager {
         return $this->repository->createAttribute($name, $table, $column, $criteriaColumn);
     }
     
-    public function retrieveAttribute(Attribute $attribute, $criteria) {
-        $this->repository->retrieveAttribute($attribute, $criteria);
+    /**
+     * @param Attribute $attribute
+     * @param string $attributeType
+     * @param int $userId
+     * @param int $objectId
+     */
+    public function retrieveAttribute(Attribute $attribute, $attributeType, $userId, $objectId) {
+        switch($attributeType) {
+            case 'user':
+                $this->repository->retrieveAttribute($attribute, $userId);
+                break;
+            case 'object':
+                $this->repository->retrieveAttribute($attribute, $objectId);
+                break;
+            case 'environment':
+                break;
+        }
     }
 }
