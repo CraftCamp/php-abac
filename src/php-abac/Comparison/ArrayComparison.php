@@ -4,20 +4,20 @@ namespace PhpAbac\Comparison;
 
 class ArrayComparison {
     /**
+     * @param string $serializedHaystack
      * @param mixed $needle
-     * @param array $haystack
      * @return boolean
      */
-    public function isIn($needle, $haystack) {
-        return in_array($needle, $haystack);
+    public function isIn($serializedHaystack, $needle) {
+        return in_array($needle, unserialize($serializedHaystack));
     }
     
     /**
+     * @param string $serializedHaystack
      * @param mixed $needle
-     * @param array $haystack
      * @return boolean
      */
-    public function isNotIn($needle, $haystack) {
-        return !in_array($needle, $haystack);
+    public function isNotIn($serializedHaystack, $needle) {
+        return !in_array($needle, unserialize($serializedHaystack));
     }
 }

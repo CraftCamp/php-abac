@@ -13,26 +13,26 @@ class ArrayComparisonTest extends \PHPUnit_Framework_TestCase {
     }
     
     public function testIsIn() {
-        $this->assertTrue($this->comparison->isIn('expected_value', [
+        $this->assertTrue($this->comparison->isIn(serialize([
             'value',
             'expected_value',
             'another_value'
-        ]));
-        $this->assertFalse($this->comparison->isIn('expected_value', [
+        ]), 'expected_value'));
+        $this->assertFalse($this->comparison->isIn(serialize([
             'value',
             'another_value'
-        ]));
+        ]), 'expected_value'));
     }
     
     public function testIsNotIn() {
-        $this->assertTrue($this->comparison->isNotIn('expected_value', [
+        $this->assertTrue($this->comparison->isNotIn(serialize([
             'value',
             'another_value'
-        ]));
-        $this->assertFalse($this->comparison->isNotIn('expected_value', [
+        ]), 'expected_value'));
+        $this->assertFalse($this->comparison->isNotIn(serialize([
             'value',
             'expected_value',
             'another_value'
-        ]));
+        ]), 'expected_value'));
     }
 }

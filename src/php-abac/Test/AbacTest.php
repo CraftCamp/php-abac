@@ -28,6 +28,10 @@ class AbacTest extends AbacTestCase {
     public function testEnforce() {
         $this->assertTrue($this->abac->enforce('nationality-access', 1));
         $this->assertFalse($this->abac->enforce('nationality-access', 2));
+        
+        $this->assertTrue($this->abac->enforce('vehicle-homologation', 1, 1));
+        $this->assertFalse($this->abac->enforce('vehicle-homologation', 3, 2));
+        $this->assertFalse($this->abac->enforce('vehicle-homologation', 4, 4));
     }
     
     public function testContainer() {

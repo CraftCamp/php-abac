@@ -1,13 +1,13 @@
 -- phpMyAdmin SQL Dump
--- version 3.4.11.1deb2+deb7u1
+-- version 4.0.10deb1
 -- http://www.phpmyadmin.net
 --
 -- Client: localhost
--- Généré le: Lun 03 Août 2015 à 15:20
--- Version du serveur: 5.5.40
--- Version de PHP: 5.4.34-0+deb7u1
+-- Généré le: Mar 18 Août 2015 à 12:38
+-- Version du serveur: 5.5.44-0ubuntu0.14.04.1
+-- Version de PHP: 5.5.9-1ubuntu4.11
 
-SET SQL_MODE="NO_AUTO_VALUE_ON_ZERO";
+SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
 SET time_zone = "+00:00";
 
 
@@ -15,6 +15,25 @@ SET time_zone = "+00:00";
 /*!40101 SET @OLD_CHARACTER_SET_RESULTS=@@CHARACTER_SET_RESULTS */;
 /*!40101 SET @OLD_COLLATION_CONNECTION=@@COLLATION_CONNECTION */;
 /*!40101 SET NAMES utf8 */;
+
+--
+-- Base de données: `php_abac_test`
+--
+
+-- --------------------------------------------------------
+
+--
+-- Structure de la table `abac_policy_rules`
+--
+DROP TABLE IF EXISTS `abac_policy_rules`;
+CREATE TABLE IF NOT EXISTS `abac_policy_rules` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `name` varchar(45) COLLATE utf8_unicode_ci NOT NULL,
+  `created_at` datetime NOT NULL,
+  `updated_at` datetime NOT NULL,
+  PRIMARY KEY (`id`),
+  UNIQUE KEY `name` (`name`)
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci AUTO_INCREMENT=2 ;
 
 -- --------------------------------------------------------
 
@@ -31,25 +50,8 @@ CREATE TABLE IF NOT EXISTS `abac_attributes` (
   `created_at` datetime NOT NULL,
   `updated_at` datetime NOT NULL,
   `name` varchar(45) COLLATE utf8_unicode_ci NOT NULL,
-  PRIMARY KEY (`id`),
-  UNIQUE KEY `name` (`name`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci AUTO_INCREMENT=1 ;
-
--- --------------------------------------------------------
-
---
--- Structure de la table `abac_policy_rules`
---
-
-DROP TABLE IF EXISTS `abac_policy_rules`;
-CREATE TABLE IF NOT EXISTS `abac_policy_rules` (
-  `id` int(11) NOT NULL AUTO_INCREMENT,
-  `name` varchar(45) COLLATE utf8_unicode_ci NOT NULL,
-  `created_at` datetime NOT NULL,
-  `updated_at` datetime NOT NULL,
-  PRIMARY KEY (`id`),
-  UNIQUE KEY `name` (`name`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci AUTO_INCREMENT=1 ;
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci AUTO_INCREMENT=4 ;
 
 -- --------------------------------------------------------
 
@@ -61,6 +63,8 @@ DROP TABLE IF EXISTS `abac_policy_rules_attributes`;
 CREATE TABLE IF NOT EXISTS `abac_policy_rules_attributes` (
   `policy_rule_id` int(11) NOT NULL,
   `attribute_id` int(11) NOT NULL,
+  `type` VARCHAR(10) COLLATE utf8_unicode_ci NOT NULL,
+  `comparison_type` varchar(10) COLLATE utf8_unicode_ci NOT NULL,
   `comparison` varchar(60) COLLATE utf8_unicode_ci NOT NULL,
   `value` varchar(80) COLLATE utf8_unicode_ci NOT NULL,
   KEY `policy_rule_id` (`policy_rule_id`,`attribute_id`)

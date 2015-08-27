@@ -24,7 +24,7 @@ class Abac {
      * Return true if both user and object respects all the rules conditions
      * If the objectId is null, policy rules about its attributes will be ignored
      * 
-     * @param string $rule
+     * @param string $ruleName
      * @param integer $userId
      * @param integer $objectId
      * @return boolean
@@ -37,13 +37,12 @@ class Abac {
         
         foreach($policyRule->getPolicyRuleAttributes() as $pra) {
             $attribute = $pra->getAttribute();
-            $expectedValue = $pra->getValue();
-            $attributeManager->retrieveAttribute($attribute, $userId);
+            $attributeManager->retrieveAttribute($attribute, $pra->getType(), $userId, $objectId);
             
-            $comparisonClass = 'PhpAbac\\Comparison\\'. $pra->getType() . 'Comparison';
+            $comparisonClass = 'PhpAbac\\Comparison\\'. $pra->getComparisonType() . 'Comparison';
             $comparison = new $comparisonClass();
             
-            $isEnforced *= $comparison->{$pra->getComparison()}($expectedValue, $attribute->getValue());
+            $isEnforced *= $comparison->{$pra->getComparison()}($pra->getValue(), $attribute->getValue());
         }
         return (bool) $isEnforced;
     }
