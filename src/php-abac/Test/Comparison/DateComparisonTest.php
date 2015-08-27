@@ -15,10 +15,8 @@ class DateComparisonTest extends \PHPUnit_Framework_TestCase {
     public function testIsBetween() {
         $start = new \DateTime('2015-08-01');
         $end = new \DateTime('2015-08-16');
-        $rightValue = new \DateTime('2015-08-05');
-        $wrongValue = new \DateTime('2015-07-18');
         
-        $this->assertTrue($this->comparison->isBetween($start, $end, $rightValue));
-        $this->assertFalse($this->comparison->isBetween($start, $end, $wrongValue));
+        $this->assertTrue($this->comparison->isBetween($start, $end, '2015-08-05'));
+        $this->assertFalse($this->comparison->isBetween($start, $end, '2015-07-18'));
     }
 }
