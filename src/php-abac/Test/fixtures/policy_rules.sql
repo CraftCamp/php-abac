@@ -22,12 +22,12 @@ SET time_zone = "+00:00";
 
 -- --------------------------------------------------------
 
-DROP TABLE IF EXISTS `abac_test_vehicle`;
-DROP TABLE IF EXISTS `abac_policy_rules`;
 DROP TABLE IF EXISTS `abac_policy_rules_attributes`;
+DROP TABLE IF EXISTS `abac_policy_rules`;
 DROP TABLE IF EXISTS `abac_environment_attributes`;
 DROP TABLE IF EXISTS `abac_attributes`;
 DROP TABLE IF EXISTS `abac_attributes_data`;
+DROP TABLE IF EXISTS `abac_test_vehicle`;
 DROP TABLE IF EXISTS `abac_test_user`;
 --
 -- Structure de la table `abac_policy_rules`
