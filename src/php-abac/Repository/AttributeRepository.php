@@ -11,7 +11,8 @@ class AttributeRepository extends Repository {
      */
     public function findAttribute($attributeId) {
         $statement = $this->query(
-            'SELECT name, table_name, column_name, criteria_column, created_at, updated_at FROM abac_attributes WHERE id = :id'
+            'SELECT ad.name, a.table_name, a.column_name, a.criteria_column, ad.created_at, ad.updated_at ' .
+            'FROM abac_attributes_data ad INNER JOIN abac_attributes a ON a.id = ad.id WHERE ad.id = :id'
         , ['id' => $attributeId]);
         $data = $statement->fetch();
         
@@ -50,8 +51,10 @@ class AttributeRepository extends Repository {
         $formattedDatetime = $datetime->format('Y-m-d H:i:s');
         
         $this->insert(
-            'INSERT INTO abac_attributes (table_name, column_name, criteria_column, created_at, updated_at, name) ' .
-            'VALUES(:table_name, :column_name, :criteria_column, :created_at, :updated_at, :name)'
+            'INSERT INTO abac_attributes_data (created_at, updated_at, name) ' .
+            'VALUES(:created_at, :updated_at, :name);' .
+            'INSERT INTO abac_attributes (id, column_name, criteria_column) ' .
+            'VALUES(LAST_INSERT_ID(), :table_name, :column_name, :criteria_column);'
         , [
             'name' => $name,
             'table_name' => $table,

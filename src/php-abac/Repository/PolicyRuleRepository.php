@@ -15,12 +15,13 @@ class PolicyRuleRepository extends Repository {
     public function findByName($name) {
         $statement = $this->query(
             'SELECT pr.id, pr.created_at, pr.updated_at, pra.type, pra.comparison_type, ' .
-            'pra.comparison, pra.value, a.id AS attribute_id, a.name AS attribute_name, ' .
+            'pra.comparison, pra.value, ad.id AS attribute_id, ad.name AS attribute_name, ' .
             'a.table_name, a.column_name, a.criteria_column, ' .
-            'a.created_at AS attribute_created_at, a.updated_at AS attribute_updated_at ' .
+            'ad.created_at AS attribute_created_at, ad.updated_at AS attribute_updated_at ' .
             'FROM abac_policy_rules pr ' .
             'LEFT JOIN abac_policy_rules_attributes pra ON pra.policy_rule_id = pr.id ' .
-            'LEFT JOIN abac_attributes a ON a.id = pra.attribute_id ' .
+            'LEFT JOIN abac_attributes_data ad ON ad.id = pra.attribute_id ' .
+            'INNER JOIN abac_attributes a ON a.id = ad.id ' .
             'WHERE pr.name = :name', [
             'name' => $name
         ]);
