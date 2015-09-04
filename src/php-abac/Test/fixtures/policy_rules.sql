@@ -133,7 +133,7 @@ INSERT INTO `abac_environment_attributes` (`id`, `variable_name`) VALUES
 CREATE TABLE IF NOT EXISTS `abac_policy_rules_attributes` (
   `policy_rule_id` int(11) NOT NULL,
   `attribute_id` int(11) NOT NULL,
-  `type` VARCHAR(10) COLLATE utf8_unicode_ci NOT NULL,
+  `type` VARCHAR(15) COLLATE utf8_unicode_ci NOT NULL,
   `comparison_type` varchar(10) COLLATE utf8_unicode_ci NOT NULL,
   `comparison` varchar(60) COLLATE utf8_unicode_ci NOT NULL,
   `value` varchar(255) COLLATE utf8_unicode_ci NOT NULL,
@@ -151,7 +151,8 @@ INSERT INTO `abac_policy_rules_attributes` (`policy_rule_id`, `attribute_id`, `t
 (2, 4, 'user', 'Boolean', 'boolAnd', '1'),
 (2, 5, 'object', 'Date', 'isMoreRecentThan', '2Y'),
 (2, 6, 'object', 'Date', 'isMoreRecentThan', '25Y'),
-(2, 7, 'object', 'Array', 'isIn', 'a:5:{i:0;s:2:"FR";i:1;s:2:"DE";i:2;s:2:"IT";i:3;s:1:"L";i:4;s:2:"GB";}');
+(2, 7, 'object', 'Array', 'isIn', 'a:5:{i:0;s:2:"FR";i:1;s:2:"DE";i:2;s:2:"IT";i:3;s:1:"L";i:4;s:2:"GB";}'),
+(2, 8, 'environment', 'String', 'isEqual', 'GET');
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
 /*!40101 SET CHARACTER_SET_RESULTS=@OLD_CHARACTER_SET_RESULTS */;
