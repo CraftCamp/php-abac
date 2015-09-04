@@ -3,7 +3,7 @@
 namespace PhpAbac\Model;
 
 class PolicyRuleAttribute {
-    /** @var PhpAbac\Model\Attribute **/
+    /** @var PhpAbac\Model\AbstractAttribute **/
     protected $attribute;
     /** @var string **/
     protected $type;
@@ -15,17 +15,17 @@ class PolicyRuleAttribute {
     protected $value;
     
     /**
-     * @param \PhpAbac\Model\Attribute $attribute
+     * @param \PhpAbac\Model\AbstractAttribute $attribute
      * @return \PhpAbac\Model\PolicyRuleAttribute
      */
-    public function setAttribute(Attribute $attribute) {
+    public function setAttribute(AbstractAttribute $attribute) {
         $this->attribute = $attribute;
         
         return $this;
     }
     
     /**
-     * @return \PhpAbac\Model\Attribute
+     * @return \PhpAbac\Model\AbstractAttribute
      */
     public function getAttribute() {
         return $this->attribute;
