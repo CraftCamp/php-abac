@@ -122,7 +122,7 @@ CREATE TABLE IF NOT EXISTS `abac_environment_attributes` (
 --
 
 INSERT INTO `abac_environment_attributes` (`id`, `variable_name`) VALUES
-(8, 'REQUEST_METHOD');
+(8, 'SERVICE_STATE');
 
 -- --------------------------------------------------------
 
@@ -152,7 +152,7 @@ INSERT INTO `abac_policy_rules_attributes` (`policy_rule_id`, `attribute_id`, `t
 (2, 5, 'object', 'Date', 'isMoreRecentThan', '2Y'),
 (2, 6, 'object', 'Date', 'isMoreRecentThan', '25Y'),
 (2, 7, 'object', 'Array', 'isIn', 'a:5:{i:0;s:2:"FR";i:1;s:2:"DE";i:2;s:2:"IT";i:3;s:1:"L";i:4;s:2:"GB";}'),
-(2, 8, 'environment', 'String', 'isEqual', 'GET');
+(2, 8, 'environment', 'String', 'isEqual', 'OPEN');
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
 /*!40101 SET CHARACTER_SET_RESULTS=@OLD_CHARACTER_SET_RESULTS */;
