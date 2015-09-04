@@ -4,7 +4,9 @@ namespace PhpAbac\Manager;
 
 use PhpAbac\Repository\AttributeRepository;
 
+use PhpAbac\Model\AbstractAttribute;
 use PhpAbac\Model\Attribute;
+use PhpAbac\Model\EnvironmentAttribute;
 
 class AttributeManager {
     /** @var AttributeRepository **/
@@ -26,12 +28,15 @@ class AttributeManager {
     }
     
     /**
-     * @param Attribute $attribute
+     * @param AbstractAttribute $attribute
      * @param string $attributeType
      * @param int $userId
      * @param int $objectId
      */
-    public function retrieveAttribute(Attribute $attribute, $attributeType, $userId, $objectId) {
+    public function retrieveAttribute(AbstractAttribute $attribute, $attributeType, $userId, $objectId) {
+        // The switch is important.
+        // Even if we call the same method for the two first cases,
+        // the given argument isn't the same.
         switch($attributeType) {
             case 'user':
                 $this->repository->retrieveAttribute($attribute, $userId);
@@ -40,6 +45,7 @@ class AttributeManager {
                 $this->repository->retrieveAttribute($attribute, $objectId);
                 break;
             case 'environment':
+                $attribute->setValue(getenv($attribute->getVariableName()));
                 break;
         }
     }
