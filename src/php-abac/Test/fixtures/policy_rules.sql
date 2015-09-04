@@ -215,6 +215,13 @@ INSERT INTO `abac_test_vehicle` (`id`, `brand`, `model`, `technical_review_date`
 --
 -- Contraintes pour la table `abac_attributes`
 --
+ALTER TABLE `abac_policy_rules_attributes`
+  ADD CONSTRAINT `policy_rules` FOREIGN KEY (`policy_rule_id`) REFERENCES `abac_policy_rules` (`id`);
+ALTER TABLE `abac_policy_rules_attributes`
+  ADD CONSTRAINT `attributes` FOREIGN KEY (`attribute_id`) REFERENCES `abac_attributes_data` (`id`);
+--
+-- Contraintes pour la table `abac_attributes`
+--
 ALTER TABLE `abac_attributes`
   ADD CONSTRAINT `attributes_data` FOREIGN KEY (`id`) REFERENCES `abac_attributes_data` (`id`) ON DELETE CASCADE;
 
