@@ -3,6 +3,7 @@
 namespace PhpAbac\Repository;
 
 use PhpAbac\Model\Attribute;
+use PhpAbac\Model\EnvironmentAttribute;
 use PhpAbac\Model\PolicyRule;
 use PhpAbac\Model\PolicyRuleAttribute;
 
@@ -15,12 +16,15 @@ class PolicyRuleRepository extends Repository {
     public function findByName($name) {
         $statement = $this->query(
             'SELECT pr.id, pr.created_at, pr.updated_at, pra.type, pra.comparison_type, ' .
-            'pra.comparison, pra.value, a.id AS attribute_id, a.name AS attribute_name, ' .
+            'pra.comparison, pra.value, ad.id AS attribute_id, ad.name AS attribute_name, ' .
             'a.table_name, a.column_name, a.criteria_column, ' .
-            'a.created_at AS attribute_created_at, a.updated_at AS attribute_updated_at ' .
+            'ea.variable_name, ' .
+            'ad.created_at AS attribute_created_at, ad.updated_at AS attribute_updated_at ' .
             'FROM abac_policy_rules pr ' .
             'LEFT JOIN abac_policy_rules_attributes pra ON pra.policy_rule_id = pr.id ' .
-            'LEFT JOIN abac_attributes a ON a.id = pra.attribute_id ' .
+            'LEFT JOIN abac_attributes_data ad ON ad.id = pra.attribute_id ' .
+            'LEFT JOIN abac_attributes a ON a.id = ad.id ' .
+            'LEFT JOIN abac_environment_attributes ea ON ea.id = ad.id ' .
             'WHERE pr.name = :name', [
             'name' => $name
         ]);
@@ -40,6 +44,38 @@ class PolicyRuleRepository extends Repository {
         if($data['attribute_id'] === null) {
             return $policyRule;
         }
+        $this->fetchPolicyRuleAttribute($policyRule, $data);
+        // Then we fetch the remaining rows, corresponding to attributes
+        while($data = $statement->fetch()) {
+            $this->fetchPolicyRuleAttribute($policyRule, $data);
+        }
+        return $policyRule;
+    }
+    
+    /**
+     * @param PolicyRule $policyRule
+     * @param array $data
+     */
+    public function fetchPolicyRuleAttribute($policyRule, $data) {
+        $attribute = 
+            (!empty($data['variable_name']))
+            ?
+                (new EnvironmentAttribute())
+                ->setId($data['attribute_id'])
+                ->setName($data['attribute_name'])
+                ->setVariableName($data['variable_name'])
+                ->setCreatedAt(new \DateTime($data['attribute_created_at']))
+                ->setUpdatedAt(new \DateTime($data['attribute_updated_at']))
+            :
+                (new Attribute())
+                ->setId($data['attribute_id'])
+                ->setName($data['attribute_name'])
+                ->setTable($data['table_name'])
+                ->setColumn($data['column_name'])
+                ->setCriteriaColumn($data['criteria_column'])
+                ->setCreatedAt(new \DateTime($data['attribute_created_at']))
+                ->setUpdatedAt(new \DateTime($data['attribute_updated_at']))
+        ;
         $policyRule
             ->addPolicyRuleAttribute(
                 (new PolicyRuleAttribute())
@@ -47,41 +83,9 @@ class PolicyRuleRepository extends Repository {
                 ->setComparisonType($data['comparison_type'])
                 ->setComparison($data['comparison'])
                 ->setValue($data['value'])
-                ->setAttribute(
-                    (new Attribute())
-                    ->setId($data['attribute_id'])
-                    ->setName($data['attribute_name'])
-                    ->setTable($data['table_name'])
-                    ->setColumn($data['column_name'])
-                    ->setCriteriaColumn($data['criteria_column'])
-                    ->setCreatedAt(new \DateTime($data['attribute_created_at']))
-                    ->setUpdatedAt(new \DateTime($data['attribute_updated_at']))
-                )
+                ->setAttribute($attribute)
             )
         ;
-        // Then we fetch the remaining rows, corresponding to attributes
-        while($data = $statement->fetch()) {
-            $policyRule
-                ->addPolicyRuleAttribute(
-                    (new PolicyRuleAttribute())
-                    ->setType($data['type'])
-                    ->setComparisonType($data['comparison_type'])
-                    ->setComparison($data['comparison'])
-                    ->setValue($data['value'])
-                    ->setAttribute(
-                        (new Attribute())
-                        ->setId($data['attribute_id'])
-                        ->setName($data['attribute_name'])
-                        ->setTable($data['table_name'])
-                        ->setColumn($data['column_name'])
-                        ->setCriteriaColumn($data['criteria_column'])
-                        ->setCreatedAt(new \DateTime($data['attribute_created_at']))
-                        ->setUpdatedAt(new \DateTime($data['attribute_updated_at']))
-                    )
-                )
-            ;
-        }
-        return $policyRule;
     }
     
     /**

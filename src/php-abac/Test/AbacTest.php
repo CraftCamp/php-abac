@@ -29,6 +29,9 @@ class AbacTest extends AbacTestCase {
         $this->assertTrue($this->abac->enforce('nationality-access', 1));
         $this->assertFalse($this->abac->enforce('nationality-access', 2));
         
+        // getenv() don't work in CLI scripts without putenv()
+        putenv('SERVICE_STATE=OPEN');
+        
         $this->assertTrue($this->abac->enforce('vehicle-homologation', 1, 1));
         $this->assertFalse($this->abac->enforce('vehicle-homologation', 3, 2));
         $this->assertFalse($this->abac->enforce('vehicle-homologation', 4, 4));
