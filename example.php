@@ -14,6 +14,8 @@
     ));
     Abac::get('pdo-connection')->exec(file_get_contents("src/php-abac/Test/fixtures/policy_rules.sql"));
     
+    putenv('SERVICE_STATE=OPEN');
+    
     $user1Nationality = $abac->enforce('nationality-access', 1);
     
     if($user1Nationality) {
