@@ -27,14 +27,20 @@ class AbacTest extends AbacTestCase {
     
     public function testEnforce() {
         $this->assertTrue($this->abac->enforce('nationality-access', 1));
-        $this->assertFalse($this->abac->enforce('nationality-access', 2));
+        $this->assertEquals([
+            'japd'
+        ], $this->abac->enforce('nationality-access', 2));
         
         // getenv() don't work in CLI scripts without putenv()
         putenv('SERVICE_STATE=OPEN');
         
         $this->assertTrue($this->abac->enforce('vehicle-homologation', 1, 1, ['proprietaire' => 1]));
-        $this->assertFalse($this->abac->enforce('vehicle-homologation', 3, 2, ['proprietaire' => 3]));
-        $this->assertFalse($this->abac->enforce('vehicle-homologation', 4, 4, ['proprietaire' => 4]));
+        $this->assertEquals([
+            'dernier-controle-technique'
+        ],$this->abac->enforce('vehicle-homologation', 3, 2, ['proprietaire' => 3]));
+        $this->assertEquals([
+            'permis-de-conduire'
+        ], $this->abac->enforce('vehicle-homologation', 4, 4, ['proprietaire' => 4]));
     }
     
     public function testContainer() {

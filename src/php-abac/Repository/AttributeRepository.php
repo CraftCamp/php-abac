@@ -55,7 +55,7 @@ class AttributeRepository extends Repository {
         $this->insert(
             'INSERT INTO abac_attributes_data (created_at, updated_at, name, slug) ' .
             'VALUES(:created_at, :updated_at, :name, :slug);' .
-            'INSERT INTO abac_attributes (id, column_name, criteria_column) ' .
+            'INSERT INTO abac_attributes (id, table_name, column_name, criteria_column) ' .
             'VALUES(LAST_INSERT_ID(), :table_name, :column_name, :criteria_column);'
         , [
             'name' => $name,

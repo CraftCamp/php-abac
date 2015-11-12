@@ -9,7 +9,7 @@ class NumericComparison {
      * @return boolean
      */
     public function isEqual($expected, $value) {
-        return $expected === $value;
+        return (int) $expected === (int) $value;
     }
     
     /**
