@@ -6,7 +6,6 @@ use PhpAbac\Repository\AttributeRepository;
 
 use PhpAbac\Model\AbstractAttribute;
 use PhpAbac\Model\Attribute;
-use PhpAbac\Model\EnvironmentAttribute;
 
 class AttributeManager {
     /** @var AttributeRepository **/
@@ -48,5 +47,18 @@ class AttributeManager {
                 $attribute->setValue(getenv($attribute->getVariableName()));
                 break;
         }
+    }
+    
+    /**
+     * @param string $slug
+     * @param array $dynamicAttributes
+     * @return mixed
+     * @throws \InvalidArgumentException
+     */
+    public function getDynamicAttribute($slug, $dynamicAttributes = []) {
+        if(!isset($dynamicAttributes[$slug])) {
+            throw new \InvalidArgumentException('The "'.$slug.'" attribute is dynamic and its value must be given');
+        }
+        return $dynamicAttributes[$slug];
     }
 }
