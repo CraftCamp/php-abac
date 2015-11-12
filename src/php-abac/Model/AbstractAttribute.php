@@ -7,6 +7,8 @@ abstract class AbstractAttribute {
     protected $id;
     /** @var string **/
     protected $name;
+    /** @var string **/
+    protected $slug;
     /** @var \DateTime **/
     protected $createdAt;
     /** @var \DateTime **/
@@ -46,6 +48,23 @@ abstract class AbstractAttribute {
      */
     public function getName() {
         return $this->name;
+    }
+    
+    /**
+     * @param string $slug
+     * @return \PhpAbac\Model\AbstractAttribute
+     */
+    public function setSlug($slug) {
+        $this->slug = $slug;
+        
+        return $this;
+    }
+    
+    /**
+     * @return string
+     */
+    public function getSlug() {
+        return $this->slug;
     }
     
     /**
