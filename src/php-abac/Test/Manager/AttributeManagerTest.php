@@ -27,22 +27,21 @@ class AttributeManagerTest extends \PHPUnit_Framework_TestCase {
     }
     
     public function testCreate() {
-        $this->manager->create('test-attribute', 'abac_policy_rules', 'name', 'id');
+        $this->manager->create('Licence d\'équitation', 'users', 'has_horse_license', 'id');
         
         $data =
             Abac::get('pdo-connection')
             ->query(
                 'SELECT * FROM abac_attributes_data ad ' .
                 'INNER JOIN abac_attributes a ON a.id = ad.id '.
-                'WHERE ad.name = "JAPD"'
+                'WHERE a.id = LAST_INSERT_ID()'
             )
-            ->fetchAll()
+            ->fetch(\PDO::FETCH_ASSOC)
         ;
-        
-        $this->assertCount(1, $data);
-        $this->assertEquals('JAPD', $data[0]['name']);
-        $this->assertEquals('abac_test_user', $data[0]['table_name']);
-        $this->assertEquals('has_done_japd', $data[0]['column_name']);
-        $this->assertEquals('id', $data[0]['criteria_column']);
+        $this->assertEquals('Licence d\'équitation', $data['name']);
+        $this->assertEquals('licence-d-equitation', $data['slug']);
+        $this->assertEquals('users', $data['table_name']);
+        $this->assertEquals('has_horse_license', $data['column_name']);
+        $this->assertEquals('id', $data['criteria_column']);
     }
 }
