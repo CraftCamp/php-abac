@@ -63,6 +63,7 @@ CREATE TABLE IF NOT EXISTS `abac_attributes_data` (
   `created_at` datetime NOT NULL,
   `updated_at` datetime NOT NULL,
   `name` varchar(45) COLLATE utf8_unicode_ci NOT NULL,
+  `slug` varchar(45) COLLATE utf8_unicode_ci NOT NULL,
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB  DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci AUTO_INCREMENT=4 ;
 
@@ -70,15 +71,16 @@ CREATE TABLE IF NOT EXISTS `abac_attributes_data` (
 -- Contenu de la table `abac_attributes`
 --
 
-INSERT INTO `abac_attributes_data` (`id`, `created_at`, `updated_at`, `name`) VALUES
-(1, '2015-08-19 11:03:38', '2015-08-19 11:03:38', 'Age'),
-(2, '2015-08-19 11:03:38', '2015-08-19 11:03:38', 'Nationalité des Parents'),
-(3, '2015-08-19 11:03:38', '2015-08-19 11:03:38', 'JAPD'),
-(4, '2015-08-19 11:03:38', '2015-08-19 11:03:38', 'Permis de Conduire'),
-(5, '2015-08-19 11:03:38', '2015-08-19 11:03:38', 'Dernier Contrôle Technique'),
-(6, '2015-08-19 11:03:38', '2015-08-19 11:03:38', 'Date de sortie usine'),
-(7, '2015-08-19 11:03:38', '2015-08-19 11:03:38', 'Origine'),
-(8, '2015-08-19 11:03:38', '2015-08-19 11:03:38', 'Statut du service');
+INSERT INTO `abac_attributes_data` (`id`, `created_at`, `updated_at`, `name`, `slug`) VALUES
+(1, '2015-08-19 11:03:38', '2015-08-19 11:03:38', 'Age', 'age'),
+(2, '2015-08-19 11:03:38', '2015-08-19 11:03:38', 'Nationalité des Parents', 'nationalite-des-parents'),
+(3, '2015-08-19 11:03:38', '2015-08-19 11:03:38', 'JAPD', 'japd'),
+(4, '2015-08-19 11:03:38', '2015-08-19 11:03:38', 'Permis de Conduire', 'permis-de-conduire'),
+(5, '2015-08-19 11:03:38', '2015-08-19 11:03:38', 'Dernier Contrôle Technique', 'dernier-controle-technique'),
+(6, '2015-08-19 11:03:38', '2015-08-19 11:03:38', 'Date de sortie usine', 'date-de-sortie-d-usine'),
+(7, '2015-08-19 11:03:38', '2015-08-19 11:03:38', 'Origine', 'origine'),
+(8, '2015-08-19 11:03:38', '2015-08-19 11:03:38', 'Propriétaire', 'proprietaire'),
+(9, '2015-08-19 11:03:38', '2015-08-19 11:03:38', 'Statut du service', 'statut-du-service');
 -- --------------------------------------------------------
 
 --
@@ -104,7 +106,8 @@ INSERT INTO `abac_attributes` (`id`, `table_name`, `column_name`, `criteria_colu
 (4, 'abac_test_user', 'has_driving_license', 'id'),
 (5, 'abac_test_vehicle', 'technical_review_date', 'id'),
 (6, 'abac_test_vehicle', 'manufacture_date', 'id'),
-(7, 'abac_test_vehicle', 'origin', 'id');
+(7, 'abac_test_vehicle', 'origin', 'id'),
+(8, 'abac_test_vehicle', 'user_id', 'id');
 -- --------------------------------------------------------
 
 --
@@ -122,7 +125,7 @@ CREATE TABLE IF NOT EXISTS `abac_environment_attributes` (
 --
 
 INSERT INTO `abac_environment_attributes` (`id`, `variable_name`) VALUES
-(8, 'SERVICE_STATE');
+(9, 'SERVICE_STATE');
 
 -- --------------------------------------------------------
 
@@ -152,7 +155,8 @@ INSERT INTO `abac_policy_rules_attributes` (`policy_rule_id`, `attribute_id`, `t
 (2, 5, 'object', 'Date', 'isMoreRecentThan', '2Y'),
 (2, 6, 'object', 'Date', 'isMoreRecentThan', '25Y'),
 (2, 7, 'object', 'Array', 'isIn', 'a:5:{i:0;s:2:"FR";i:1;s:2:"DE";i:2;s:2:"IT";i:3;s:1:"L";i:4;s:2:"GB";}'),
-(2, 8, 'environment', 'String', 'isEqual', 'OPEN');
+(2, 8, 'object', 'Numeric', 'isEqual', 'dynamic'),
+(2, 9, 'environment', 'String', 'isEqual', 'OPEN');
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
 /*!40101 SET CHARACTER_SET_RESULTS=@OLD_CHARACTER_SET_RESULTS */;
@@ -190,6 +194,7 @@ INSERT INTO `abac_test_user` (`id`, `name`, `age`, `parent_nationality`, `has_do
 
 CREATE TABLE IF NOT EXISTS `abac_test_vehicle` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
+  `user_id` int(11) NOT NULL,
   `brand` varchar(40) COLLATE utf8_unicode_ci NOT NULL,
   `model` varchar(60) COLLATE utf8_unicode_ci NOT NULL,
   `technical_review_date` datetime NOT NULL,
@@ -203,11 +208,11 @@ CREATE TABLE IF NOT EXISTS `abac_test_vehicle` (
 --
 -- Contenu de la table `abac_test_vehicle`
 --
-INSERT INTO `abac_test_vehicle` (`id`, `brand`, `model`, `technical_review_date`, `manufacture_date`, `origin`, `engine_type`, `eco_class`) VALUES
-(1, 'Renault', 'Mégane', '2014-08-19 11:03:38', '2015-08-19 11:03:38', 'FR', 'diesel', 'C'),
-(2, 'Fiat', 'Stilo', '2008-08-19 11:03:38', '2004-08-19 11:03:38', 'IT', 'diesel', 'C'),
-(3, 'Alpha Roméo', 'Mito', '2014-08-19 11:03:38', '2013-08-19 11:03:38', 'FR', 'gasoline', 'D'),
-(4, 'Fiat', 'Punto', '2015-08-19 11:03:38', '2010-08-19 11:03:38', 'FR', 'diesel', 'B');
+INSERT INTO `abac_test_vehicle` (`id`, `user_id`, `brand`, `model`, `technical_review_date`, `manufacture_date`, `origin`, `engine_type`, `eco_class`) VALUES
+(1, 1, 'Renault', 'Mégane', '2014-08-19 11:03:38', '2015-08-19 11:03:38', 'FR', 'diesel', 'C'),
+(2, 3, 'Fiat', 'Stilo', '2008-08-19 11:03:38', '2004-08-19 11:03:38', 'IT', 'diesel', 'C'),
+(3, 1, 'Alpha Roméo', 'Mito', '2014-08-19 11:03:38', '2013-08-19 11:03:38', 'FR', 'gasoline', 'D'),
+(4, 4, 'Fiat', 'Punto', '2015-08-19 11:03:38', '2010-08-19 11:03:38', 'FR', 'diesel', 'B');
 
 --
 -- Contraintes pour les tables exportées

@@ -29,7 +29,7 @@ class Abac {
      * @param integer $objectId
      * @return boolean
      */
-    public function enforce($ruleName, $userId, $objectId = null) {
+    public function enforce($ruleName, $userId, $objectId = null, $dynamicAttributes = []) {
         $attributeManager = self::get('attribute-manager');
         
         $policyRule = self::get('policy-rule-manager')->getRuleByName($ruleName);
@@ -41,8 +41,12 @@ class Abac {
             
             $comparisonClass = 'PhpAbac\\Comparison\\'. $pra->getComparisonType() . 'Comparison';
             $comparison = new $comparisonClass();
-            
-            $isEnforced *= $comparison->{$pra->getComparison()}($pra->getValue(), $attribute->getValue());
+            $value =
+                ($pra->getValue() === 'dynamic')
+                ? $attributeManager->getDynamicAttribute($pra->getAttribute()->getSlug(), $dynamicAttributes)
+                : $pra->getValue()
+            ;
+            $isEnforced *= $comparison->{$pra->getComparison()}($value, $attribute->getValue());
         }
         return (bool) $isEnforced;
     }
