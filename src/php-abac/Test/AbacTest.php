@@ -32,9 +32,9 @@ class AbacTest extends AbacTestCase {
         // getenv() don't work in CLI scripts without putenv()
         putenv('SERVICE_STATE=OPEN');
         
-        $this->assertTrue($this->abac->enforce('vehicle-homologation', 1, 1));
-        $this->assertFalse($this->abac->enforce('vehicle-homologation', 3, 2));
-        $this->assertFalse($this->abac->enforce('vehicle-homologation', 4, 4));
+        $this->assertTrue($this->abac->enforce('vehicle-homologation', 1, 1, ['proprietaire' => 1]));
+        $this->assertFalse($this->abac->enforce('vehicle-homologation', 3, 2, ['proprietaire' => 3]));
+        $this->assertFalse($this->abac->enforce('vehicle-homologation', 4, 4, ['proprietaire' => 4]));
     }
     
     public function testContainer() {
