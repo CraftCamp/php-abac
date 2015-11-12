@@ -23,17 +23,19 @@ class Abac {
     /**
      * Return true if both user and object respects all the rules conditions
      * If the objectId is null, policy rules about its attributes will be ignored
+     * In case of mismatch between attributes and expected values,
+     * an array with the concerned attributes slugs will be returned
      * 
      * @param string $ruleName
      * @param integer $userId
      * @param integer $objectId
-     * @return boolean
+     * @return boolean|array
      */
     public function enforce($ruleName, $userId, $objectId = null, $dynamicAttributes = []) {
         $attributeManager = self::get('attribute-manager');
         
         $policyRule = self::get('policy-rule-manager')->getRuleByName($ruleName);
-        $isEnforced = true;
+        $rejectedAttributes = [];
         
         foreach($policyRule->getPolicyRuleAttributes() as $pra) {
             $attribute = $pra->getAttribute();
@@ -43,12 +45,14 @@ class Abac {
             $comparison = new $comparisonClass();
             $value =
                 ($pra->getValue() === 'dynamic')
-                ? $attributeManager->getDynamicAttribute($pra->getAttribute()->getSlug(), $dynamicAttributes)
+                ? $attributeManager->getDynamicAttribute($attribute->getSlug(), $dynamicAttributes)
                 : $pra->getValue()
             ;
-            $isEnforced *= $comparison->{$pra->getComparison()}($value, $attribute->getValue());
+            if($comparison->{$pra->getComparison()}($value, $attribute->getValue()) !== true) {
+                $rejectedAttributes[] = $attribute->getSlug();
+            }
         }
-        return (bool) $isEnforced;
+        return (count($rejectedAttributes) === 0) ? : $rejectedAttributes;
     }
     
     public static function clearContainer() {
