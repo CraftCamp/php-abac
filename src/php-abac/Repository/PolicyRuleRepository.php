@@ -117,23 +117,29 @@ class PolicyRuleRepository extends Repository {
     /**
      * @param integer $policyRuleId
      * @param Attribute $attribute
+     * @param string $type
+     * @param string $comparisonType
      * @param string $comparison
      * @param string $value
      * @return PolicyRuleAttribute
      */
-    public function createPolicyRuleAttribute($policyRuleId, Attribute $attribute, $comparison, $value) {
+    public function createPolicyRuleAttribute($policyRuleId, Attribute $attribute, $type, $comparisonType, $comparison, $value) {
         $this->insert(
-            'INSERT INTO abac_policy_rules_attributes(policy_rule_id, attribute_id, comparison, value) ' .
-            'VALUES(:policy_rule_id, :attribute_id, :comparison, :value)', [
+            'INSERT INTO abac_policy_rules_attributes(policy_rule_id, attribute_id, type, comparison_type, comparison, value) ' .
+            'VALUES(:policy_rule_id, :attribute_id, :type, :comparison_type, :comparison, :value)', [
             'policy_rule_id' => $policyRuleId,
             'attribute_id' => $attribute->getId(),
+            'type' => $type,
+            'comparison_type' => $comparisonType,
             'comparison' => $comparison,
             'value' => $value
         ]);
         return
             (new PolicyRuleAttribute())
             ->setAttribute($attribute)
+            ->setType($type)
             ->setComparison($comparison)
+            ->setComparisonType($comparisonType)
             ->setValue($value)
         ;
     }

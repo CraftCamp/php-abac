@@ -50,6 +50,15 @@ class PolicyRuleManager {
      * @throws \InvalidArgumentException
      */
     public function createPolicyRuleAttribute($policyRule, $data) {
+        if(!isset($data['type'])) {
+            throw new \InvalidArgumentException('The attribute must have a comparison type');
+        }
+        if(!in_array($data['type'], ['user', 'object', 'environment'])) {
+            throw new \InvalidArgumentException('The attribute must have a comparison type');
+        }
+        if(!isset($data['comparison_type'])) {
+            throw new \InvalidArgumentException('The attribute must have a comparison type');
+        }
         if(!isset($data['comparison'])) {
             throw new \InvalidArgumentException('The attribute must have a comparison');
         }
@@ -69,6 +78,8 @@ class PolicyRuleManager {
                     $data['attribute']['column'],
                     $data['attribute']['criteria_column']
                 ),
+                $data['type'],
+                $data['comparison_type'],
                 $data['comparison'],
                 $data['value']
             )
