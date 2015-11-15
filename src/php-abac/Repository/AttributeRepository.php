@@ -43,7 +43,6 @@ class AttributeRepository extends Repository {
     
     /**
      * @param Attribute $attribute
-     * @return Attribute
      */
     public function createAttribute(Attribute $attribute) {
         $datetime = new \DateTime();
@@ -64,8 +63,7 @@ class AttributeRepository extends Repository {
             'created_at' => $formattedDatetime,
             'updated_at' => $formattedDatetime
         ]);
-        return
-            $attribute
+        $attribute
             ->setId($this->connection->lastInsertId('abac_attributes'))
             ->setSlug($slug)
             ->setCreatedAt($datetime)
@@ -75,7 +73,6 @@ class AttributeRepository extends Repository {
     
     /**
      * @param EnvironmentAttribute $attribute
-     * @return EnvironmentAttribute
      */
     public function createEnvironmentAttribute(EnvironmentAttribute $attribute) {
         $datetime = new \DateTime();
@@ -94,8 +91,7 @@ class AttributeRepository extends Repository {
             'created_at' => $formattedDatetime,
             'updated_at' => $formattedDatetime
         ]);
-        return
-            $attribute
+        $attribute
             ->setId($this->connection->lastInsertId('abac_attributes'))
             ->setSlug($slug)
             ->setCreatedAt($datetime)

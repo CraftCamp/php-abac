@@ -65,9 +65,7 @@ class PolicyRuleManager {
             throw new \InvalidArgumentException('The attribute must be an subclass of AbstractAttribute');
         }
         Abac::get('attribute-manager')->create($pra->getAttribute());
-        $policyRule->addPolicyRuleAttribute($this
-            ->repository
-            ->createPolicyRuleAttribute($policyRule->getId(), $pra)
-        );
+        $this->repository->createPolicyRuleAttribute($policyRule->getId(), $pra);
+        $policyRule->addPolicyRuleAttribute($pra);
     }
 }
