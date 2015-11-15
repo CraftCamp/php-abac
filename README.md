@@ -1,10 +1,96 @@
-# [Kilix] php-abac
-## Attribute-Based Access Control implementation library
+[Kilix] php-abac
+========
 
-To introduce the concepts of ABAC, you can see a presentation of it [here](http://slides.com/axelvenet/abac#/)
+### Attribute-Based Access Control implementation library
 
+Introduction
+-------
 
-## Installation
-### With Composer:
+This library is meant to implement the concept of ABAC in your PHP applications.
 
-Feature to come when the library will be published
+The concept is to manage access control using attributes : from users, from resources and environment.
+
+It allows us to define rules based on multiple attributes. These rules will be checked in your application to determine if an user is allowed to perform an action.
+
+The following links explain what ABAC is :
+
+* [ABAC Introduction](http://www.axiomatics.com/attribute-based-access-control.html)
+* [NIST specification](http://nvlpubs.nist.gov/nistpubs/specialpublications/NIST.sp.800-162.pdf)
+
+Installation
+-------
+
+**Using composer :**
+
+Write the following line in your composer.json file :
+
+```json
+"require" : {
+	"kilix/php-abac": "dev-master"
+}
+```
+
+Then just do :
+```shell
+composer install
+```
+
+To initialize the library tables in your database, there is a SQL file located in the ``sql/`` folder. This file will create the tables used by php-abac.
+
+Usage
+---
+
+**Example with only user attributes defined in the rule**
+
+```php
+use PhpAbac\Abac;
+
+$abac = new Abac($pdoConnection);
+$abac->enforce('create-group', $userId);
+```
+The checked attributes can be :
+
+|User|
+|-----|
+|is_banned = 0|
+
+**Example with both user and object attributes**
+```php
+use PhpAbac\Abac;
+
+$abac = new Abac($pdoConnection);
+$check = $abac->enforce('read-public-group', $userId, $groupId);
+```
+The checked attributes can be :
+
+|User|Group|
+|-----|----|
+|is_banned = 0|is_active = 1|
+||is_public = 1|
+
+**Example with dynamic attributes**
+```php
+use PhpAbac\Abac;
+
+$abac = new Abac($pdoConnection);
+$check = $abac->enforce('edit-group', $userId, $groupId, [
+	'group-owner' => $userId
+]);
+
+```
+
+Documentation
+-------
+
+* [Rules](doc/rules.md)
+* [Attributes](doc/attributes.md)
+* [Access-control](doc/access-control.md)
+
+Contribute
+-------
+
+If you want to contribute, don't hesitate to fork the library and submit Pull Requests.
+
+You can also report issues, suggest enhancements, feel free to give advices and your feedback about this library.
+
+It's not finished yet, there's still a lot of features to implement to make it better. If you want to be a part of this library improvement, let us know  !
