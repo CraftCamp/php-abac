@@ -4,7 +4,7 @@
 ### Attribute-Based Access Control implementation library
 
 Introduction
--------
+------------
 
 This library is meant to implement the concept of ABAC in your PHP applications.
 
@@ -18,7 +18,7 @@ The following links explain what ABAC is :
 * [NIST specification](http://nvlpubs.nist.gov/nistpubs/specialpublications/NIST.sp.800-162.pdf)
 
 Installation
--------
+------------
 
 **Using composer :**
 
@@ -82,7 +82,7 @@ $check = $abac->enforce('edit-group', $userId, $groupId, [
 Documentation
 -------
 
-* [Rules](doc/rules.md)
+* [Policy Rules](doc/policy_rules.md)
 * [Attributes](doc/attributes.md)
 * [Access-control](doc/access-control.md)
 
