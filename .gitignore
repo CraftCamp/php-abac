@@ -2,3 +2,4 @@
 nbproject
 code-coverage
 vendor
+phpunit.xml
