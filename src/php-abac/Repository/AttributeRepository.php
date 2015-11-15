@@ -3,6 +3,7 @@
 namespace PhpAbac\Repository;
 
 use PhpAbac\Model\Attribute;
+use PhpAbac\Model\EnvironmentAttribute;
 
 class AttributeRepository extends Repository {
     /**
@@ -41,16 +42,13 @@ class AttributeRepository extends Repository {
     }
     
     /**
-     * @param string $name
-     * @param string $table
-     * @param string $column
-     * @param string $criteriaColumn
+     * @param Attribute $attribute
      * @return Attribute
      */
-    public function createAttribute($name, $table, $column, $criteriaColumn) {
+    public function createAttribute(Attribute $attribute) {
         $datetime = new \DateTime();
         $formattedDatetime = $datetime->format('Y-m-d H:i:s');
-        $slug = $this->slugify($name);
+        $slug = $this->slugify($attribute->getName());
         
         $this->insert(
             'INSERT INTO abac_attributes_data (created_at, updated_at, name, slug) ' .
@@ -58,23 +56,48 @@ class AttributeRepository extends Repository {
             'INSERT INTO abac_attributes (id, table_name, column_name, criteria_column) ' .
             'VALUES(LAST_INSERT_ID(), :table_name, :column_name, :criteria_column);'
         , [
-            'name' => $name,
+            'name' => $attribute->getName(),
             'slug' => $slug,
-            'table_name' => $table,
-            'column_name' => $column,
-            'criteria_column' => $criteriaColumn,
+            'table_name' => $attribute->getTable(),
+            'column_name' => $attribute->getColumn(),
+            'criteria_column' => $attribute->getCriteriaColumn(),
             'created_at' => $formattedDatetime,
             'updated_at' => $formattedDatetime
         ]);
-        
         return
-            (new Attribute())
+            $attribute
             ->setId($this->connection->lastInsertId('abac_attributes'))
-            ->setName($name)
             ->setSlug($slug)
-            ->setTable($table)
-            ->setColumn($column)
-            ->setCriteriaColumn($criteriaColumn)
+            ->setCreatedAt($datetime)
+            ->setUpdatedAt($datetime)
+        ;
+    }
+    
+    /**
+     * @param EnvironmentAttribute $attribute
+     * @return EnvironmentAttribute
+     */
+    public function createEnvironmentAttribute(EnvironmentAttribute $attribute) {
+        $datetime = new \DateTime();
+        $formattedDatetime = $datetime->format('Y-m-d H:i:s');
+        $slug = $this->slugify($attribute->getName());
+        
+        $this->insert(
+            'INSERT INTO abac_attributes_data (created_at, updated_at, name, slug) ' .
+            'VALUES(:created_at, :updated_at, :name, :slug);' .
+            'INSERT INTO abac_environment_attributes (id, variable_name) ' .
+            'VALUES(LAST_INSERT_ID(), :variable_name);'
+        , [
+            'name' => $attribute->getName(),
+            'slug' => $slug,
+            'variable_name' => $attribute->getVariableName(),
+            'created_at' => $formattedDatetime,
+            'updated_at' => $formattedDatetime
+        ]);
+        return
+            $attribute
+            ->setId($this->connection->lastInsertId('abac_attributes'))
+            ->setSlug($slug)
             ->setCreatedAt($datetime)
             ->setUpdatedAt($datetime)
         ;

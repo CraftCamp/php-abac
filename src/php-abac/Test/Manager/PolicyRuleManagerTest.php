@@ -5,6 +5,11 @@ namespace PhpAbac\Test\Manager;
 use PhpAbac\Abac;
 use PhpAbac\Test\AbacTestCase;
 
+use PhpAbac\Model\PolicyRule;
+use PhpAbac\Model\PolicyRuleAttribute;
+use PhpAbac\Model\Attribute;
+use PhpAbac\Model\EnvironmentAttribute;
+
 class PolicyRuleManagerTest extends AbacTestCase {
     /** @var \PhpAbac\Manager\PolicyRuleManager **/
     private $manager;
@@ -26,38 +31,37 @@ class PolicyRuleManagerTest extends AbacTestCase {
     }
     
     public function testCreate() {
-        $policyRule = $this->manager->create('citizenship', [
-            [
-                'comparison' => 'greaterThan',
-                'value' => 18,
-                'attribute' => [
-                    'name' => 'age',
-                    'table' => 'user',
-                    'column' => 'age',
-                    'criteria_column' => 'id'
-                ]
-            ],
-            [
-                'comparison' => 'equal',
-                'value' => 'FR',
-                'attribute' => [
-                    'name' => 'nationalité',
-                    'table' => 'user',
-                    'column' => 'nationality',
-                    'criteria_column' => 'id'
-                ]
-            ],
-            [
-                'comparison' => 'equal',
-                'value' => true,
-                'attribute' => [
-                    'name' => 'JAPD',
-                    'table' => 'user',
-                    'column' => 'has_done_japd',
-                    'criteria_column' => 'id'
-                ]
-            ]
-        ]);
+        $policyRule =
+            (new PolicyRule())
+            ->setName('citizenship')
+            ->addPolicyRuleAttribute(
+                (new PolicyRuleAttribute())
+                ->setAttribute(
+                    (new Attribute())
+                    ->setName('Age')
+                    ->setTable('user')
+                    ->setColumn('age')
+                    ->setCriteriaColumn('id')
+                )
+                ->setType('user')
+                ->setComparisonType('Numeric')
+                ->setComparison('greaterThan')
+                ->setValue(18)
+            )
+            ->addPolicyRuleAttribute(
+                (new PolicyRuleAttribute())
+                ->setAttribute(
+                    (new EnvironmentAttribute())
+                    ->setName('Service State')
+                    ->setVariableName('SERVICE_STATE')
+                )
+                ->setType('environment')
+                ->setComparisonType('String')
+                ->setComparison('isEqual')
+                ->setValue('OPEN')
+            )
+        ;
+        $this->manager->create($policyRule);
         // Test the policy rule
         $this->assertEquals('citizenship', $policyRule->getName());
         $this->assertInstanceof('DateTime', $policyRule->getCreatedAt());
