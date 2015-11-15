@@ -84,6 +84,7 @@ Documentation
 
 * [Policy Rules](doc/policy_rules.md)
 * [Attributes](doc/attributes.md)
+* [Comparisons](doc/comparisons.md)
 * [Access-control](doc/access-control.md)
 
 Contribute
