@@ -16,4 +16,9 @@ class StringComparisonTest extends \PHPUnit_Framework_TestCase {
         $this->assertTrue($this->comparison->isEqual('john-doe', 'john-doe'));
         $this->assertFalse($this->comparison->isEqual('john-doe', 'john-DOE'));
     }
+    
+    public function testIsNotEqual() {
+        $this->assertTrue($this->comparison->isNotEqual('john-doe', 'john-DOE'));
+        $this->assertFalse($this->comparison->isNotEqual('john-doe', 'john-doe'));
+    }
 }
