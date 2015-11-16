@@ -3,6 +3,12 @@
 
 ### Attribute-Based Access Control implementation library
 
+[![Latest Stable Version](https://poser.pugx.org/kilix/php-abac/v/stable)](https://packagist.org/packages/kilix/php-abac)
+[![Latest Unstable Version](https://poser.pugx.org/kilix/php-abac/v/unstable)](https://packagist.org/packages/kilix/php-abac)
+[![Total Downloads](https://poser.pugx.org/kilix/php-abac/downloads)](https://packagist.org/packages/kilix/php-abac)
+[![License](https://poser.pugx.org/kilix/php-abac/license)](https://packagist.org/packages/kilix/php-abac)
+[![Scrutinizer Code Quality](https://scrutinizer-ci.com/g/Kilix/php-abac/badges/quality-score.png?b=master)](https://scrutinizer-ci.com/g/Kilix/php-abac/?branch=master)
+
 Introduction
 ------------
 
