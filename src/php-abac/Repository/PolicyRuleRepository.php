@@ -56,7 +56,7 @@ class PolicyRuleRepository extends Repository {
      * @param PolicyRule $policyRule
      * @param array $data
      */
-    public function fetchPolicyRuleAttribute($policyRule, $data) {
+    public function fetchPolicyRuleAttribute(PolicyRule $policyRule, $data) {
         $attribute = 
             (!empty($data['variable_name']))
             ?
@@ -91,24 +91,21 @@ class PolicyRuleRepository extends Repository {
     }
     
     /**
-     * @param string $name
-     * @return PolicyRule
+     * @param PolicyRule $policyRule
      */
-    public function createPolicyRule($name) {
+    public function createPolicyRule(PolicyRule $policyRule) {
         $datetime = new \DateTime();
         $formattedDatetime = $datetime->format('Y-m-d H:i:s');
         
         $this->insert(
             'INSERT INTO abac_policy_rules(name, created_at, updated_at) ' .
             'VALUES(:name, :created_at, :updated_at)', [
-            'name' => $name,
+            'name' => $policyRule->getName(),
             'created_at' => $formattedDatetime,
             'updated_at' => $formattedDatetime
         ]);
-        return
-            (new PolicyRule())
+        $policyRule
             ->setId($this->connection->lastInsertId('abac_policy_rules'))
-            ->setName($name)
             ->setCreatedAt($datetime)
             ->setUpdatedAt($datetime)
         ;
@@ -116,25 +113,18 @@ class PolicyRuleRepository extends Repository {
     
     /**
      * @param integer $policyRuleId
-     * @param Attribute $attribute
-     * @param string $comparison
-     * @param string $value
-     * @return PolicyRuleAttribute
+     * @param PolicyRuleAttribute $pra
      */
-    public function createPolicyRuleAttribute($policyRuleId, Attribute $attribute, $comparison, $value) {
+    public function createPolicyRuleAttribute($policyRuleId, PolicyRuleAttribute $pra) {
         $this->insert(
-            'INSERT INTO abac_policy_rules_attributes(policy_rule_id, attribute_id, comparison, value) ' .
-            'VALUES(:policy_rule_id, :attribute_id, :comparison, :value)', [
+            'INSERT INTO abac_policy_rules_attributes(policy_rule_id, attribute_id, type, comparison_type, comparison, value) ' .
+            'VALUES(:policy_rule_id, :attribute_id, :type, :comparison_type, :comparison, :value)', [
             'policy_rule_id' => $policyRuleId,
-            'attribute_id' => $attribute->getId(),
-            'comparison' => $comparison,
-            'value' => $value
+            'attribute_id' => $pra->getAttribute()->getId(),
+            'type' => $pra->getType(),
+            'comparison_type' => $pra->getComparisonType(),
+            'comparison' => $pra->getComparison(),
+            'value' => (!is_array($pra->getValue())) ? $pra->getValue() : serialize($pra->getValue())
         ]);
-        return
-            (new PolicyRuleAttribute())
-            ->setAttribute($attribute)
-            ->setComparison($comparison)
-            ->setValue($value)
-        ;
     }
 }

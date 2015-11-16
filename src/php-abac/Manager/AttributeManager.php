@@ -16,14 +16,14 @@ class AttributeManager {
     }
     
     /**
-     * @param string $name
-     * @param string $table
-     * @param string $column
-     * @param string $criteriaColumn
-     * @return Attribute
+     * @param AbstractAttribute $attribute
+     * @return AbstractAttribute
      */
-    public function create($name, $table, $column, $criteriaColumn) {
-        return $this->repository->createAttribute($name, $table, $column, $criteriaColumn);
+    public function create(AbstractAttribute $attribute) {
+        if($attribute instanceof Attribute) {
+            return $this->repository->createAttribute($attribute);
+        }
+        return $this->repository->createEnvironmentAttribute($attribute);
     }
     
     /**

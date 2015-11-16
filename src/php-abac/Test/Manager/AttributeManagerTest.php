@@ -4,6 +4,9 @@ namespace PhpAbac\Test\Manager;
 
 use PhpAbac\Abac;
 
+use PhpAbac\Model\Attribute;
+use PhpAbac\Model\EnvironmentAttribute;
+
 class AttributeManagerTest extends \PHPUnit_Framework_TestCase {
     /** @var \PhpAbac\Manager\AttributeManager **/
     private $manager;
@@ -27,7 +30,14 @@ class AttributeManagerTest extends \PHPUnit_Framework_TestCase {
     }
     
     public function testCreate() {
-        $this->manager->create('Licence d\'équitation', 'users', 'has_horse_license', 'id');
+        $attribute =
+            (new Attribute())
+            ->setName('Licence d\'équitation')
+            ->setTable('users')
+            ->setColumn('has_horse_license')
+            ->setCriteriaColumn('id')
+        ;
+        $this->manager->create($attribute);
         
         $data =
             Abac::get('pdo-connection')
@@ -43,5 +53,26 @@ class AttributeManagerTest extends \PHPUnit_Framework_TestCase {
         $this->assertEquals('users', $data['table_name']);
         $this->assertEquals('has_horse_license', $data['column_name']);
         $this->assertEquals('id', $data['criteria_column']);
+    }
+    
+    public function testCreateEnvironmentAttribute() {
+        $attribute =
+            (new EnvironmentAttribute())
+            ->setName('Server Protocol')
+            ->setVariableName('SERVER_PROTOCOL')
+        ;
+        $this->manager->create($attribute);
+        
+        $data =
+            Abac::get('pdo-connection')
+            ->query(
+                'SELECT * FROM abac_attributes_data ad ' .
+                'INNER JOIN abac_environment_attributes a ON a.id = ad.id '.
+                'WHERE a.id = LAST_INSERT_ID()'
+            )
+            ->fetch(\PDO::FETCH_ASSOC)
+        ;
+        $this->assertEquals('Server Protocol', $data['name']);
+        $this->assertEquals('SERVER_PROTOCOL', $data['variable_name']);
     }
 }

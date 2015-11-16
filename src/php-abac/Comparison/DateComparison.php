@@ -35,6 +35,10 @@ class DateComparison {
         return $this->getDatetimeFromFormat("+$format") >= new \DateTime($value);
     }
     
+    /**
+     * @param string $format
+     * @return \DateTime
+     */
     public function getDatetimeFromFormat($format) {
         $formats = [
             'Y' => 31104000,
