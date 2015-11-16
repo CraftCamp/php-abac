@@ -35,7 +35,7 @@ class PolicyRuleManager {
     public function create(PolicyRule $policyRule) {
         $this->repository->createPolicyRule($policyRule);
         
-        $attributes = $policyRule->getAttributes();
+        $attributes = $policyRule->getPolicyRuleAttributes();
         $nbAttributes = count($attributes);
         
         for($i = 0; $i < $nbAttributes; ++$i) {

@@ -70,7 +70,7 @@ class PolicyRuleManagerTest extends AbacTestCase {
         // Test the cascade created PolicyRuleAttribute entities
         $policyRuleAttributes = $policyRule->getPolicyRuleAttributes();
         
-        $this->assertCount(3, $policyRuleAttributes);
+        $this->assertCount(2, $policyRuleAttributes);
         $this->assertInstanceof('PhpAbac\Model\PolicyRuleAttribute', $policyRuleAttributes[0]);
         $this->assertEquals('greaterThan', $policyRuleAttributes[0]->getComparison());
         $this->assertEquals(18, $policyRuleAttributes[0]->getValue());
@@ -79,7 +79,7 @@ class PolicyRuleManagerTest extends AbacTestCase {
         $attribute = $policyRuleAttributes[0]->getAttribute();
         
         $this->assertInstanceof('PhpAbac\Model\Attribute', $attribute);
-        $this->assertEquals('age', $attribute->getName());
+        $this->assertEquals('Age', $attribute->getName());
         $this->assertEquals('user', $attribute->getTable());
         $this->assertEquals('age', $attribute->getColumn());
         $this->assertEquals('id', $attribute->getCriteriaColumn());
