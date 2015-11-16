@@ -2,6 +2,9 @@
     "name": "kilix/php-abac",
     "description": "Library used to implement Attribute-Based Access Control in a PHP application",
     "type": "library",
+    "keywords": ["access-control", "attributes", "security"],
+    "license": "MIT",
+    "minimum-stability": "stable",
     "authors": [
         {
             "name": "Axel Venet",
@@ -10,6 +13,9 @@
             "role": "Developer"
         }
     ],
+    "support": {
+        "email": "avenet@kilix.fr"
+    },
     "autoload" : {
         "psr-4" : {
             "PhpAbac\\": "src/php-abac/"
