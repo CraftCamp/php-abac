@@ -35,4 +35,40 @@ class ArrayComparisonTest extends \PHPUnit_Framework_TestCase {
             'another_value'
         ]), 'expected_value'));
     }
+    
+    public function testIntersect() {
+        $this->assertTrue($this->comparison->intersect([
+            'ROLE_USER',
+            'ROLE_MODERATOR',
+            'ROLE_ADMIN'
+        ], [
+            'ROLE_USER',
+            'ROLE_POST_MANAGER'
+        ]));
+        $this->assertFalse($this->comparison->intersect([
+            'ROLE_MODERATOR',
+            'ROLE_ADMIN'
+        ], [
+            'ROLE_USER',
+            'ROLE_POST_MANAGER'
+        ]));
+    }
+    
+    public function testDoNotIntersect() {
+        $this->assertTrue($this->comparison->doNotIntersect([
+            'ROLE_MODERATOR',
+            'ROLE_ADMIN'
+        ], [
+            'ROLE_USER',
+            'ROLE_POST_MANAGER'
+        ]));
+        $this->assertFalse($this->comparison->doNotIntersect([
+            'ROLE_USER',
+            'ROLE_MODERATOR',
+            'ROLE_ADMIN'
+        ], [
+            'ROLE_USER',
+            'ROLE_POST_MANAGER'
+        ]));
+    }
 }

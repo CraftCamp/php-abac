@@ -35,7 +35,7 @@ class ArrayComparison {
      * @param array $array2
      * @return boolean
      */
-    public function doNoIntersect($array1, $array2) {
+    public function doNotIntersect($array1, $array2) {
         return !$this->intersect($array1, $array2);
     }
 }
