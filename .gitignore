@@ -1,5 +1,7 @@
-/nbproject/private/
-nbproject
+/nbproject/
 code-coverage
 vendor
+build
+composer.phar
+composer.lock
 phpunit.xml

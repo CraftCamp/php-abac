@@ -17,8 +17,9 @@
         "email": "avenet@kilix.fr"
     },
     "autoload" : {
-        "psr-4" : {
-            "PhpAbac\\": "src/php-abac/"
+        "psr-4": {
+            "PhpAbac\\": "src/",
+            "PhpAbac\\Test\\": "tests/"
         }
     }
 }
