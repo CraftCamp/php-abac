@@ -54,18 +54,25 @@ class AttributeRepository extends Repository
         $slug = $this->slugify($attribute->getName());
 
         $this->insert(
-            'INSERT INTO abac_attributes_data (created_at, updated_at, name, slug) '.
-            'VALUES(:created_at, :updated_at, :name, :slug);'.
-            'INSERT INTO abac_attributes (id, table_name, column_name, criteria_column) '.
-            'VALUES(LAST_INSERT_ID(), :table_name, :column_name, :criteria_column);', [
+            'INSERT INTO abac_attributes_data (created_at, updated_at, name, slug) ' .
+            'VALUES(:created_at, :updated_at, :name, :slug);', [
             'name' => $attribute->getName(),
             'slug' => $slug,
-            'table_name' => $attribute->getTable(),
-            'column_name' => $attribute->getColumn(),
-            'criteria_column' => $attribute->getCriteriaColumn(),
             'created_at' => $formattedDatetime,
             'updated_at' => $formattedDatetime,
         ]);
+
+        $id = $this->connection->lastInsertId('abac_attributes_data');
+
+        $this->insert(
+            'INSERT INTO abac_attributes (id, table_name, column_name, criteria_column) ' .
+            'VALUES(:id, :table_name, :column_name, :criteria_column);', [
+            'id' => $id,
+            'table_name' => $attribute->getTable(),
+            'column_name' => $attribute->getColumn(),
+            'criteria_column' => $attribute->getCriteriaColumn(),
+        ]);
+
         $attribute
             ->setId($this->connection->lastInsertId('abac_attributes'))
             ->setSlug($slug)
@@ -84,16 +91,23 @@ class AttributeRepository extends Repository
         $slug = $this->slugify($attribute->getName());
 
         $this->insert(
-            'INSERT INTO abac_attributes_data (created_at, updated_at, name, slug) '.
-            'VALUES(:created_at, :updated_at, :name, :slug);'.
-            'INSERT INTO abac_environment_attributes (id, variable_name) '.
-            'VALUES(LAST_INSERT_ID(), :variable_name);', [
+            'INSERT INTO abac_attributes_data (created_at, updated_at, name, slug) ' .
+            'VALUES(:created_at, :updated_at, :name, :slug);', [
             'name' => $attribute->getName(),
             'slug' => $slug,
-            'variable_name' => $attribute->getVariableName(),
             'created_at' => $formattedDatetime,
             'updated_at' => $formattedDatetime,
         ]);
+
+        $id = $this->connection->lastInsertId('abac_attributes_data');
+
+        $this->insert(
+            'INSERT INTO abac_environment_attributes (id, variable_name) ' .
+            'VALUES(:id, :variable_name);', [
+            'id' => $id,
+            'variable_name' => $attribute->getVariableName(),
+        ]);
+
         $attribute
             ->setId($this->connection->lastInsertId('abac_attributes'))
             ->setSlug($slug)

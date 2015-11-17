@@ -20,9 +20,9 @@
     </testsuites>
 
     <php>
-        <var name="MYSQL_DB_HOST" value="localhost" />
-        <var name="MYSQL_DB_USER" value="root" />
-        <var name="MYSQL_DB_PASSWD" value="vagrant" />
+        <var name="MYSQL_DB_HOST" value="172.17.0.5" />
+        <var name="MYSQL_DB_USER" value="ffb" />
+        <var name="MYSQL_DB_PASSWD" value="ffb" />
         <var name="MYSQL_DB_DBNAME" value="php_abac_test" />
     </php>
 

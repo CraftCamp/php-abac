@@ -3,25 +3,25 @@
 namespace PhpAbac\Test\Manager;
 
 use PhpAbac\Abac;
+use PhpAbac\Test\AbacTestCase;
 use PhpAbac\Model\Attribute;
 use PhpAbac\Model\EnvironmentAttribute;
 
-class AttributeManagerTest extends \PHPUnit_Framework_TestCase
+class AttributeManagerTest extends AbacTestCase
 {
     /** @var \PhpAbac\Manager\AttributeManager **/
     private $manager;
 
+    /**
+     * @var Abac
+     */
+    private $abac;
+
     public function setUp()
     {
-        new Abac(new \PDO(
-            'mysql:host='.$GLOBALS['MYSQL_DB_HOST'].';'.
-            'dbname='.$GLOBALS['MYSQL_DB_DBNAME'],
-            $GLOBALS['MYSQL_DB_USER'],
-            $GLOBALS['MYSQL_DB_PASSWD'],
-            [
-                \PDO::ATTR_ERRMODE => \PDO::ERRMODE_EXCEPTION,
-            ]
-        ));
+        $this->abac = new Abac($this->getConnection());
+
+        $this->loadFixture('policy_rules');
 
         $this->manager = Abac::get('attribute-manager');
     }
@@ -42,17 +42,19 @@ class AttributeManagerTest extends \PHPUnit_Framework_TestCase
         ;
         $this->manager->create($attribute);
 
+        $id = $this->getConnection()->lastInsertId('abac_attributes');
+
         $data =
             Abac::get('pdo-connection')
             ->query(
                 'SELECT * FROM abac_attributes_data ad '.
                 'INNER JOIN abac_attributes a ON a.id = ad.id '.
-                'WHERE a.id = LAST_INSERT_ID()'
+                'WHERE a.id = '.$id
             )
             ->fetch(\PDO::FETCH_ASSOC)
         ;
         $this->assertEquals('Licence d\'équitation', $data['name']);
-        $this->assertEquals('licence-d-equitation', $data['slug']);
+        $this->assertEquals('licence-d-quitation', $data['slug']);
         $this->assertEquals('users', $data['table_name']);
         $this->assertEquals('has_horse_license', $data['column_name']);
         $this->assertEquals('id', $data['criteria_column']);
@@ -67,12 +69,14 @@ class AttributeManagerTest extends \PHPUnit_Framework_TestCase
         ;
         $this->manager->create($attribute);
 
+        $id = $this->getConnection()->lastInsertId('abac_environment_attributes');
+
         $data =
             Abac::get('pdo-connection')
             ->query(
                 'SELECT * FROM abac_attributes_data ad '.
                 'INNER JOIN abac_environment_attributes a ON a.id = ad.id '.
-                'WHERE a.id = LAST_INSERT_ID()'
+                'WHERE a.id = '.$id
             )
             ->fetch(\PDO::FETCH_ASSOC)
         ;
