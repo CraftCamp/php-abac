@@ -5,8 +5,10 @@ namespace PhpAbac\Test\Model;
 use PhpAbac\Model\Attribute;
 use PhpAbac\Model\PolicyRuleAttribute;
 
-class PolicyRuleAttributeTest extends \PHPUnit_Framework_TestCase {
-    public function testEntity() {
+class PolicyRuleAttributeTest extends \PHPUnit_Framework_TestCase
+{
+    public function testEntity()
+    {
         $policyRuleAttribute =
             (new PolicyRuleAttribute())
             ->setAttribute(new Attribute())

@@ -5,13 +5,15 @@ namespace PhpAbac\Test\Model;
 use PhpAbac\Model\PolicyRule;
 use PhpAbac\Model\PolicyRuleAttribute;
 
-class PolicyRuleTest extends \PHPUnit_Framework_TestCase {
-    public function testEntity() {
+class PolicyRuleTest extends \PHPUnit_Framework_TestCase
+{
+    public function testEntity()
+    {
         $pra1 = new PolicyRuleAttribute();
         $pra2 = new PolicyRuleAttribute();
         $pra3 = new PolicyRuleAttribute();
         $pra4 = new PolicyRuleAttribute();
-        
+
         $policyRule =
             (new PolicyRule())
             ->setId(1)

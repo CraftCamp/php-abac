@@ -4,33 +4,35 @@ namespace PhpAbac\Test\Manager;
 
 use PhpAbac\Abac;
 use PhpAbac\Test\AbacTestCase;
-
 use PhpAbac\Model\PolicyRule;
 use PhpAbac\Model\PolicyRuleAttribute;
 use PhpAbac\Model\Attribute;
 use PhpAbac\Model\EnvironmentAttribute;
 
-class PolicyRuleManagerTest extends AbacTestCase {
+class PolicyRuleManagerTest extends AbacTestCase
+{
     /** @var \PhpAbac\Manager\PolicyRuleManager **/
     private $manager;
-    
-    public function setUp() {
+
+    public function setUp()
+    {
         new Abac(new \PDO(
-            'mysql:host=' . $GLOBALS['MYSQL_DB_HOST'] . ';' .
-            'dbname=' . $GLOBALS['MYSQL_DB_DBNAME'],
+            'mysql:host='.$GLOBALS['MYSQL_DB_HOST'].';'.
+            'dbname='.$GLOBALS['MYSQL_DB_DBNAME'],
             $GLOBALS['MYSQL_DB_USER'],
             $GLOBALS['MYSQL_DB_PASSWD'],
             [
-                \PDO::ATTR_ERRMODE => \PDO::ERRMODE_EXCEPTION
+                \PDO::ATTR_ERRMODE => \PDO::ERRMODE_EXCEPTION,
             ]
         ));
-        
+
         $this->loadFixture('policy_rules');
-        
+
         $this->manager = Abac::get('policy-rule-manager');
     }
-    
-    public function testCreate() {
+
+    public function testCreate()
+    {
         $policyRule =
             (new PolicyRule())
             ->setName('citizenship')
@@ -66,28 +68,29 @@ class PolicyRuleManagerTest extends AbacTestCase {
         $this->assertEquals('citizenship', $policyRule->getName());
         $this->assertInstanceof('DateTime', $policyRule->getCreatedAt());
         $this->assertInstanceof('DateTime', $policyRule->getUpdatedAt());
-        
+
         // Test the cascade created PolicyRuleAttribute entities
         $policyRuleAttributes = $policyRule->getPolicyRuleAttributes();
-        
+
         $this->assertCount(2, $policyRuleAttributes);
         $this->assertInstanceof('PhpAbac\Model\PolicyRuleAttribute', $policyRuleAttributes[0]);
         $this->assertEquals('greaterThan', $policyRuleAttributes[0]->getComparison());
         $this->assertEquals(18, $policyRuleAttributes[0]->getValue());
-        
+
         // Test the created Attribute entity
         $attribute = $policyRuleAttributes[0]->getAttribute();
-        
+
         $this->assertInstanceof('PhpAbac\Model\Attribute', $attribute);
         $this->assertEquals('Age', $attribute->getName());
         $this->assertEquals('user', $attribute->getTable());
         $this->assertEquals('age', $attribute->getColumn());
         $this->assertEquals('id', $attribute->getCriteriaColumn());
     }
-    
-    public function testGetRuleByName() {
+
+    public function testGetRuleByName()
+    {
         $policyRule = $this->manager->getRuleByName('vehicle-homologation');
-        
+
         $this->assertInstanceof('PhpAbac\Model\PolicyRule', $policyRule);
         $this->assertEquals(2, $policyRule->getId(2));
         $this->assertEquals('vehicle-homologation', $policyRule->getName());

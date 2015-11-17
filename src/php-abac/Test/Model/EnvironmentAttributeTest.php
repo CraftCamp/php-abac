@@ -4,8 +4,10 @@ namespace PhpAbac\Test\Model;
 
 use PhpAbac\Model\EnvironmentAttribute;
 
-class EnvironmentAttributeTest extends \PHPUnit_Framework_TestCase {
-    public function testEntity() {
+class EnvironmentAttributeTest extends \PHPUnit_Framework_TestCase
+{
+    public function testEntity()
+    {
         $attribute =
             (new EnvironmentAttribute())
             ->setId(1)

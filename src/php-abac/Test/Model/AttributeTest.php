@@ -4,8 +4,10 @@ namespace PhpAbac\Test\Model;
 
 use PhpAbac\Model\Attribute;
 
-class AttributeTest extends \PHPUnit_Framework_TestCase {
-    public function testEntity() {
+class AttributeTest extends \PHPUnit_Framework_TestCase
+{
+    public function testEntity()
+    {
         $attribute =
             (new Attribute())
             ->setId(1)
