@@ -4,20 +4,24 @@ namespace PhpAbac\Test\Comparison;
 
 use PhpAbac\Comparison\StringComparison;
 
-class StringComparisonTest extends \PHPUnit_Framework_TestCase {
+class StringComparisonTest extends \PHPUnit_Framework_TestCase
+{
     /** @var StringComparison **/
     protected $comparison;
-    
-    public function setUp() {
+
+    public function setUp()
+    {
         $this->comparison = new StringComparison();
     }
-    
-    public function testIsEqual() {
+
+    public function testIsEqual()
+    {
         $this->assertTrue($this->comparison->isEqual('john-doe', 'john-doe'));
         $this->assertFalse($this->comparison->isEqual('john-doe', 'john-DOE'));
     }
-    
-    public function testIsNotEqual() {
+
+    public function testIsNotEqual()
+    {
         $this->assertTrue($this->comparison->isNotEqual('john-doe', 'john-DOE'));
         $this->assertFalse($this->comparison->isNotEqual('john-doe', 'john-doe'));
     }

@@ -2,22 +2,27 @@
 
 namespace PhpAbac\Comparison;
 
-class StringComparison {
+class StringComparison
+{
     /**
      * @param string $expected
      * @param string $value
-     * @return boolean
+     *
+     * @return bool
      */
-    public function isEqual($expected, $value) {
+    public function isEqual($expected, $value)
+    {
         return $expected === $value;
     }
-    
+
     /**
      * @param string $expected
      * @param string $value
-     * @return boolean
+     *
+     * @return bool
      */
-    public function isNotEqual($expected, $value) {
+    public function isNotEqual($expected, $value)
+    {
         return !$this->isEqual($expected, $value);
     }
 }
