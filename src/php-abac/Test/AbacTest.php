@@ -11,15 +11,7 @@ class AbacTest extends AbacTestCase
 
     public function setUp()
     {
-        $this->abac = new Abac(new \PDO(
-            'mysql:host='.$GLOBALS['MYSQL_DB_HOST'].';'.
-            'dbname='.$GLOBALS['MYSQL_DB_DBNAME'],
-            $GLOBALS['MYSQL_DB_USER'],
-            $GLOBALS['MYSQL_DB_PASSWD'],
-            [
-                \PDO::ATTR_ERRMODE => \PDO::ERRMODE_EXCEPTION,
-            ]
-        ));
+        $this->abac = new Abac($this->getConnection());
         $this->loadFixture('policy_rules');
     }
 

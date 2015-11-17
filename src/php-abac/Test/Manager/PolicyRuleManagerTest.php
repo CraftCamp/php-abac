@@ -14,17 +14,14 @@ class PolicyRuleManagerTest extends AbacTestCase
     /** @var \PhpAbac\Manager\PolicyRuleManager **/
     private $manager;
 
+    /**
+     * @var Abac
+     */
+    private $abac;
+
     public function setUp()
     {
-        new Abac(new \PDO(
-            'mysql:host='.$GLOBALS['MYSQL_DB_HOST'].';'.
-            'dbname='.$GLOBALS['MYSQL_DB_DBNAME'],
-            $GLOBALS['MYSQL_DB_USER'],
-            $GLOBALS['MYSQL_DB_PASSWD'],
-            [
-                \PDO::ATTR_ERRMODE => \PDO::ERRMODE_EXCEPTION,
-            ]
-        ));
+        $this->abac = new Abac($this->getConnection());
 
         $this->loadFixture('policy_rules');
 

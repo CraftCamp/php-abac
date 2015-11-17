@@ -19,9 +19,9 @@ abstract class Repository
 
     /**
      * Start SQL Transaction
-     * Return true in case of success, false otherwise.
-     * 
-     * @return bool
+     * Return true in case of success, false otherwise
+     *
+     * @return boolean
      */
     public function beginTransaction()
     {
@@ -30,9 +30,9 @@ abstract class Repository
 
     /**
      * Commit a SQL Transaction
-     * Return true in case of success, false otherwise.
-     * 
-     * @return bool
+     * Return true in case of success, false otherwise
+     *
+     * @return boolean
      */
     public function commitTransaction()
     {
@@ -41,9 +41,9 @@ abstract class Repository
 
     /**
      * Rollback a SQL Transaction
-     * Return true in case of success, false otherwise.
-     * 
-     * @return bool
+     * Return true in case of success, false otherwise
+     *
+     * @return boolean
      */
     public function rollbackTransaction()
     {
