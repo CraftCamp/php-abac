@@ -50,6 +50,8 @@ class PolicyRuleManager
     }
 
     /**
+     * The variables used in empty() calls are meant to make this method working with PHP 5.4
+     * 
      * @param PolicyRule          $policyRule
      * @param PolicyRuleAttribute $pra
      *
@@ -60,27 +62,23 @@ class PolicyRuleManager
         if (!in_array($pra->getType(), ['user', 'object', 'environment'])) {
             throw new \InvalidArgumentException('The attribute type must have the value "user", "object" or "environment"');
         }
-
         $comparisonType = $pra->getComparisonType();
         if (empty($comparisonType)) {
             throw new \InvalidArgumentException('The attribute must have a comparison type');
         }
-
         $comparison = $pra->getComparison();
         if (empty($comparison)) {
             throw new \InvalidArgumentException('The attribute must have a comparison');
         }
-
         $value = $pra->getValue();
         if (empty($value)) {
             throw new \InvalidArgumentException('The attribute must have a value');
         }
-
-        if (!$pra->getAttribute() instanceof AbstractAttribute) {
+        $attribute = $pra->getAttribute();
+        if (!is_a($attribute, 'PhpAbac\\Model\\AbstractAttribute')) {
             throw new \InvalidArgumentException('The attribute must be an subclass of AbstractAttribute');
         }
-
-        Abac::get('attribute-manager')->create($pra->getAttribute());
+        Abac::get('attribute-manager')->create($attribute);
         $this->repository->createPolicyRuleAttribute($policyRule->getId(), $pra);
         $policyRule->addPolicyRuleAttribute($pra);
     }
