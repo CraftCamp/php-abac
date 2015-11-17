@@ -3,6 +3,7 @@
 namespace PhpAbac\Manager;
 
 use PhpAbac\Abac;
+use PhpAbac\Model\AbstractAttribute;
 use PhpAbac\Model\PolicyRule;
 use PhpAbac\Model\PolicyRuleAttribute;
 use PhpAbac\Repository\PolicyRuleRepository;
@@ -59,18 +60,26 @@ class PolicyRuleManager
         if (!in_array($pra->getType(), ['user', 'object', 'environment'])) {
             throw new \InvalidArgumentException('The attribute type must have the value "user", "object" or "environment"');
         }
-        if (empty($pra->getComparisonType())) {
+
+        $comparisonType = $pra->getComparisonType();
+        if (empty($comparisonType)) {
             throw new \InvalidArgumentException('The attribute must have a comparison type');
         }
-        if (empty($pra->getComparison())) {
+
+        $comparison = $pra->getComparison();
+        if (empty($comparison)) {
             throw new \InvalidArgumentException('The attribute must have a comparison');
         }
-        if (empty($pra->getValue())) {
+
+        $value = $pra->getValue();
+        if (empty($value)) {
             throw new \InvalidArgumentException('The attribute must have a value');
         }
-        if (!is_a($pra->getAttribute(), 'PhpAbac\\Model\\AbstractAttribute')) {
+
+        if (!$pra->getAttribute() instanceof AbstractAttribute) {
             throw new \InvalidArgumentException('The attribute must be an subclass of AbstractAttribute');
         }
+
         Abac::get('attribute-manager')->create($pra->getAttribute());
         $this->repository->createPolicyRuleAttribute($policyRule->getId(), $pra);
         $policyRule->addPolicyRuleAttribute($pra);
