@@ -35,7 +35,7 @@ class AttributeManagerTest extends AbacTestCase
     {
         $attribute =
             (new Attribute())
-            ->setName('Licence d\'équitation')
+            ->setName('Licence d\'equitation')
             ->setTable('users')
             ->setColumn('has_horse_license')
             ->setCriteriaColumn('id')
@@ -53,8 +53,8 @@ class AttributeManagerTest extends AbacTestCase
             )
             ->fetch(\PDO::FETCH_ASSOC)
         ;
-        $this->assertEquals('Licence d\'équitation', $data['name']);
-        $this->assertEquals('licence-d-quitation', $data['slug']);
+        $this->assertEquals('Licence d\'equitation', $data['name']);
+        $this->assertEquals('licence-d-equitation', $data['slug']);
         $this->assertEquals('users', $data['table_name']);
         $this->assertEquals('has_horse_license', $data['column_name']);
         $this->assertEquals('id', $data['criteria_column']);

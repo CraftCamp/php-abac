@@ -14,16 +14,12 @@
         bootstrap                   = "./vendor/autoload.php" >
 
     <testsuites>
-        <testsuite name="PHP RBAC test suite">
+        <testsuite name="PHP ABAC test suite">
             <directory suffix="Test.php">./src/php-abac/Test/</directory>
         </testsuite>
     </testsuites>
 
     <php>
-        <var name="MYSQL_DB_HOST" value="172.17.0.5" />
-        <var name="MYSQL_DB_USER" value="ffb" />
-        <var name="MYSQL_DB_PASSWD" value="ffb" />
-        <var name="MYSQL_DB_DBNAME" value="php_abac_test" />
     </php>
 
     <filter>
