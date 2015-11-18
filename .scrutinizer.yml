@@ -1,0 +1,16 @@
+imports:
+    - php
+
+tools:
+    external_code_coverage:
+        timeout: 600
+    php_mess_detector: true
+    php_cpd: true
+    php_code_sniffer:
+        config:
+            standard: PSR2
+    php_pdepend: true
+    php_analyzer: true
+    sensiolabs_security_checker: true
+
+
