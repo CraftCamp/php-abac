@@ -6,6 +6,7 @@
 [![Latest Stable Version](https://poser.pugx.org/kilix/php-abac/v/stable)](https://packagist.org/packages/kilix/php-abac)
 [![Latest Unstable Version](https://poser.pugx.org/kilix/php-abac/v/unstable)](https://packagist.org/packages/kilix/php-abac)
 [![Build Status](https://travis-ci.org/Kilix/php-abac.svg?branch=master)](https://travis-ci.org/Kilix/php-abac)
+[![Code Coverage](https://scrutinizer-ci.com/g/Kilix/php-abac/badges/coverage.png?b=master)](https://scrutinizer-ci.com/g/Kilix/php-abac/?branch=master)
 [![Scrutinizer Code Quality](https://scrutinizer-ci.com/g/Kilix/php-abac/badges/quality-score.png?b=master)](https://scrutinizer-ci.com/g/Kilix/php-abac/?branch=master)
 [![Total Downloads](https://poser.pugx.org/kilix/php-abac/downloads)](https://packagist.org/packages/kilix/php-abac)
 [![License](https://poser.pugx.org/kilix/php-abac/license)](https://packagist.org/packages/kilix/php-abac)
