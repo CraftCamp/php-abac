@@ -120,7 +120,7 @@ CREATE TABLE IF NOT EXISTS `abac_policy_rules_attributes` (
   `comparison_type` varchar(10) NOT NULL,
   `comparison` varchar(60) NOT NULL,
   `value` varchar(255) NOT NULL,
-  FOREIGN KEY(policy_rule_id) REFERENCES abac_policy_rules(id)
+  FOREIGN KEY(policy_rule_id) REFERENCES abac_policy_rules(id),
   FOREIGN KEY(attribute_id) REFERENCES abac_attributes_data(id)
 );
 
