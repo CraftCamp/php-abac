@@ -39,7 +39,8 @@ Write the following line in your composer.json file :
 ```
 
 Then just do :
-```shell
+
+```sh
 composer install
 ```
 
@@ -51,6 +52,8 @@ Usage
 **Example with only user attributes defined in the rule**
 
 ```php
+<?php
+
 use PhpAbac\Abac;
 
 $abac = new Abac($pdoConnection);
@@ -78,6 +81,8 @@ The checked attributes can be :
 
 **Example with dynamic attributes**
 ```php
+<?php
+
 use PhpAbac\Abac;
 
 $abac = new Abac($pdoConnection);
