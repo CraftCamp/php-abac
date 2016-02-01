@@ -2,6 +2,10 @@
 All notable changes to this project will be documented in this file.
 This project adheres to [Semantic Versioning](http://semver.org/).
 
+### Unreleased
+### Fixed
+- Support lowercase for comparison type values
+
 ## [1.1] - 2015-11-17
 ### Added
 - Travis CI

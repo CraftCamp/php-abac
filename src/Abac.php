@@ -44,7 +44,7 @@ class Abac
             $attribute = $pra->getAttribute();
             $attributeManager->retrieveAttribute($attribute, $pra->getType(), $userId, $objectId);
 
-            $comparisonClass = 'PhpAbac\\Comparison\\'.$pra->getComparisonType().'Comparison';
+            $comparisonClass = 'PhpAbac\\Comparison\\'.ucfirst($pra->getComparisonType()).'Comparison';
             $comparison = new $comparisonClass();
             $value =
                 ($pra->getValue() === 'dynamic')
