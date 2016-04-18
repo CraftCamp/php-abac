@@ -13,6 +13,9 @@
             "role": "Developer"
         }
     ],
+    "require": {
+        "psr/cache": "~1.0"
+    },
     "support": {
         "email": "avenet@kilix.fr"
     },
