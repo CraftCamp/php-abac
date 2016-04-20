@@ -7,16 +7,20 @@
     $abac = new Abac(new \PDO(
         'mysql:host=localhost;dbname=php_abac_test',
         'root',
-        'vagrant',
+        '',
         [
             \PDO::ATTR_ERRMODE => \PDO::ERRMODE_EXCEPTION
         ]
     ));
-    Abac::get('pdo-connection')->exec(file_get_contents("src/php-abac/Test/fixtures/policy_rules.sql"));
+    //Abac::get('pdo-connection')->exec(file_get_contents("src/php-abac/Test/fixtures/policy_rules.sql"));
     
     putenv('SERVICE_STATE=OPEN');
     
-    $user1Nationality = $abac->enforce('nationality-access', 1);
+    $user1Nationality = $abac->enforce('nationality-access', 1, null, [], [
+        'cache_result' => true,
+        'cache_lifetime' => 100,
+        'cache_driver' => 'memory'
+    ]);
     
     if ($user1Nationality === true) {
         echo("GRANTED : The user 1 is able to be nationalized\n");
