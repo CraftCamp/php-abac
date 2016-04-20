@@ -29,25 +29,31 @@ class AbacTest extends AbacTestCase
 
         // getenv() don't work in CLI scripts without putenv()
         putenv('SERVICE_STATE=OPEN');
-
-        $this->assertTrue($this->abac->enforce('vehicle-homologation', 1, 1, ['proprietaire' => 1]));
+        
+        $this->assertTrue($this->abac->enforce('vehicle-homologation', 1, 1, [
+            'dynamic_attributes' => ['proprietaire' => 1]
+        ]));
         $this->assertEquals([
-            'dernier-controle-technique',
-        ], $this->abac->enforce('vehicle-homologation', 3, 2, ['proprietaire' => 3]));
+            'dernier-controle-technique'
+        ],$this->abac->enforce('vehicle-homologation', 3, 2, [
+            'dynamic_attributes' => ['proprietaire' => 3]
+        ]));
         $this->assertEquals([
-            'permis-de-conduire',
-        ], $this->abac->enforce('vehicle-homologation', 4, 4, ['proprietaire' => 4]));
+            'permis-de-conduire'
+        ], $this->abac->enforce('vehicle-homologation', 4, 4, [
+            'dynamic_attributes' => ['proprietaire' => 4]
+        ]));
     }
     
     public function testEnforceWithCache() {
-        $this->assertTrue($this->abac->enforce('nationality-access', 1, null, [], [
+        $this->assertTrue($this->abac->enforce('nationality-access', 1, null, [
             'cache_result' => true,
             'cache_ttl' => 100,
             'cache_driver' => 'memory'
         ]));
         $this->assertEquals([
             'japd'
-        ], $this->abac->enforce('nationality-access', 2, null, [], [
+        ], $this->abac->enforce('nationality-access', 2, null, [
             'cache_result' => true,
             'cache_ttl' => 100,
             'cache_driver' => 'memory'
