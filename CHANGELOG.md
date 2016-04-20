@@ -2,8 +2,16 @@
 All notable changes to this project will be documented in this file.
 This project adheres to [Semantic Versioning](http://semver.org/).
 
-### Unreleased
+### [Unreleased]
+### Added
+- PSR-6 compliant cache implementation
+- Memory cache driver
+
+### Changed
+- Dynamic attributes are now an enforce method option
+
 ### Fixed
+- Example script database connection
 - Support lowercase for comparison type values
 
 ## [1.1] - 2015-11-17
