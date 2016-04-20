@@ -15,6 +15,8 @@ class MemoryCacheItem implements CacheItemInterface {
     protected $defaultLifetime = 3600;
     /** @var \DateTime **/
     protected $expiresAt;
+    /** @var string **/
+    protected $driver = 'memory';
     
     /**
      * @param string $key
@@ -85,5 +87,12 @@ class MemoryCacheItem implements CacheItemInterface {
      */
     public function getExpirationDate() {
         return $this->expiresAt;
+    }
+    
+    /**
+     * @return string
+     */
+    public function getDriver() {
+        return $this->driver;
     }
 }
