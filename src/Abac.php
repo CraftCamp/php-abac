@@ -4,6 +4,7 @@ namespace PhpAbac;
 
 use PhpAbac\Manager\AttributeManager;
 use PhpAbac\Manager\PolicyRuleManager;
+use PhpAbac\Manager\CacheManager;
 
 class Abac
 {
@@ -19,6 +20,7 @@ class Abac
         self::set('pdo-connection', $connection, true);
         self::set('policy-rule-manager', new PolicyRuleManager(), true);
         self::set('attribute-manager', new AttributeManager(), true);
+        self::set('cache-manager', new CacheManager(), true);
     }
 
     /**
@@ -33,10 +35,20 @@ class Abac
      *
      * @return bool|array
      */
-    public function enforce($ruleName, $userId, $objectId = null, $dynamicAttributes = [])
-    {
+    public function enforce($ruleName, $userId, $objectId = null, $dynamicAttributes = [], $options = []) {
         $attributeManager = self::get('attribute-manager');
-
+        $cacheManager = self::get('cache-manager');
+        
+        if(($cacheResult = isset($options['cache_result']) && $options['cache_result'] === true) === true) {
+            $cacheItem = $cacheManager->getItem(
+                "$ruleName-$userId-$objectId",
+                (isset($options['cache_driver'])) ? $options['cache_driver'] : null,
+                (isset($options['cache_lifetime'])) ? $options['cache_lifetime'] : null
+            );
+            if(($cacheValue = $cacheItem->get()) !== null) {
+                return $cacheValue;
+            }
+        }
         $policyRule = self::get('policy-rule-manager')->getRuleByName($ruleName);
         $rejectedAttributes = [];
 
@@ -55,8 +67,12 @@ class Abac
                 $rejectedAttributes[] = $attribute->getSlug();
             }
         }
-
-        return (count($rejectedAttributes) === 0) ?: $rejectedAttributes;
+        $result = (count($rejectedAttributes) === 0) ? : $rejectedAttributes;
+        if($cacheResult) {
+            $cacheItem->set($result);
+            $cacheManager->save($cacheItem);
+        }
+        return $result;
     }
 
     public static function clearContainer()
