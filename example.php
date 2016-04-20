@@ -5,14 +5,14 @@
     use PhpAbac\Abac;
 
     $abac = new Abac(new \PDO(
-        'mysql:host=localhost;dbname=php_abac_test',
+        'mysql:host=localhost;dbname=php_abac',
         'root',
         '',
         [
             \PDO::ATTR_ERRMODE => \PDO::ERRMODE_EXCEPTION
         ]
     ));
-    Abac::get('pdo-connection')->exec(file_get_contents("src/php-abac/Test/fixtures/policy_rules.sql"));
+    Abac::get('pdo-connection')->exec(file_get_contents("tests/fixtures/policy_rules.sql"));
     
     putenv('SERVICE_STATE=OPEN');
     

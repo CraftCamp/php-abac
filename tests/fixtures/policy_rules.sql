@@ -7,14 +7,14 @@ DROP TABLE IF EXISTS `abac_test_vehicle`;
 DROP TABLE IF EXISTS `abac_test_user`;
 
 CREATE TABLE IF NOT EXISTS `abac_policy_rules` (
-  `id` integer PRIMARY KEY AUTOINCREMENT,
+  `id` integer PRIMARY KEY AUTO_INCREMENT,
   `name` varchar(45) NOT NULL,
   `created_at` datetime NOT NULL,
   `updated_at` datetime NOT NULL
 );
 
 CREATE TABLE IF NOT EXISTS `abac_attributes_data` (
-  `id` integer PRIMARY KEY AUTOINCREMENT,
+  `id` integer PRIMARY KEY AUTO_INCREMENT,
   `created_at` datetime NOT NULL,
   `updated_at` datetime NOT NULL,
   `name` varchar(255) NOT NULL,
@@ -22,7 +22,7 @@ CREATE TABLE IF NOT EXISTS `abac_attributes_data` (
 );
 
 CREATE TABLE IF NOT EXISTS `abac_attributes` (
-  `id` integer PRIMARY KEY AUTOINCREMENT,
+  `id` integer PRIMARY KEY AUTO_INCREMENT,
   `table_name` varchar(65) NOT NULL,
   `column_name` varchar(40) NOT NULL,
   `criteria_column` varchar(40) NOT NULL,
@@ -30,7 +30,7 @@ CREATE TABLE IF NOT EXISTS `abac_attributes` (
 );
 
 CREATE TABLE IF NOT EXISTS `abac_environment_attributes` (
-  `id` integer PRIMARY KEY AUTOINCREMENT,
+  `id` integer PRIMARY KEY AUTO_INCREMENT,
   `variable_name` varchar(65) NOT NULL,
   FOREIGN KEY(id) REFERENCES abac_attributes_data(id)
 );
@@ -47,7 +47,7 @@ CREATE TABLE IF NOT EXISTS `abac_policy_rules_attributes` (
 );
 
 CREATE TABLE IF NOT EXISTS `abac_test_user` (
-  `id` integer PRIMARY KEY AUTOINCREMENT,
+  `id` integer PRIMARY KEY AUTO_INCREMENT,
   `name` varchar(60) NOT NULL,
   `age` tinyint(4) NOT NULL,
   `parent_nationality` varchar(50) NOT NULL,
@@ -56,7 +56,7 @@ CREATE TABLE IF NOT EXISTS `abac_test_user` (
 );
 
 CREATE TABLE IF NOT EXISTS `abac_test_vehicle` (
-  `id` integer PRIMARY KEY AUTOINCREMENT,
+  `id` integer PRIMARY KEY AUTO_INCREMENT,
   `user_id` int(11) NOT NULL,
   `brand` varchar(40) NOT NULL,
   `model` varchar(60) NOT NULL,
