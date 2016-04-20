@@ -87,9 +87,19 @@ use PhpAbac\Abac;
 
 $abac = new Abac($pdoConnection);
 $check = $abac->enforce('edit-group', $userId, $groupId, [
+    'dynamic-attributes' => [
 	'group-owner' => $userId
+    ]
 ]);
+```
 
+**Example with cache**
+```php
+$check = $abac->enforce('edit-group', $userId, $groupId, [
+    'cache_result' => true,
+    'cache_ttl' => 3600, // Time To Live in seconds
+    'cache_driver' => 'memory' // memory is the default driver, you can avoid this option
+]);
 ```
 
 Documentation

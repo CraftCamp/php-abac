@@ -39,8 +39,34 @@ For example, it can be useful to check the ownership of a resource :
 use PhpAbac\Abac;
 
 $check = $abac->enforce('medical-reports-access', $userId, $reportId, [
+    'dynamic-attributes' => [
 	'report-author' => $userId
+    ]
 ]);
 ```
 
 ***To make this work, the expected value stored in the ```PolicyRuleAttribute``` object must be ```"dynamic"```***
+
+Cache
+-----------------
+
+This library implements cache using PSR-6 specification.
+
+To enable cache for a specific call of the enforce method, add the following options :
+
+```php
+$check = $abac->enforce('medical-reports-access', $userId, $reportId, [
+    'dynamic-attributes' => [
+	'report-author' => $userId
+    ],
+    'cache_result' => true, // enable cache
+    'cache_ttl' => 60, // Time to live in seconds, default is one hour
+    'cache_driver' => 'memory' // Default is memory
+]);
+```
+
+With this, if you call this method again with the same $userId and $reportId, the previous result will be returned.
+
+Available cache drivers :
+
+* ``memory`` : This cache is stored in the library RAM. It will be erased after the script execution.

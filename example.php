@@ -4,19 +4,16 @@
 
     use PhpAbac\Abac;
 
-    $abac = new Abac(new \PDO(
-        'mysql:host=localhost;dbname=php_abac_test',
-        'root',
-        'vagrant',
-        [
-            \PDO::ATTR_ERRMODE => \PDO::ERRMODE_EXCEPTION
-        ]
-    ));
-    Abac::get('pdo-connection')->exec(file_get_contents("src/php-abac/Test/fixtures/policy_rules.sql"));
+    $abac = new Abac(new \PDO('sqlite::memory:', null, null, [\PDO::ATTR_ERRMODE => \PDO::ERRMODE_EXCEPTION]));
+    Abac::get('pdo-connection')->exec(file_get_contents("tests/fixtures/policy_rules.sql"));
     
     putenv('SERVICE_STATE=OPEN');
     
-    $user1Nationality = $abac->enforce('nationality-access', 1);
+    $user1Nationality = $abac->enforce('nationality-access', 1, null, [
+        'cache_result' => true,
+        'cache_lifetime' => 100,
+        'cache_driver' => 'memory'
+    ]);
     
     if ($user1Nationality === true) {
         echo("GRANTED : The user 1 is able to be nationalized\n");
@@ -31,26 +28,34 @@
         echo("FAIL : The system didn't deny access\n");
     }
 
-    $user1Vehicle = $abac->enforce('vehicle-homologation', 1, 1, ['proprietaire' => 1]);
-    if ($user1Vehicle === true) {
+    $user1Vehicle = $abac->enforce('vehicle-homologation', 1, 1, [
+        'dynamic_attributes' => ['proprietaire' => 1]
+    ]);
+    if($user1Vehicle === true) {
         echo("GRANTED : The vehicle 1 is able to be approved for the user 1\n");
     } else {
         echo("FAIL : The system didn't grant access\n");
     }
-    $user3Vehicle = $abac->enforce('vehicle-homologation', 3, 2, ['proprietaire' => 3]);
-    if (!$user3Vehicle !== true) {
+    $user3Vehicle = $abac->enforce('vehicle-homologation', 3, 2, [
+        'dynamic_attributes' => ['proprietaire' => 3]
+    ]);
+    if(!$user3Vehicle !== true) {
         echo("DENIED : The vehicle 2 is not approved for the user 3 because its last technical review is too old\n");
     } else {
         echo("FAIL : The system didn't deny access\n");
     }
-    $user4Vehicle = $abac->enforce('vehicle-homologation', 4, 4, ['proprietaire' => 4]);
-    if ($user4Vehicle !== true) {
+    $user4Vehicle = $abac->enforce('vehicle-homologation', 4, 4, [
+        'dynamic_attributes' => ['proprietaire' => 4]
+    ]);
+    if($user4Vehicle !== true) {
         echo("DENIED : The vehicle 4 is not able to be approved for the user 4 because he has no driving license\n");
     } else {
         echo("FAIL : The system didn't deny access\n");
     }
-    $user5Vehicle = $abac->enforce('vehicle-homologation', 4, 2, ['proprietaire' => 4]);
-    if ($user5Vehicle !== true) {
+    $user5Vehicle = $abac->enforce('vehicle-homologation', 4, 2, [
+        'dynamic_attributes' => ['proprietaire' => 1]
+    ]);
+    if($user5Vehicle !== true) {
         echo("DENIED : The vehicle 4 is not able to be approved for the user 2 because he doesn't own the vehicle\n");
     } else {
         echo("FAIL : The system didn't deny access\n");

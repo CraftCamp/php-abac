@@ -4,6 +4,7 @@ namespace PhpAbac;
 
 use PhpAbac\Manager\AttributeManager;
 use PhpAbac\Manager\PolicyRuleManager;
+use PhpAbac\Manager\CacheManager;
 
 class Abac
 {
@@ -19,6 +20,7 @@ class Abac
         self::set('pdo-connection', $connection, true);
         self::set('policy-rule-manager', new PolicyRuleManager(), true);
         self::set('attribute-manager', new AttributeManager(), true);
+        self::set('cache-manager', new CacheManager(), true);
     }
 
     /**
@@ -27,16 +29,35 @@ class Abac
      * In case of mismatch between attributes and expected values,
      * an array with the concerned attributes slugs will be returned.
      * 
+     * Available options are :
+     * * dynamic_attributes: array
+     * * cache_result: boolean
+     * * cache_ttl: integer
+     * * cache_driver: string
+     * 
+     * Available cache drivers are :
+     * * memory
+     * 
      * @param string $ruleName
-     * @param int    $userId
-     * @param int    $objectId
-     *
-     * @return bool|array
+     * @param integer $userId
+     * @param integer $objectId
+     * @param array $options
+     * @return boolean|array
      */
-    public function enforce($ruleName, $userId, $objectId = null, $dynamicAttributes = [])
-    {
+    public function enforce($ruleName, $userId, $objectId = null, $options = []) {
         $attributeManager = self::get('attribute-manager');
-
+        $cacheManager = self::get('cache-manager');
+        
+        if(($cacheResult = isset($options['cache_result']) && $options['cache_result'] === true) === true) {
+            $cacheItem = $cacheManager->getItem(
+                "$ruleName-$userId-$objectId",
+                (isset($options['cache_driver'])) ? $options['cache_driver'] : null,
+                (isset($options['cache_ttl'])) ? $options['cache_ttl'] : null
+            );
+            if(($cacheValue = $cacheItem->get()) !== null) {
+                return $cacheValue;
+            }
+        }
         $policyRule = self::get('policy-rule-manager')->getRuleByName($ruleName);
         $rejectedAttributes = [];
 
@@ -46,6 +67,7 @@ class Abac
 
             $comparisonClass = 'PhpAbac\\Comparison\\'.ucfirst($pra->getComparisonType()).'Comparison';
             $comparison = new $comparisonClass();
+            $dynamicAttributes = (isset($options['dynamic_attributes'])) ? $options['dynamic_attributes'] : [];
             $value =
                 ($pra->getValue() === 'dynamic')
                 ? $attributeManager->getDynamicAttribute($attribute->getSlug(), $dynamicAttributes)
@@ -55,8 +77,12 @@ class Abac
                 $rejectedAttributes[] = $attribute->getSlug();
             }
         }
-
-        return (count($rejectedAttributes) === 0) ?: $rejectedAttributes;
+        $result = (count($rejectedAttributes) === 0) ? : $rejectedAttributes;
+        if($cacheResult) {
+            $cacheItem->set($result);
+            $cacheManager->save($cacheItem);
+        }
+        return $result;
     }
 
     public static function clearContainer()
