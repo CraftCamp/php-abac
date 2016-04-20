@@ -38,9 +38,33 @@ class AbacTest extends AbacTestCase
             'permis-de-conduire',
         ], $this->abac->enforce('vehicle-homologation', 4, 4, ['proprietaire' => 4]));
     }
-
-    public function testContainer()
-    {
+    
+    public function testEnforceWithCache() {
+        $this->assertTrue($this->abac->enforce('nationality-access', 1, null, [], [
+            'cache_result' => true,
+            'cache_ttl' => 100,
+            'cache_driver' => 'memory'
+        ]));
+        $this->assertEquals([
+            'japd'
+        ], $this->abac->enforce('nationality-access', 2, null, [], [
+            'cache_result' => true,
+            'cache_ttl' => 100,
+            'cache_driver' => 'memory'
+        ]));
+        $cacheItems = Abac::get('cache-manager')->getItemPool('memory')->getItems([
+            'nationality-access-1-',
+            'nationality-access-2-'
+        ]);
+        $this->assertCount(2, $cacheItems);
+        $this->assertArrayHasKey('nationality-access-1-', $cacheItems);
+        $this->assertInstanceOf('PhpAbac\\Cache\\Item\\MemoryCacheItem', $cacheItems['nationality-access-1-']);
+        $this->assertEquals('nationality-access-1-', $cacheItems['nationality-access-1-']->getKey());
+        $this->assertEquals(true, $cacheItems['nationality-access-1-']->get());
+        $this->assertEquals(['japd'], $cacheItems['nationality-access-2-']->get());
+    }
+    
+    public function testContainer() {
         $item = new \stdClass();
         $item->property = 'test';
         // Test Set method
