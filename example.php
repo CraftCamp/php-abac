@@ -4,14 +4,7 @@
 
     use PhpAbac\Abac;
 
-    $abac = new Abac(new \PDO(
-        'mysql:host=localhost;dbname=php_abac',
-        'root',
-        '',
-        [
-            \PDO::ATTR_ERRMODE => \PDO::ERRMODE_EXCEPTION
-        ]
-    ));
+    $abac = new Abac(new \PDO('sqlite::memory:', null, null, [\PDO::ATTR_ERRMODE => \PDO::ERRMODE_EXCEPTION]));
     Abac::get('pdo-connection')->exec(file_get_contents("tests/fixtures/policy_rules.sql"));
     
     putenv('SERVICE_STATE=OPEN');
