@@ -2,7 +2,7 @@
 All notable changes to this project will be documented in this file.
 This project adheres to [Semantic Versioning](http://semver.org/).
 
-### [Unreleased]
+### [1.2.0] - 2016-04-20
 ### Added
 - PSR-6 compliant cache implementation
 - Memory cache driver
@@ -16,6 +16,7 @@ This project adheres to [Semantic Versioning](http://semver.org/).
 
 ## [1.1] - 2015-11-17
 ### Added
+- Scrutinizer CI
 - Travis CI
 - SQLite for unit tests
 
