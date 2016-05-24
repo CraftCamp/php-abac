@@ -82,13 +82,13 @@ INSERT INTO `abac_attributes_data` (`id`, `created_at`, `updated_at`, `name`, `s
 INSERT INTO `abac_attributes_data` (`id`, `created_at`, `updated_at`, `name`, `slug`) VALUES (9, '2015-08-19 11:03:38', '2015-08-19 11:03:38', 'Statut du service', 'statut-du-service');
 
 INSERT INTO `abac_attributes` (`id`, `table_name`, `column_name`, `criteria_column`) VALUES (1, 'abac_test_user', 'age', 'id');
-INSERT INTO `abac_attributes` (`id`, `table_name`, `column_name`, `criteria_column`) VALUES (2, 'abac_test_user', 'parent_nationality', 'id');
-INSERT INTO `abac_attributes` (`id`, `table_name`, `column_name`, `criteria_column`) VALUES (3, 'abac_test_user', 'has_done_japd', 'id');
-INSERT INTO `abac_attributes` (`id`, `table_name`, `column_name`, `criteria_column`) VALUES (4, 'abac_test_user', 'has_driving_license', 'id');
-INSERT INTO `abac_attributes` (`id`, `table_name`, `column_name`, `criteria_column`) VALUES (5, 'abac_test_vehicle', 'technical_review_date', 'id');
-INSERT INTO `abac_attributes` (`id`, `table_name`, `column_name`, `criteria_column`) VALUES (6, 'abac_test_vehicle', 'manufacture_date', 'id');
+INSERT INTO `abac_attributes` (`id`, `table_name`, `column_name`, `criteria_column`) VALUES (2, 'abac_test_user', 'parentNationality', 'id');
+INSERT INTO `abac_attributes` (`id`, `table_name`, `column_name`, `criteria_column`) VALUES (3, 'abac_test_user', 'hasDoneJapd', 'id');
+INSERT INTO `abac_attributes` (`id`, `table_name`, `column_name`, `criteria_column`) VALUES (4, 'abac_test_user', 'hasDrivingLicense', 'id');
+INSERT INTO `abac_attributes` (`id`, `table_name`, `column_name`, `criteria_column`) VALUES (5, 'abac_test_vehicle', 'lastTechnicalReviewDate', 'id');
+INSERT INTO `abac_attributes` (`id`, `table_name`, `column_name`, `criteria_column`) VALUES (6, 'abac_test_vehicle', 'manufactureDate', 'id');
 INSERT INTO `abac_attributes` (`id`, `table_name`, `column_name`, `criteria_column`) VALUES (7, 'abac_test_vehicle', 'origin', 'id');
-INSERT INTO `abac_attributes` (`id`, `table_name`, `column_name`, `criteria_column`) VALUES (8, 'abac_test_vehicle', 'user_id', 'id');
+INSERT INTO `abac_attributes` (`id`, `table_name`, `column_name`, `criteria_column`) VALUES (8, 'abac_test_vehicle', 'owner.id', 'id');
 
 INSERT INTO `abac_environment_attributes` (`id`, `variable_name`) VALUES (9, 'SERVICE_STATE');
 
