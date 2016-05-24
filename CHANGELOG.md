@@ -2,7 +2,12 @@
 All notable changes to this project will be documented in this file.
 This project adheres to [Semantic Versioning](http://semver.org/).
 
-### [1.2.0] - 2016-04-20
+## [Unreleased]
+### Changed
+- The enforce method accepts objects instead of numeric IDs
+- Attributes are now accessed from the objects instead of the database
+
+## [1.2.0] - 2016-04-20
 ### Added
 - PSR-6 compliant cache implementation
 - Memory cache driver
