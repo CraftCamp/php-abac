@@ -12,7 +12,7 @@
         ->setName('John Doe')
         ->setAge(36)
         ->setParentNationality('FR')
-        ->setHasDoneJapd(true)
+        ->setHasDoneJapd(false)
         ->setHasDrivingLicense(true),
         (new User())
         ->setId(2)
@@ -49,7 +49,7 @@
         ->setEcoClass('C'),
         (new Vehicle())
         ->setId(2)
-        ->setOwner($users[2])
+        ->setOwner($users[0])
         ->setBrand('Fiat')
         ->setModel('Stilo')
         ->setLastTechnicalReviewDate(new \DateTime('2008-08-19 11:03:38'))
@@ -84,7 +84,7 @@
     
     putenv('SERVICE_STATE=OPEN');
     
-    $user1Nationality = $abac->enforce('nationality-access', $users[0], null, [
+    $user1Nationality = $abac->enforce('nationality-access', $users[3], null, [
         'cache_result' => true,
         'cache_lifetime' => 100,
         'cache_driver' => 'memory'
@@ -97,13 +97,13 @@
     }
     
     $user2Nationality = $abac->enforce('nationality-access', $users[0]);
-    if ($user2Nationality  !== true) {
+    if ($user2Nationality !== true) {
         echo("DENIED : The user 2 is not able to be nationalized because he hasn't done his JAPD\n");
     } else {
         echo("FAIL : The system didn't deny access\n");
     }
     
-    $user1Vehicle = $abac->enforce('vehicle-homologation', $users[1], $vehicles[0], [
+    $user1Vehicle = $abac->enforce('vehicle-homologation', $users[0], $vehicles[0], [
         'dynamic_attributes' => ['proprietaire' => 1]
     ]);
     if($user1Vehicle === true) {
