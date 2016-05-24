@@ -27,7 +27,7 @@ use PhpAbac\Model\Attribute;
 $abac = new Abac($pdoConnection);
 
 $policyRule =
-	(new PolicyRule())
+    (new PolicyRule())
     ->setName('medical-reports-access')
     ->addPolicyRuleAttribute(
     	(new PolicyRuleAttribute())
@@ -36,11 +36,9 @@ $policyRule =
         ->setComparison('intersect')
         ->setValue(['ROLE_MEDIC', 'ROLE_DIRECTOR'])
         ->setAttribute(
-        	(new Attribute())
+            (new Attribute())
             ->setName('User Role')
-            ->setTable('users')
-            ->setColumn('roles')
-            ->setCriteriaColumn('id')
+            ->setProperty('roles')
         )
     )
     ->addPolicyRuleAttribute(
@@ -50,11 +48,9 @@ $policyRule =
         ->setComparison('isEqual')
         ->setValue('dynamic')
         ->setAttribute(
-        	(new Attribute())
+            (new Attribute())
             ->setName('Medical report service')
-            ->setTable('medical_reports')
-            ->setColumn('service_id')
-            ->setCriteriaColumn('id')
+            ->setProperty('service.id')
         )
     )
 ;

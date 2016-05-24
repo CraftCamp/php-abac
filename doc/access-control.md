@@ -16,7 +16,7 @@ Usage
 ```php
 use PhpAbac\Abac;
 
-$check = $abac->enforce('medical-reports-access', $userId, $reportId);
+$check = $abac->enforce('medical-reports-access', $user, $report);
 ```
 
 ```$check``` have two possible values :
@@ -38,9 +38,9 @@ For example, it can be useful to check the ownership of a resource :
 ```php
 use PhpAbac\Abac;
 
-$check = $abac->enforce('medical-reports-access', $userId, $reportId, [
+$check = $abac->enforce('medical-reports-access', $user, $report, [
     'dynamic-attributes' => [
-	'report-author' => $userId
+	'report-author' => $user->getId()
     ]
 ]);
 ```
@@ -55,9 +55,9 @@ This library implements cache using PSR-6 specification.
 To enable cache for a specific call of the enforce method, add the following options :
 
 ```php
-$check = $abac->enforce('medical-reports-access', $userId, $reportId, [
+$check = $abac->enforce('medical-reports-access', $user, $report, [
     'dynamic-attributes' => [
-	'report-author' => $userId
+	'report-author' => $user->getId()
     ],
     'cache_result' => true, // enable cache
     'cache_ttl' => 60, // Time to live in seconds, default is one hour
