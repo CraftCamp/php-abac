@@ -3,7 +3,6 @@
 namespace PhpAbac\Manager;
 
 use PhpAbac\Abac;
-use PhpAbac\Model\AbstractAttribute;
 use PhpAbac\Model\PolicyRule;
 use PhpAbac\Model\PolicyRuleAttribute;
 use PhpAbac\Repository\PolicyRuleRepository;

@@ -57,12 +57,12 @@ class AttributeManager
      */
     private function retrieveClassicAttribute(Attribute $attribute, $object)
     {
-        $propertyPath = explode('.', $attribute->getColumn());
+        $propertyPath = explode('.', $attribute->getProperty());
         $propertyValue = $object;
         foreach($propertyPath as $property) {
             $getter = 'get'.ucfirst($property);
             if(!method_exists($propertyValue, $getter)) {
-                throw new \InvalidArgumentException('There is no getter for the "'.$attribute->getColumn().'" attribute for object "'.get_class($propertyValue).'"');
+                throw new \InvalidArgumentException('There is no getter for the "'.$attribute->getProperty().'" attribute for object "'.get_class($propertyValue).'"');
             }
             $propertyValue = $propertyValue->{$getter}();
         }

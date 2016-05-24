@@ -19,8 +19,7 @@ class PolicyRuleRepository extends Repository
         $statement = $this->query(
             'SELECT pr.id, pr.created_at, pr.updated_at, pra.type, pra.comparison_type, '.
             'pra.comparison, pra.value, ad.id AS attribute_id, ad.name AS attribute_name, ad.slug, '.
-            'a.table_name, a.column_name, a.criteria_column, '.
-            'ea.variable_name, '.
+            'a.property, ea.variable_name, '.
             'ad.created_at AS attribute_created_at, ad.updated_at AS attribute_updated_at '.
             'FROM abac_policy_rules pr '.
             'LEFT JOIN abac_policy_rules_attributes pra ON pra.policy_rule_id = pr.id '.
@@ -76,9 +75,7 @@ class PolicyRuleRepository extends Repository
                 ->setId($data['attribute_id'])
                 ->setName($data['attribute_name'])
                 ->setSlug($data['slug'])
-                ->setTable($data['table_name'])
-                ->setColumn($data['column_name'])
-                ->setCriteriaColumn($data['criteria_column'])
+                ->setProperty($data['property'])
                 ->setCreatedAt(new \DateTime($data['attribute_created_at']))
                 ->setUpdatedAt(new \DateTime($data['attribute_updated_at']))
         ;

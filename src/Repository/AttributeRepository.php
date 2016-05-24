@@ -14,18 +14,15 @@ class AttributeRepository extends Repository
      */
     public function findAttribute($attributeId)
     {
-        $statement = $this->query(
-            'SELECT ad.name, ad.slug, a.table_name, a.column_name, a.criteria_column, ad.created_at, ad.updated_at '.
-            'FROM abac_attributes_data ad INNER JOIN abac_attributes a ON a.id = ad.id WHERE ad.id = :id', ['id' => $attributeId]);
-        $data = $statement->fetch();
-
+        $data = $this->query(
+            'SELECT ad.name, ad.slug, a.property, ad.created_at, ad.updated_at '.
+            'FROM abac_attributes_data ad INNER JOIN abac_attributes a ON a.id = ad.id WHERE ad.id = :id'
+        , ['id' => $attributeId])->fetch();
         return
             (new Attribute())
             ->setName($data['name'])
             ->setSlug($data['slug'])
-            ->setTable($data['table_name'])
-            ->setColumn($data['column_name'])
-            ->setCriteriaColumn($data['criteria_column'])
+            ->setProperty($data['property'])
             ->setCreatedAt($data['created_at'])
             ->setUpdatedAt($data['updated_at'])
         ;
@@ -48,16 +45,10 @@ class AttributeRepository extends Repository
             'created_at' => $formattedDatetime,
             'updated_at' => $formattedDatetime,
         ]);
-
-        $id = $this->connection->lastInsertId('abac_attributes_data');
-
         $this->insert(
-            'INSERT INTO abac_attributes (id, table_name, column_name, criteria_column) ' .
-            'VALUES(:id, :table_name, :column_name, :criteria_column);', [
-            'id' => $id,
-            'table_name' => $attribute->getTable(),
-            'column_name' => $attribute->getColumn(),
-            'criteria_column' => $attribute->getCriteriaColumn(),
+            'INSERT INTO abac_attributes (id, property) VALUES(:id, :property);', [
+            'id' => $this->connection->lastInsertId('abac_attributes_data'),
+            'property' => $attribute->getProperty(),
         ]);
 
         $attribute
