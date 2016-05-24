@@ -32,19 +32,6 @@ class AttributeRepository extends Repository
     }
 
     /**
-     * @param Attribute &$attribute
-     * @param mixed     $criteria
-     */
-    public function retrieveAttribute(Attribute $attribute, $criteria)
-    {
-        $statement = $this->query(
-            "SELECT {$attribute->getColumn()} FROM {$attribute->getTable()} WHERE {$attribute->getCriteriaColumn()} = {$criteria}"
-        );
-        $data = $statement->fetch();
-        $attribute->setValue($data[$attribute->getColumn()]);
-    }
-
-    /**
      * @param Attribute $attribute
      */
     public function createAttribute(Attribute $attribute)
