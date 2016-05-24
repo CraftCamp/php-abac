@@ -39,21 +39,22 @@ class Abac
      * * memory
      * 
      * @param string $ruleName
-     * @param integer $userId
-     * @param integer $objectId
+     * @param object $user
+     * @param object $object
      * @param array $options
      * @return boolean|array
      */
-    public function enforce($ruleName, $userId, $objectId = null, $options = []) {
+    public function enforce($ruleName, $user, $object = null, $options = []) {
         $attributeManager = self::get('attribute-manager');
         $cacheManager = self::get('cache-manager');
-        
+        // Retrieve cache value for the current rule and values if cache item is valid
         if(($cacheResult = isset($options['cache_result']) && $options['cache_result'] === true) === true) {
             $cacheItem = $cacheManager->getItem(
-                "$ruleName-$userId-$objectId",
+                "$ruleName-{$user->getId()}-" . (($object !== null) ? $object->getId() : ''),
                 (isset($options['cache_driver'])) ? $options['cache_driver'] : null,
                 (isset($options['cache_ttl'])) ? $options['cache_ttl'] : null
             );
+            // We check if the cache value s valid before returning it
             if(($cacheValue = $cacheItem->get()) !== null) {
                 return $cacheValue;
             }
@@ -63,8 +64,7 @@ class Abac
 
         foreach ($policyRule->getPolicyRuleAttributes() as $pra) {
             $attribute = $pra->getAttribute();
-            $attributeManager->retrieveAttribute($attribute, $pra->getType(), $userId, $objectId);
-
+            $attribute->setValue($attributeManager->retrieveAttribute($attribute, $pra->getType(), $user, $object));
             $comparisonClass = 'PhpAbac\\Comparison\\'.ucfirst($pra->getComparisonType()).'Comparison';
             $comparison = new $comparisonClass();
             $dynamicAttributes = (isset($options['dynamic_attributes'])) ? $options['dynamic_attributes'] : [];

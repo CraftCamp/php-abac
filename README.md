@@ -18,7 +18,9 @@ This library is meant to implement the concept of ABAC in your PHP applications.
 
 The concept is to manage access control using attributes : from users, from resources and environment.
 
-It allows us to define rules based on multiple attributes. These rules will be checked in your application to determine if an user is allowed to perform an action.
+It allows us to define rules based on the properties of the user object and optionally the accessed object.
+
+These rules will be checked in your application to determine if an user is allowed to perform an action.
 
 The following links explain what ABAC is :
 
@@ -51,33 +53,62 @@ Usage
 
 **Example with only user attributes defined in the rule**
 
+We have in this example a single object, representing the current user.
+
+This object have properties, with getter methods to access the values.
+
+For example, we can code :
+
 ```php
 <?php
 
 use PhpAbac\Abac;
 
+class User{
+    protected $id;
+
+    protected $isBanned;
+
+    public function getId() {
+        return $this->id;
+    }
+
+    public function setIsBanned($isBanned) {
+        $this->isBanned = $isBanned;
+
+        return $this;
+    }
+
+    public function getIsBanned() {
+        return $this->isBanned;
+    }
+}
+
+$user = new User();
+$user->setIsBanned(true);
+
 $abac = new Abac($pdoConnection);
-$abac->enforce('create-group', $userId);
+$abac->enforce('create-group', $user);
 ```
-The checked attributes can be :
+The attributes checked by the rule can be :
 
 |User|
 |-----|
-|is_banned = 0|
+|isBanned = false|
 
 **Example with both user and object attributes**
 ```php
 use PhpAbac\Abac;
 
 $abac = new Abac($pdoConnection);
-$check = $abac->enforce('read-public-group', $userId, $groupId);
+$check = $abac->enforce('read-public-group', $user, $group);
 ```
 The checked attributes can be :
 
 |User|Group|
 |-----|----|
-|is_banned = 0|is_active = 1|
-||is_public = 1|
+|isBanned = 0|isActive = 1|
+||isPublic = 1|
 
 **Example with dynamic attributes**
 ```php
@@ -86,16 +117,16 @@ The checked attributes can be :
 use PhpAbac\Abac;
 
 $abac = new Abac($pdoConnection);
-$check = $abac->enforce('edit-group', $userId, $groupId, [
+$check = $abac->enforce('edit-group', $user, $group, [
     'dynamic-attributes' => [
-	'group-owner' => $userId
+	'group-owner' => $user->getId()
     ]
 ]);
 ```
 
 **Example with cache**
 ```php
-$check = $abac->enforce('edit-group', $userId, $groupId, [
+$check = $abac->enforce('edit-group', $user, $group, [
     'cache_result' => true,
     'cache_ttl' => 3600, // Time To Live in seconds
     'cache_driver' => 'memory' // memory is the default driver, you can avoid this option

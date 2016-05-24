@@ -36,9 +36,7 @@ class AttributeManagerTest extends AbacTestCase
         $attribute =
             (new Attribute())
             ->setName('Licence d\'equitation')
-            ->setTable('users')
-            ->setColumn('has_horse_license')
-            ->setCriteriaColumn('id')
+            ->setProperty('hasHorseLicense')
         ;
         $this->manager->create($attribute);
 
@@ -55,9 +53,7 @@ class AttributeManagerTest extends AbacTestCase
         ;
         $this->assertEquals('Licence d\'equitation', $data['name']);
         $this->assertEquals('licence-d-equitation', $data['slug']);
-        $this->assertEquals('users', $data['table_name']);
-        $this->assertEquals('has_horse_license', $data['column_name']);
-        $this->assertEquals('id', $data['criteria_column']);
+        $this->assertEquals('hasHorseLicense', $data['property']);
     }
 
     public function testCreateEnvironmentAttribute()

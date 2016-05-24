@@ -5,6 +5,7 @@ namespace PhpAbac\Manager;
 use PhpAbac\Repository\AttributeRepository;
 use PhpAbac\Model\AbstractAttribute;
 use PhpAbac\Model\Attribute;
+use PhpAbac\Model\EnvironmentAttribute;
 
 class AttributeManager
 {
@@ -32,26 +33,49 @@ class AttributeManager
 
     /**
      * @param AbstractAttribute $attribute
-     * @param string            $attributeType
-     * @param int               $userId
-     * @param int               $objectId
+     * @param string $attributeType
+     * @param object $user
+     * @param object $object
+     * @return mixed
      */
-    public function retrieveAttribute(AbstractAttribute $attribute, $attributeType, $userId, $objectId)
+    public function retrieveAttribute(AbstractAttribute $attribute, $attributeType, $user, $object)
     {
-        // The switch is important.
-        // Even if we call the same method for the two first cases,
-        // the given argument isn't the same.
-        switch ($attributeType) {
+        switch($attributeType) {
             case 'user':
-                $this->repository->retrieveAttribute($attribute, $userId);
-                break;
+                return $this->retrieveClassicAttribute($attribute, $user);
             case 'object':
-                $this->repository->retrieveAttribute($attribute, $objectId);
-                break;
+                return $this->retrieveClassicAttribute($attribute, $object);
             case 'environment':
-                $attribute->setValue(getenv($attribute->getVariableName()));
-                break;
+                return $this->retrieveEnvironmentAttribute($attribute);
         }
+    }
+
+    /**
+     * @param Attribute $attribute
+     * @param object $object
+     * @return mixed
+     */
+    private function retrieveClassicAttribute(Attribute $attribute, $object)
+    {
+        $propertyPath = explode('.', $attribute->getProperty());
+        $propertyValue = $object;
+        foreach($propertyPath as $property) {
+            $getter = 'get'.ucfirst($property);
+            if(!method_exists($propertyValue, $getter)) {
+                throw new \InvalidArgumentException('There is no getter for the "'.$attribute->getProperty().'" attribute for object "'.get_class($propertyValue).'"');
+            }
+            $propertyValue = $propertyValue->{$getter}();
+        }
+        return $propertyValue;
+    }
+    
+    /**
+     * 
+     * @param \PhpAbac\Model\EnvironmentAttribute $attribute
+     * @return mixed
+     */
+    private function retrieveEnvironmentAttribute(EnvironmentAttribute $attribute) {
+        return getenv($attribute->getVariableName());
     }
 
     /**
@@ -67,7 +91,6 @@ class AttributeManager
         if (!isset($dynamicAttributes[$slug])) {
             throw new \InvalidArgumentException('The "'.$slug.'" attribute is dynamic and its value must be given');
         }
-
         return $dynamicAttributes[$slug];
     }
 }

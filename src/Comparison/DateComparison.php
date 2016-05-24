@@ -9,37 +9,35 @@ class DateComparison
      * 
      * @param \DateTime $start
      * @param \DateTime $end
-     * @param string    $value
+     * @param \DateTime $datetime
      *
      * @return bool
      */
-    public function isBetween(\DateTime $start, \DateTime $end, $value)
+    public function isBetween(\DateTime $start, \DateTime $end, $datetime)
     {
-        $datetime = new \DateTime($value);
-
         return $start <= $datetime && $end >= $datetime;
     }
 
     /**
      * @param string $format
-     * @param string $value
+     * @param \DateTime $datetime
      *
      * @return bool
      */
-    public function isMoreRecentThan($format, $value)
+    public function isMoreRecentThan($format, $datetime)
     {
-        return $this->getDatetimeFromFormat("-$format") <= new \DateTime($value);
+        return $this->getDatetimeFromFormat("-$format") <= $datetime;
     }
 
     /**
      * @param string $format
-     * @param string $value
+     * @param \DateTime $datetime
      *
      * @return bool
      */
-    public function isLessRecentThan($format, $value)
+    public function isLessRecentThan($format, $datetime)
     {
-        return $this->getDatetimeFromFormat("+$format") >= new \DateTime($value);
+        return $this->getDatetimeFromFormat("+$format") >= $datetime;
     }
 
     /**

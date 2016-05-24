@@ -12,20 +12,16 @@ class AttributeTest extends \PHPUnit_Framework_TestCase
             (new Attribute())
             ->setId(1)
             ->setName('test-attribute')
-            ->setColumn('attribute_column')
-            ->setTable('user_attributes')
-            ->setCriteriaColumn('user_id')
-            ->setValue(3)
+            ->setProperty('userAttributes')
+            ->setValue([])
             ->setCreatedAt(new \DateTime())
             ->setUpdatedAt(new \DateTime())
         ;
         $this->assertEquals(1, $attribute->getId());
         $this->assertEquals('test-attribute', $attribute->getName());
-        $this->assertEquals('attribute_column', $attribute->getColumn());
-        $this->assertEquals('user_attributes', $attribute->getTable());
-        $this->assertEquals('user_id', $attribute->getCriteriaColumn());
+        $this->assertEquals('userAttributes', $attribute->getProperty());
         $this->assertInstanceOf('DateTime', $attribute->getCreatedAt());
         $this->assertInstanceOf('DateTime', $attribute->getUpdatedAt());
-        $this->assertEquals(3, $attribute->getValue());
+        $this->assertEquals([], $attribute->getValue());
     }
 }

@@ -22,6 +22,7 @@
     "autoload" : {
         "psr-4": {
             "PhpAbac\\": "src/",
+            "PhpAbac\\Example\\": "example/",
             "PhpAbac\\Test\\": "tests/"
         }
     }

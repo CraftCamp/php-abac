@@ -22,51 +22,56 @@ class AbacTest extends AbacTestCase
 
     public function testEnforce()
     {
-        $this->assertTrue($this->abac->enforce('nationality-access', 1));
+        $users = include('tests/fixtures/users.php');
+        $vehicles = include('tests/fixtures/vehicles.php');
+        $this->assertTrue($this->abac->enforce('nationality-access', $users[3]));
         $this->assertEquals([
             'japd',
-        ], $this->abac->enforce('nationality-access', 2));
+        ], $this->abac->enforce('nationality-access', $users[1]));
 
         // getenv() don't work in CLI scripts without putenv()
         putenv('SERVICE_STATE=OPEN');
         
-        $this->assertTrue($this->abac->enforce('vehicle-homologation', 1, 1, [
+        $this->assertTrue($this->abac->enforce('vehicle-homologation', $users[0], $vehicles[0], [
             'dynamic_attributes' => ['proprietaire' => 1]
         ]));
         $this->assertEquals([
             'dernier-controle-technique'
-        ],$this->abac->enforce('vehicle-homologation', 3, 2, [
+        ],$this->abac->enforce('vehicle-homologation', $users[2], $vehicles[1], [
             'dynamic_attributes' => ['proprietaire' => 3]
         ]));
         $this->assertEquals([
             'permis-de-conduire'
-        ], $this->abac->enforce('vehicle-homologation', 4, 4, [
+        ], $this->abac->enforce('vehicle-homologation', $users[3], $vehicles[3], [
             'dynamic_attributes' => ['proprietaire' => 4]
         ]));
     }
     
     public function testEnforceWithCache() {
-        $this->assertTrue($this->abac->enforce('nationality-access', 1, null, [
+        $users = include('tests/fixtures/users.php');
+        $vehicles = include('tests/fixtures/vehicles.php');
+        
+        $this->assertTrue($this->abac->enforce('nationality-access', $users[3], null, [
             'cache_result' => true,
             'cache_ttl' => 100,
             'cache_driver' => 'memory'
         ]));
         $this->assertEquals([
             'japd'
-        ], $this->abac->enforce('nationality-access', 2, null, [
+        ], $this->abac->enforce('nationality-access', $users[1], null, [
             'cache_result' => true,
             'cache_ttl' => 100,
             'cache_driver' => 'memory'
         ]));
         $cacheItems = Abac::get('cache-manager')->getItemPool('memory')->getItems([
-            'nationality-access-1-',
+            'nationality-access-4-',
             'nationality-access-2-'
         ]);
         $this->assertCount(2, $cacheItems);
-        $this->assertArrayHasKey('nationality-access-1-', $cacheItems);
-        $this->assertInstanceOf('PhpAbac\\Cache\\Item\\MemoryCacheItem', $cacheItems['nationality-access-1-']);
-        $this->assertEquals('nationality-access-1-', $cacheItems['nationality-access-1-']->getKey());
-        $this->assertEquals(true, $cacheItems['nationality-access-1-']->get());
+        $this->assertArrayHasKey('nationality-access-4-', $cacheItems);
+        $this->assertInstanceOf('PhpAbac\\Cache\\Item\\MemoryCacheItem', $cacheItems['nationality-access-4-']);
+        $this->assertEquals('nationality-access-4-', $cacheItems['nationality-access-4-']->getKey());
+        $this->assertEquals(true, $cacheItems['nationality-access-4-']->get());
         $this->assertEquals(['japd'], $cacheItems['nationality-access-2-']->get());
     }
     
