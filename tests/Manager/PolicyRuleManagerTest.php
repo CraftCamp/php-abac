@@ -38,9 +38,7 @@ class PolicyRuleManagerTest extends AbacTestCase
                 ->setAttribute(
                     (new Attribute())
                     ->setName('Age')
-                    ->setTable('user')
-                    ->setColumn('age')
-                    ->setCriteriaColumn('id')
+                    ->setProperty('age')
                 )
                 ->setType('user')
                 ->setComparisonType('Numeric')
@@ -79,9 +77,7 @@ class PolicyRuleManagerTest extends AbacTestCase
 
         $this->assertInstanceof('PhpAbac\Model\Attribute', $attribute);
         $this->assertEquals('Age', $attribute->getName());
-        $this->assertEquals('user', $attribute->getTable());
-        $this->assertEquals('age', $attribute->getColumn());
-        $this->assertEquals('id', $attribute->getCriteriaColumn());
+        $this->assertEquals('age', $attribute->getProperty());
     }
 
     public function testGetRuleByName()
