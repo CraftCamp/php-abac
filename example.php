@@ -3,81 +3,9 @@
     require_once('vendor/autoload.php');
 
     use PhpAbac\Abac;
-    use PhpAbac\Example\User;
-    use PhpAbac\Example\Vehicle;
     
-    $users = [
-        (new User())
-        ->setId(1)
-        ->setName('John Doe')
-        ->setAge(36)
-        ->setParentNationality('FR')
-        ->setHasDoneJapd(false)
-        ->setHasDrivingLicense(true),
-        (new User())
-        ->setId(2)
-        ->setName('Thierry')
-        ->setAge(24)
-        ->setParentNationality('FR')
-        ->setHasDoneJapd(false)
-        ->setHasDrivingLicense(false),
-        (new User())
-        ->setId(3)
-        ->setName('Jason')
-        ->setAge(17)
-        ->setParentNationality('FR')
-        ->setHasDoneJapd(true)
-        ->setHasDrivingLicense(true),
-        (new User())
-        ->setId(4)
-        ->setName('Bouddha')
-        ->setAge(556)
-        ->setParentNationality('FR')
-        ->setHasDoneJapd(true)
-        ->setHasDrivingLicense(false),
-    ];
-    $vehicles = [
-        (new Vehicle())
-        ->setId(1)
-        ->setOwner($users[0])
-        ->setBrand('Renault')
-        ->setModel('Mégane')
-        ->setLastTechnicalReviewDate(new \DateTime('2014-08-19 11:03:38'))
-        ->setManufactureDate(new \DateTime('2015-08-19 11:03:38'))
-        ->setOrigin('FR')
-        ->setEngineType('diesel')
-        ->setEcoClass('C'),
-        (new Vehicle())
-        ->setId(2)
-        ->setOwner($users[0])
-        ->setBrand('Fiat')
-        ->setModel('Stilo')
-        ->setLastTechnicalReviewDate(new \DateTime('2008-08-19 11:03:38'))
-        ->setManufactureDate(new \DateTime('2004-08-19 11:03:38'))
-        ->setOrigin('IT')
-        ->setEngineType('diesel')
-        ->setEcoClass('C'),
-        (new Vehicle())
-        ->setId(3)
-        ->setOwner($users[0])
-        ->setBrand('Alpha Roméo')
-        ->setModel('Mito')
-        ->setLastTechnicalReviewDate(new \DateTime('2014-08-19 11:03:38'))
-        ->setManufactureDate(new \DateTime('2013-08-19 11:03:38'))
-        ->setOrigin('FR')
-        ->setEngineType('gasoline')
-        ->setEcoClass('D'),
-        (new Vehicle())
-        ->setId(4)
-        ->setOwner($users[3])
-        ->setBrand('Fiat')
-        ->setModel('Punto')
-        ->setLastTechnicalReviewDate(new \DateTime('2015-08-19 11:03:38'))
-        ->setManufactureDate(new \DateTime('2010-08-19 11:03:38'))
-        ->setOrigin('FR')
-        ->setEngineType('diesel')
-        ->setEcoClass('B'),
-    ];
+    $users = include('tests/fixtures/users.php');
+    $vehicles = include('tests/fixtures/vehicles.php');
     
     $abac = new Abac(new \PDO('sqlite::memory:', null, null, [\PDO::ATTR_ERRMODE => \PDO::ERRMODE_EXCEPTION]));
     Abac::get('pdo-connection')->exec(file_get_contents("tests/fixtures/policy_rules.sql"));
