@@ -36,7 +36,7 @@ Write the following line in your composer.json file :
 
 ```json
 "require" : {
-	"kilix/php-abac": "dev-master"
+    "kilix/php-abac": "dev-master"
 }
 ```
 
@@ -46,10 +46,19 @@ Then just do :
 composer install
 ```
 
-To initialize the library tables in your database, there is a SQL file located in the ``sql/`` folder. This file will create the tables used by php-abac.
+Then you will have to configure the attributes and the rules of your application.
 
-Usage
----
+For more details about this, please refer to the [dedicated documentation](doc/configuration.md)
+
+Documentation
+------------
+
+* [Configuration](doc/configuration.md)
+* [Access-control](doc/access-control.md)
+* [Comparisons](doc/comparisons.md)
+
+Usage Examples
+-------------
 
 **Example with only user attributes defined in the rule**
 
@@ -132,14 +141,6 @@ $check = $abac->enforce('edit-group', $user, $group, [
     'cache_driver' => 'memory' // memory is the default driver, you can avoid this option
 ]);
 ```
-
-Documentation
--------
-
-* [Policy Rules](doc/policy_rules.md)
-* [Attributes](doc/attributes.md)
-* [Comparisons](doc/comparisons.md)
-* [Access-control](doc/access-control.md)
 
 Contribute
 -------
