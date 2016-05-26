@@ -60,6 +60,10 @@ rules:
                 comparison_type: datetime
                 comparison: isMoreRecentThan
                 value: -25Y
+            vehicle.owner.id:
+                comparison_type: numeric
+                comparison: isEqual
+                value: dynamic
             vehicle.origin:
                 comparison_type: array
                 comparison: isIn
