@@ -36,8 +36,12 @@ class ConfigurationManager {
     public function parseConfigurationFile($configurationFiles) {
         foreach($configurationFiles as $configurationFile) {
             $config = $this->loaders[$this->format]->load($configurationFile);
-            $this->attributes = array_merge($this->attributes, $config['attributes']);
-            $this->rules = array_merge($this->rules, $config['rules']);
+            if(isset($config['attributes'])) {
+                $this->attributes = array_merge($this->attributes, $config['attributes']);
+            }
+            if(isset($config['rules'])) {
+                $this->rules = array_merge($this->rules, $config['rules']);
+            }
         }
     }
     
