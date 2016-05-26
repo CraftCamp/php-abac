@@ -5,16 +5,22 @@ namespace PhpAbac\Manager;
 use PhpAbac\Abac;
 use PhpAbac\Model\PolicyRule;
 use PhpAbac\Model\PolicyRuleAttribute;
-use PhpAbac\Repository\PolicyRuleRepository;
 
 class PolicyRuleManager
 {
-    /** @var PolicyRuleRepository **/
-    protected $repository;
+    /** @var \PhpAbac\Manager\AttributeManager **/
+    private $attributeManager;
+    /** @var array **/
+    private $rules;
 
-    public function __construct()
+    /**
+     * @param \PhpAbac\Manager\AttributeManager $attributeManager
+     * @param array $rules
+     */
+    public function __construct(AttributeManager $attributeManager, $rules)
     {
-        $this->repository = new PolicyRuleRepository();
+        $this->attributeManager = $attributeManager;
+        $this->rules = $rules;
     }
 
     /**
@@ -24,13 +30,32 @@ class PolicyRuleManager
      *
      * @throws \InvalidArgumentException
      */
-    public function getRuleByName($ruleName)
+    public function getRule($ruleName)
     {
-        if (($rule = $this->repository->findByName($ruleName)) === null) {
-            throw new \InvalidArgumentException('The rule "'.$ruleName.'" does not exists');
+        if(!isset($this->rules[$ruleName])) {
+            throw new \InvalidArgumentException('The given rule "' . $ruleName . '" is not configured');
         }
-
+        $rule =
+            (new PolicyRule())
+            ->setName($ruleName)
+        ;
+        $this->processRuleAttributes($rule);
         return $rule;
+    }
+    
+    /**
+     * @param PolicyRule $rule
+     */
+    public function processRuleAttributes(PolicyRule $rule) {
+        foreach($this->rules[$rule->getName()]['attributes'] as $attributeName => $attribute) {
+            $rule->addPolicyRuleAttribute(
+                (new PolicyRuleAttribute())
+                ->setAttribute($this->attributeManager->getAttribute($attributeName))
+                ->setComparison($attribute['comparison'])
+                ->setComparisonType($attribute['comparison_type'])
+                ->setValue($attribute['value'])
+            );
+        }
     }
 
     /**

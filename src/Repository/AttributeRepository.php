@@ -7,26 +7,6 @@ use PhpAbac\Model\EnvironmentAttribute;
 
 class AttributeRepository extends Repository
 {
-    /**
-     * @param int $attributeId
-     *
-     * @return Attribute
-     */
-    public function findAttribute($attributeId)
-    {
-        $data = $this->query(
-            'SELECT ad.name, ad.slug, a.property, ad.created_at, ad.updated_at '.
-            'FROM abac_attributes_data ad INNER JOIN abac_attributes a ON a.id = ad.id WHERE ad.id = :id'
-        , ['id' => $attributeId])->fetch();
-        return
-            (new Attribute())
-            ->setName($data['name'])
-            ->setSlug($data['slug'])
-            ->setProperty($data['property'])
-            ->setCreatedAt($data['created_at'])
-            ->setUpdatedAt($data['updated_at'])
-        ;
-    }
 
     /**
      * @param Attribute $attribute
@@ -92,26 +72,5 @@ class AttributeRepository extends Repository
             ->setCreatedAt($datetime)
             ->setUpdatedAt($datetime)
         ;
-    }
-
-    /*
-     * @param string $name
-     * @return string
-     */
-    public function slugify($name)
-    {
-        // replace non letter or digits by -
-        $name = trim(preg_replace('~[^\\pL\d]+~u', '-', $name), '-');
-        // transliterate
-        if (function_exists('iconv')) {
-            $name = iconv('utf-8', 'us-ascii//TRANSLIT', $name);
-        }
-        // remove unwanted characters
-        $name = preg_replace('~[^-\w]+~', '', strtolower($name));
-        if (empty($name)) {
-            return 'n-a';
-        }
-
-        return $name;
     }
 }
