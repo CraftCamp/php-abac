@@ -46,7 +46,7 @@ class PolicyRuleManager
     /**
      * @param PolicyRule $rule
      */
-    public function processRuleAttributes(PolicyRule $rule) {
+    private function processRuleAttributes(PolicyRule $rule) {
         foreach($this->rules[$rule->getName()]['attributes'] as $attributeName => $attribute) {
             $rule->addPolicyRuleAttribute(
                 (new PolicyRuleAttribute())

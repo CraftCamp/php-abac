@@ -41,7 +41,7 @@ class AttributeManager
      * @param string $property
      * @return \PhpAbac\Model\Attribute
      */
-    public function getClassicAttribute($attributeData, $property) {
+    private function getClassicAttribute($attributeData, $property) {
         return
             (new Attribute())
             ->setName($attributeData['fields'][$property]['name'])
@@ -56,7 +56,7 @@ class AttributeManager
      * @param string $key
      * @return \PhpAbac\Model\EnvironmentAttribute
      */
-    public function getEnvironmentAttribute($attributeData, $key) {
+    private function getEnvironmentAttribute($attributeData, $key) {
         return
             (new EnvironmentAttribute())
             ->setName($attributeData[$key]['name'])
