@@ -7,8 +7,7 @@
     $users = include('tests/fixtures/users.php');
     $vehicles = include('tests/fixtures/vehicles.php');
     
-    $abac = new Abac(new \PDO('sqlite::memory:', null, null, [\PDO::ATTR_ERRMODE => \PDO::ERRMODE_EXCEPTION]));
-    Abac::get('pdo-connection')->exec(file_get_contents("tests/fixtures/policy_rules.sql"));
+    $abac = new Abac();
     
     putenv('SERVICE_STATE=OPEN');
     
