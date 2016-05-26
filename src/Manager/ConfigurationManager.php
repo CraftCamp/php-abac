@@ -25,13 +25,20 @@ class ConfigurationManager {
     public function __construct(FileLocatorInterface $locator, $format = 'yaml') {
         $this->locator = $locator;
         $this->format = $format;
+        $this->attributes = [];
+        $this->rules = [];
         $this->loaders['yaml'] = new YamlAbacLoader($locator);
     }
     
-    public function parseConfigurationFile() {
-        $config = $this->loaders[$this->format]->load('policy_rules.yml');
-        $this->attributes = $config['attributes'];
-        $this->rules = $config['rules'];
+    /**
+     * @param array $configurationFiles
+     */
+    public function parseConfigurationFile($configurationFiles) {
+        foreach($configurationFiles as $configurationFile) {
+            $config = $this->loaders[$this->format]->load($configurationFile);
+            $this->attributes = array_merge($this->attributes, $config['attributes']);
+            $this->rules = array_merge($this->rules, $config['rules']);
+        }
     }
     
     /**

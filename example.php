@@ -7,7 +7,7 @@
     $users = include('tests/fixtures/users.php');
     $vehicles = include('tests/fixtures/vehicles.php');
     
-    $abac = new Abac();
+    $abac = new Abac([__DIR__.'/tests/fixtures/policy_rules.yml']);
     
     putenv('SERVICE_STATE=OPEN');
     

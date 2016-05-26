@@ -20,18 +20,24 @@ class Abac
     /** @var \PhpAbac\Manager\CacheManager **/
     private $cacheManager;
 
-    public function __construct()
+    /**
+     * @param array $configPaths
+     */
+    public function __construct($configPaths)
     {
-        $this->configure();
+        $this->configure($configPaths);
         $this->attributeManager = new AttributeManager($this->configuration->getAttributes());
         $this->policyRuleManager = new PolicyRuleManager($this->attributeManager, $this->configuration->getRules());
         $this->cacheManager = new CacheManager();
     }
     
-    public function configure() {
-        $locator = new FileLocator([__DIR__.'/../']);
+    /**
+     * @param array $configPaths
+     */
+    public function configure($configPaths) {
+        $locator = new FileLocator($configPaths);
         $this->configuration = new ConfigurationManager($locator);
-        $this->configuration->parseConfigurationFile();
+        $this->configuration->parseConfigurationFile($configPaths);
     }
 
     /**
@@ -71,7 +77,6 @@ class Abac
         $policyRule = $this->policyRuleManager->getRule($ruleName);
         $rejectedAttributes = [];
 
-        
         foreach ($policyRule->getPolicyRuleAttributes() as $pra) {
             $attribute = $pra->getAttribute();
             $attribute->setValue($this->attributeManager->retrieveAttribute($attribute, $user, $object));
