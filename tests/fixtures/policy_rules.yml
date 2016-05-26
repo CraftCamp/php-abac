@@ -1,0 +1,79 @@
+---
+attributes:
+    main_user:
+        class: PhpAbac\Example\User
+        type: user
+        fields:
+            age:
+                name: Age
+            parentNationality:
+                name: Nationalité des parents
+            hasDoneJapd:
+                name: JAPD
+            hasDrivingLicense:
+                name: Permis de conduire
+            
+    vehicle:
+        class: PhpAbac\Example\Vehicle
+        type: resource
+        fields:
+            origin:
+                name: Origine
+            owner.id:
+                name: Propriétaire
+            manufactureDate:
+                name: Date de sortie d'usine
+            lastTechnicalReviewDate:
+                name: Dernière révision technique
+        
+    environment:
+        service_state:
+            name: Statut du service
+            variable_name: SERVICE_STATE
+
+rules:
+    nationality-access:
+        attributes:
+            main_user.age:
+                comparison_type: numeric
+                comparison: isGreaterThan
+                value: 18
+            main_user.parentNationality:
+                comparison_type: string
+                comparison: isEqual
+                value: FR
+            main_user.hasDoneJapd:
+                comparison_type: boolean
+                comparison: boolAnd
+                value: true
+    vehicle-homologation:
+        attributes:
+            main_user.hasDrivingLicense:
+                comparison_type: boolean
+                comparison: boolAnd
+                value: true
+            vehicle.lastTechnicalReviewDate:
+                comparison_type: datetime
+                comparison: isMoreRecentThan
+                value: -2Y
+            vehicle.manufactureDate:
+                comparison_type: datetime
+                comparison: isMoreRecentThan
+                value: -25Y
+            vehicle.owner.id:
+                comparison_type: numeric
+                comparison: isEqual
+                value: dynamic
+            vehicle.origin:
+                comparison_type: array
+                comparison: isIn
+                value: ["FR", "DE", "IT", "L", "GB", "P", "ES", "NL", "B"]
+            environment.service_state:
+                comparison_type: string
+                comparison: isEqual
+                value: OPEN
+    gunlaw:
+        main_user.age:
+            comparison_type: numeric
+            comparison: isGreaterThan
+            value: 21

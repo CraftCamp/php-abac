@@ -2,33 +2,69 @@
 
 namespace PhpAbac\Manager;
 
-use PhpAbac\Repository\AttributeRepository;
 use PhpAbac\Model\AbstractAttribute;
 use PhpAbac\Model\Attribute;
 use PhpAbac\Model\EnvironmentAttribute;
 
 class AttributeManager
 {
-    /** @var AttributeRepository **/
-    protected $repository;
-
-    public function __construct()
-    {
-        $this->repository = new AttributeRepository();
-    }
+    /** @var array **/
+    private $attributes;
 
     /**
-     * @param AbstractAttribute $attribute
-     *
-     * @return AbstractAttribute
+     * @param array $attributes
      */
-    public function create(AbstractAttribute $attribute)
+    public function __construct($attributes)
     {
-        if ($attribute instanceof Attribute) {
-            return $this->repository->createAttribute($attribute);
-        }
-
-        return $this->repository->createEnvironmentAttribute($attribute);
+        $this->attributes = $attributes;
+    }
+    
+    /**
+     * @param string $attributeId
+     * @return \PhpAbac\Model\AbstractAttribute
+     */
+    public function getAttribute($attributeId) {
+        $attributeKeys = explode('.', $attributeId);
+        // The first element will be the attribute ID, then the field ID
+        $attributeId = array_shift($attributeKeys);
+        $attributeName = implode('.', $attributeKeys);
+        // The field ID is also the attribute object property
+        $attributeData = $this->attributes[$attributeId];
+        return
+            ($attributeId === 'environment')
+            ? $this->getEnvironmentAttribute($attributeData, $attributeName)
+            : $this->getClassicAttribute($attributeData, $attributeName)
+        ;
+    }
+    
+    /**
+     * @param array $attributeData
+     * @param string $property
+     * @return \PhpAbac\Model\Attribute
+     */
+    private function getClassicAttribute($attributeData, $property) {
+        return
+            (new Attribute())
+            ->setName($attributeData['fields'][$property]['name'])
+            ->setType($attributeData['type'])
+            ->setProperty($property)
+            ->setSlug($this->slugify($attributeData['fields'][$property]['name']))
+        ;
+    }
+    
+    /**
+     * @param array $attributeData
+     * @param string $key
+     * @return \PhpAbac\Model\EnvironmentAttribute
+     */
+    private function getEnvironmentAttribute($attributeData, $key) {
+        return
+            (new EnvironmentAttribute())
+            ->setName($attributeData[$key]['name'])
+            ->setType('environment')
+            ->setVariableName($attributeData[$key]['variable_name'])
+            ->setSlug($this->slugify($attributeData[$key]['name']))
+        ;
     }
 
     /**
@@ -38,12 +74,12 @@ class AttributeManager
      * @param object $object
      * @return mixed
      */
-    public function retrieveAttribute(AbstractAttribute $attribute, $attributeType, $user, $object)
+    public function retrieveAttribute(AbstractAttribute $attribute, $user, $object = null)
     {
-        switch($attributeType) {
+        switch($attribute->getType()) {
             case 'user':
                 return $this->retrieveClassicAttribute($attribute, $user);
-            case 'object':
+            case 'resource':
                 return $this->retrieveClassicAttribute($attribute, $object);
             case 'environment':
                 return $this->retrieveEnvironmentAttribute($attribute);
@@ -92,5 +128,25 @@ class AttributeManager
             throw new \InvalidArgumentException('The "'.$slug.'" attribute is dynamic and its value must be given');
         }
         return $dynamicAttributes[$slug];
+    }
+    
+    /*
+     * @param string $name
+     * @return string
+     */
+    public function slugify($name)
+    {
+        // replace non letter or digits by -
+        $name = trim(preg_replace('~[^\\pL\d]+~u', '-', $name), '-');
+        // transliterate
+        if (function_exists('iconv')) {
+            $name = iconv('utf-8', 'us-ascii//TRANSLIT', $name);
+        }
+        // remove unwanted characters
+        $name = preg_replace('~[^-\w]+~', '', strtolower($name));
+        if (empty($name)) {
+            return 'n-a';
+        }
+        return $name;
     }
 }

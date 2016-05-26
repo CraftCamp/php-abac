@@ -2,7 +2,7 @@
 
 namespace PhpAbac\Comparison;
 
-class DateComparison
+class DatetimeComparison
 {
     /**
      * Return true if the given formatted datetime is between two other datetimes.
@@ -26,7 +26,7 @@ class DateComparison
      */
     public function isMoreRecentThan($format, $datetime)
     {
-        return $this->getDatetimeFromFormat("-$format") <= $datetime;
+        return $this->getDatetimeFromFormat($format) <= $datetime;
     }
 
     /**
@@ -37,7 +37,7 @@ class DateComparison
      */
     public function isLessRecentThan($format, $datetime)
     {
-        return $this->getDatetimeFromFormat("+$format") >= $datetime;
+        return $this->getDatetimeFromFormat($format) >= $datetime;
     }
 
     /**

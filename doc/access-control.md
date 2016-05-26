@@ -1,8 +1,8 @@
 Access-Control
-=======
+==============
 
 Introduction
--------
+------------
 
 This library is meant to perform access control with precise logic.
 
@@ -45,7 +45,26 @@ $check = $abac->enforce('medical-reports-access', $user, $report, [
 ]);
 ```
 
-***To make this work, the expected value stored in the ```PolicyRuleAttribute``` object must be ```"dynamic"```***
+Be careful, the key of your dynamic attribute is the **slug** of the attribute's name, not its configuration ID.
+
+To define an attribute as dynamic, we can write the following code in the configuration file :
+
+```yaml
+attributes:
+    medical_report:
+        class: MySuperVeterinary\Model\MedicalReport
+        type: resource
+        fields:
+            author.id:
+                name: Report Author
+rules:
+    nationality-access:
+        attributes:
+            medical_report.author.id:
+                comparison_type: numeric
+                comparison: isEqual
+                value: dynamic
+```
 
 Cache
 -----------------
@@ -65,7 +84,7 @@ $check = $abac->enforce('medical-reports-access', $user, $report, [
 ]);
 ```
 
-With this, if you call this method again with the same $userId and $reportId, the previous result will be returned.
+With this, if you call this method again with the same $user and $report, the previous result will be returned.
 
 Available cache drivers :
 

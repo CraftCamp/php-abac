@@ -3,9 +3,19 @@ All notable changes to this project will be documented in this file.
 This project adheres to [Semantic Versioning](http://semver.org/).
 
 ## [Unreleased]
+### Added
+- Configuration manager
+- YAML Loader for configuration files
+- Multiple configuration files loading
+- Example classes for example script
+
 ### Changed
+- Rules and attributes are now defined with configuration file instead of database
 - The enforce method accepts objects instead of numeric IDs
 - Attributes are now accessed from the objects instead of the database
+
+### Removed
+- Rules and attributes creation by manager
 
 ## [1.2.0] - 2016-04-20
 ### Added

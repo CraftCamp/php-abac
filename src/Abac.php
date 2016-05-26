@@ -4,23 +4,40 @@ namespace PhpAbac;
 
 use PhpAbac\Manager\AttributeManager;
 use PhpAbac\Manager\PolicyRuleManager;
+use PhpAbac\Manager\ConfigurationManager;
 use PhpAbac\Manager\CacheManager;
+
+use Symfony\Component\Config\FileLocator;
 
 class Abac
 {
-    /** @var array **/
-    private static $container;
+    /** @var \PhpAbac\Manager\ConfigurationManager **/
+    private $configuration;
+    /** @var \PhpAbac\Manager\PolicyRuleManager **/
+    private $policyRuleManager;
+    /** @var \PhpAbac\Manager\AttributeManager **/
+    private $attributeManager;
+    /** @var \PhpAbac\Manager\CacheManager **/
+    private $cacheManager;
 
     /**
-     * @param \PDO $connection
+     * @param array $configPaths
      */
-    public function __construct(\PDO $connection)
+    public function __construct($configPaths)
     {
-        // Set the main managers
-        self::set('pdo-connection', $connection, true);
-        self::set('policy-rule-manager', new PolicyRuleManager(), true);
-        self::set('attribute-manager', new AttributeManager(), true);
-        self::set('cache-manager', new CacheManager(), true);
+        $this->configure($configPaths);
+        $this->attributeManager = new AttributeManager($this->configuration->getAttributes());
+        $this->policyRuleManager = new PolicyRuleManager($this->attributeManager, $this->configuration->getRules());
+        $this->cacheManager = new CacheManager();
+    }
+    
+    /**
+     * @param array $configPaths
+     */
+    public function configure($configPaths) {
+        $locator = new FileLocator($configPaths);
+        $this->configuration = new ConfigurationManager($locator);
+        $this->configuration->parseConfigurationFile($configPaths);
     }
 
     /**
@@ -45,11 +62,9 @@ class Abac
      * @return boolean|array
      */
     public function enforce($ruleName, $user, $object = null, $options = []) {
-        $attributeManager = self::get('attribute-manager');
-        $cacheManager = self::get('cache-manager');
         // Retrieve cache value for the current rule and values if cache item is valid
         if(($cacheResult = isset($options['cache_result']) && $options['cache_result'] === true) === true) {
-            $cacheItem = $cacheManager->getItem(
+            $cacheItem = $this->cacheManager->getItem(
                 "$ruleName-{$user->getId()}-" . (($object !== null) ? $object->getId() : ''),
                 (isset($options['cache_driver'])) ? $options['cache_driver'] : null,
                 (isset($options['cache_ttl'])) ? $options['cache_ttl'] : null
@@ -59,18 +74,18 @@ class Abac
                 return $cacheValue;
             }
         }
-        $policyRule = self::get('policy-rule-manager')->getRuleByName($ruleName);
+        $policyRule = $this->policyRuleManager->getRule($ruleName);
         $rejectedAttributes = [];
 
         foreach ($policyRule->getPolicyRuleAttributes() as $pra) {
             $attribute = $pra->getAttribute();
-            $attribute->setValue($attributeManager->retrieveAttribute($attribute, $pra->getType(), $user, $object));
+            $attribute->setValue($this->attributeManager->retrieveAttribute($attribute, $user, $object));
             $comparisonClass = 'PhpAbac\\Comparison\\'.ucfirst($pra->getComparisonType()).'Comparison';
             $comparison = new $comparisonClass();
             $dynamicAttributes = (isset($options['dynamic_attributes'])) ? $options['dynamic_attributes'] : [];
             $value =
                 ($pra->getValue() === 'dynamic')
-                ? $attributeManager->getDynamicAttribute($attribute->getSlug(), $dynamicAttributes)
+                ? $this->attributeManager->getDynamicAttribute($attribute->getSlug(), $dynamicAttributes)
                 : $pra->getValue()
             ;
             if ($comparison->{$pra->getComparison()}($value, $attribute->getValue()) !== true) {
@@ -80,55 +95,8 @@ class Abac
         $result = (count($rejectedAttributes) === 0) ? : $rejectedAttributes;
         if($cacheResult) {
             $cacheItem->set($result);
-            $cacheManager->save($cacheItem);
+            $this->cacheManager->save($cacheItem);
         }
         return $result;
-    }
-
-    public static function clearContainer()
-    {
-        self::$container = null;
-    }
-
-    /**
-     * @param string $serviceName
-     * @param mixed  $service
-     * @param bool   $force
-     *
-     * @throws \InvalidArgumentException
-     */
-    public static function set($serviceName, $service, $force = false)
-    {
-        if (self::has($serviceName) && $force === false) {
-            throw new \InvalidArgumentException(
-                "The service $serviceName is already set in PhpAbac container. ".
-                'Please set $force parameter to true if you want to replace the set service'
-            );
-        }
-        self::$container[$serviceName] = $service;
-    }
-
-    /**
-     * @param string $serviceName
-     *
-     * @return bool
-     */
-    public static function has($serviceName)
-    {
-        return isset(self::$container[$serviceName]);
-    }
-
-    /**
-     * @throws \InvalidArgumentException
-     *
-     * @return mixed
-     */
-    public static function get($serviceName)
-    {
-        if (!self::has($serviceName)) {
-            throw new \InvalidArgumentException("The PhpAbac container has no service named $serviceName");
-        }
-
-        return self::$container[$serviceName];
     }
 }

@@ -10,18 +10,14 @@ class AttributeTest extends \PHPUnit_Framework_TestCase
     {
         $attribute =
             (new Attribute())
-            ->setId(1)
             ->setName('test-attribute')
             ->setProperty('userAttributes')
+            ->setType('resource')
             ->setValue([])
-            ->setCreatedAt(new \DateTime())
-            ->setUpdatedAt(new \DateTime())
         ;
-        $this->assertEquals(1, $attribute->getId());
         $this->assertEquals('test-attribute', $attribute->getName());
         $this->assertEquals('userAttributes', $attribute->getProperty());
-        $this->assertInstanceOf('DateTime', $attribute->getCreatedAt());
-        $this->assertInstanceOf('DateTime', $attribute->getUpdatedAt());
+        $this->assertEquals('resource', $attribute->getType());
         $this->assertEquals([], $attribute->getValue());
     }
 }

@@ -16,7 +16,6 @@ class PolicyRuleTest extends \PHPUnit_Framework_TestCase
 
         $policyRule =
             (new PolicyRule())
-            ->setId(1)
             ->setName('citizenship')
             ->addPolicyRuleAttribute($pra1)
             ->addPolicyRuleAttribute($pra2)
@@ -24,7 +23,6 @@ class PolicyRuleTest extends \PHPUnit_Framework_TestCase
             ->addPolicyRuleAttribute($pra4)
             ->removePolicyRuleAttribute($pra4)
         ;
-        $this->assertEquals(1, $policyRule->getId());
         $this->assertEquals('citizenship', $policyRule->getName());
         $this->assertCount(3, $policyRule->getPolicyRuleAttributes());
     }
