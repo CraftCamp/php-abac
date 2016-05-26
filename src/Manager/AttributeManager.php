@@ -34,7 +34,6 @@ class AttributeManager
             ? $this->getEnvironmentAttribute($attributeData, $attributeKeys[1])
             : $this->getClassicAttribute($attributeData, $attributeKeys[1])
         ;
-        
     }
     
     /**
@@ -65,20 +64,6 @@ class AttributeManager
             ->setVariableName($attributeData[$key]['variable_name'])
             ->setSlug($this->slugify($attributeData[$key]['name']))
         ;
-    }
-
-    /**
-     * @param AbstractAttribute $attribute
-     *
-     * @return AbstractAttribute
-     */
-    public function create(AbstractAttribute $attribute)
-    {
-        if ($attribute instanceof Attribute) {
-            return $this->repository->createAttribute($attribute);
-        }
-
-        return $this->repository->createEnvironmentAttribute($attribute);
     }
 
     /**
