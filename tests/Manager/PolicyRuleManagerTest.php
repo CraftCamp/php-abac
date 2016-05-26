@@ -35,7 +35,7 @@ class PolicyRuleManagerTest extends \PHPUnit_Framework_TestCase
 
         $this->assertInstanceof('PhpAbac\Model\PolicyRule', $policyRule);
         $this->assertEquals('vehicle-homologation', $policyRule->getName());
-        $this->assertCount(5, $policyRule->getPolicyRuleAttributes());
+        $this->assertCount(6, $policyRule->getPolicyRuleAttributes());
         
         $policyRuleAttribute = $policyRule->getPolicyRuleAttributes()[0];
         
