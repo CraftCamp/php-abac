@@ -26,7 +26,7 @@ class DatetimeComparison
      */
     public function isMoreRecentThan($format, $datetime)
     {
-        return $this->getDatetimeFromFormat("-$format") <= $datetime;
+        return $this->getDatetimeFromFormat($format) <= $datetime;
     }
 
     /**
@@ -37,7 +37,7 @@ class DatetimeComparison
      */
     public function isLessRecentThan($format, $datetime)
     {
-        return $this->getDatetimeFromFormat("+$format") >= $datetime;
+        return $this->getDatetimeFromFormat($format) >= $datetime;
     }
 
     /**
