@@ -4,38 +4,14 @@ namespace PhpAbac\Model;
 
 abstract class AbstractAttribute
 {
-    /** @var int **/
-    protected $id;
     /** @var string **/
     protected $name;
     /** @var string **/
+    protected $type;
+    /** @var string **/
     protected $slug;
-    /** @var \DateTime **/
-    protected $createdAt;
-    /** @var \DateTime **/
-    protected $updatedAt;
     /** @var mixed **/
     protected $value;
-
-    /**
-     * @param int $id
-     *
-     * @return \PhpAbac\Model\AbstractAttribute
-     */
-    public function setId($id)
-    {
-        $this->id = $id;
-
-        return $this;
-    }
-
-    /**
-     * @return int
-     */
-    public function getId()
-    {
-        return $this->id;
-    }
 
     /**
      * @param string $name
@@ -58,6 +34,26 @@ abstract class AbstractAttribute
     }
 
     /**
+     * @param string $type
+     *
+     * @return \PhpAbac\Model\PolicyRuleAttribute
+     */
+    public function setType($type)
+    {
+        $this->type = $type;
+
+        return $this;
+    }
+
+    /**
+     * @return string
+     */
+    public function getType()
+    {
+        return $this->type;
+    }
+
+    /**
      * @param string $slug
      *
      * @return \PhpAbac\Model\AbstractAttribute
@@ -75,46 +71,6 @@ abstract class AbstractAttribute
     public function getSlug()
     {
         return $this->slug;
-    }
-
-    /**
-     * @param \DateTime $datetime
-     *
-     * @return \PhpAbac\Model\Attribute
-     */
-    public function setCreatedAt(\DateTime $datetime)
-    {
-        $this->createdAt = $datetime;
-
-        return $this;
-    }
-
-    /**
-     * @return \DateTime
-     */
-    public function getCreatedAt()
-    {
-        return $this->createdAt;
-    }
-
-    /**
-     * @param \DateTime $datetime
-     *
-     * @return \PhpAbac\Model\Attribute
-     */
-    public function setUpdatedAt(\DateTime $datetime)
-    {
-        $this->updatedAt = $datetime;
-
-        return $this;
-    }
-
-    /**
-     * @return \DateTime
-     */
-    public function getUpdatedAt()
-    {
-        return $this->updatedAt;
     }
 
     /**
