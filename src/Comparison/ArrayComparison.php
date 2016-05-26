@@ -16,14 +16,14 @@ class ArrayComparison
     }
 
     /**
-     * @param string $serializedHaystack
+     * @param array $haystack
      * @param mixed  $needle
      *
      * @return bool
      */
-    public function isNotIn($serializedHaystack, $needle)
+    public function isNotIn($haystack, $needle)
     {
-        return !$this->isIn($serializedHaystack, $needle);
+        return !$this->isIn($haystack, $needle);
     }
 
     /**

@@ -2,16 +2,16 @@
 
 namespace PhpAbac\Test\Comparison;
 
-use PhpAbac\Comparison\DateComparison;
+use PhpAbac\Comparison\DatetimeComparison;
 
-class DateComparisonTest extends \PHPUnit_Framework_TestCase
+class DattimeeComparisonTest extends \PHPUnit_Framework_TestCase
 {
     /** @var DateComparison **/
     protected $comparison;
 
     public function setUp()
     {
-        $this->comparison = new DateComparison();
+        $this->comparison = new DatetimeComparison();
     }
 
     public function testIsBetween()

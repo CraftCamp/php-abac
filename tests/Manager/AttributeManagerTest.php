@@ -2,81 +2,46 @@
 
 namespace PhpAbac\Test\Manager;
 
-use PhpAbac\Abac;
-use PhpAbac\Test\AbacTestCase;
+use Symfony\Component\Config\FileLocator;
+
+use PhpAbac\Manager\AttributeManager;
+use PhpAbac\Manager\ConfigurationManager;
+
 use PhpAbac\Model\Attribute;
 use PhpAbac\Model\EnvironmentAttribute;
 
-class AttributeManagerTest extends AbacTestCase
+class AttributeManagerTest extends \PHPUnit_Framework_TestCase
 {
     /** @var \PhpAbac\Manager\AttributeManager **/
     private $manager;
 
-    /**
-     * @var Abac
-     */
-    private $abac;
-
     public function setUp()
     {
-        $this->abac = new Abac($this->getConnection());
-
-        $this->loadFixture('policy_rules');
-
-        $this->manager = Abac::get('attribute-manager');
+        $configuration = new ConfigurationManager(new FileLocator());
+        $configuration->parseConfigurationFile([__DIR__.'/../fixtures/policy_rules.yml']);
+        
+        $this->manager = new AttributeManager($configuration->getAttributes());
     }
-
-    public function tearDown()
-    {
-        Abac::clearContainer();
+    
+    public function testGetClassicAttribute() {
+        $attribute = $this->manager->getAttribute('main_user.age');
+        
+        $this->assertInstanceOf('PhpAbac\Model\Attribute', $attribute);
+        $this->assertEquals('user', $attribute->getType());
+        $this->assertEquals('Age', $attribute->getName());
+        $this->assertEquals('age', $attribute->getSlug());
+        $this->assertEquals('age', $attribute->getProperty());
+        $this->assertNull($attribute->getValue());
     }
-
-    public function testCreate()
-    {
-        $attribute =
-            (new Attribute())
-            ->setName('Licence d\'equitation')
-            ->setProperty('hasHorseLicense')
-        ;
-        $this->manager->create($attribute);
-
-        $id = $this->getConnection()->lastInsertId('abac_attributes');
-
-        $data =
-            Abac::get('pdo-connection')
-            ->query(
-                'SELECT * FROM abac_attributes_data ad '.
-                'INNER JOIN abac_attributes a ON a.id = ad.id '.
-                'WHERE a.id = '.$id
-            )
-            ->fetch(\PDO::FETCH_ASSOC)
-        ;
-        $this->assertEquals('Licence d\'equitation', $data['name']);
-        $this->assertEquals('licence-d-equitation', $data['slug']);
-        $this->assertEquals('hasHorseLicense', $data['property']);
-    }
-
-    public function testCreateEnvironmentAttribute()
-    {
-        $attribute =
-            (new EnvironmentAttribute())
-            ->setName('Server Protocol')
-            ->setVariableName('SERVER_PROTOCOL')
-        ;
-        $this->manager->create($attribute);
-
-        $id = $this->getConnection()->lastInsertId('abac_environment_attributes');
-
-        $data =
-            Abac::get('pdo-connection')
-            ->query(
-                'SELECT * FROM abac_attributes_data ad '.
-                'INNER JOIN abac_environment_attributes a ON a.id = ad.id '.
-                'WHERE a.id = '.$id
-            )
-            ->fetch(\PDO::FETCH_ASSOC)
-        ;
-        $this->assertEquals('Server Protocol', $data['name']);
-        $this->assertEquals('SERVER_PROTOCOL', $data['variable_name']);
+    
+    public function testGetEnvironmentAttribute() {
+        $attribute = $this->manager->getAttribute('environment.service_state');
+        
+        $this->assertInstanceOf('PhpAbac\Model\EnvironmentAttribute', $attribute);
+        $this->assertEquals('environment', $attribute->getType());
+        $this->assertEquals('SERVICE_STATE', $attribute->getVariableName());
+        $this->assertEquals('Statut du service', $attribute->getName());
+        $this->assertEquals('statut-du-service', $attribute->getSlug());
+        $this->assertNull($attribute->getValue());
     }
 }

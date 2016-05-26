@@ -10,18 +10,14 @@ class EnvironmentAttributeTest extends \PHPUnit_Framework_TestCase
     {
         $attribute =
             (new EnvironmentAttribute())
-            ->setId(1)
+            ->setType('environment')
             ->setName('test-attribute')
             ->setVariableName('service-state')
             ->setValue(3)
-            ->setCreatedAt(new \DateTime())
-            ->setUpdatedAt(new \DateTime())
         ;
-        $this->assertEquals(1, $attribute->getId());
+        $this->assertEquals('environment', $attribute->getType());
         $this->assertEquals('test-attribute', $attribute->getName());
         $this->assertEquals('service-state', $attribute->getVariableName());
-        $this->assertInstanceOf('DateTime', $attribute->getCreatedAt());
-        $this->assertInstanceOf('DateTime', $attribute->getUpdatedAt());
         $this->assertEquals(3, $attribute->getValue());
     }
 }
