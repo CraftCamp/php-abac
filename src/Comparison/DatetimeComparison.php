@@ -2,7 +2,7 @@
 
 namespace PhpAbac\Comparison;
 
-class DateComparison
+class DatetimeComparison
 {
     /**
      * Return true if the given formatted datetime is between two other datetimes.
