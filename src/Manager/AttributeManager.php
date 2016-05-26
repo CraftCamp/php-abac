@@ -73,7 +73,7 @@ class AttributeManager
      * @param object $object
      * @return mixed
      */
-    public function retrieveAttribute(AbstractAttribute $attribute, $user, $object)
+    public function retrieveAttribute(AbstractAttribute $attribute, $user, $object = null)
     {
         switch($attribute->getType()) {
             case 'user':

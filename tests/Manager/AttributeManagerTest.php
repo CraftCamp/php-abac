@@ -7,8 +7,7 @@ use Symfony\Component\Config\FileLocator;
 use PhpAbac\Manager\AttributeManager;
 use PhpAbac\Manager\ConfigurationManager;
 
-use PhpAbac\Model\Attribute;
-use PhpAbac\Model\EnvironmentAttribute;
+use PhpAbac\Example\User;
 
 class AttributeManagerTest extends \PHPUnit_Framework_TestCase
 {
@@ -43,5 +42,19 @@ class AttributeManagerTest extends \PHPUnit_Framework_TestCase
         $this->assertEquals('Statut du service', $attribute->getName());
         $this->assertEquals('statut-du-service', $attribute->getSlug());
         $this->assertNull($attribute->getValue());
+    }
+    
+    public function testRetrieveClassicAttribute() {
+        $this->assertEquals(18, $this->manager->retrieveAttribute(
+            $this->manager->getAttribute('main_user.age'),
+            (new User())->setAge(18)
+        ));
+    }
+    
+    public function testRetrieveEnvironmentAttribute() {
+        $this->assertEquals('OPEN', $this->manager->retrieveAttribute(
+            $this->manager->getAttribute('environment.service_state'),
+            (new User())->setAge(18)
+        ));
     }
 }
