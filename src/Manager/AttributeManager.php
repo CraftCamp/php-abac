@@ -24,15 +24,16 @@ class AttributeManager
      * @return \PhpAbac\Model\AbstractAttribute
      */
     public function getAttribute($attributeId) {
-        // The first element will be the attribute ID, then the field ID
-        // The field ID is also the attribute object property
         $attributeKeys = explode('.', $attributeId);
-        $attributeData = $this->attributes[$attributeKeys[0]];
-        
+        // The first element will be the attribute ID, then the field ID
+        $attributeId = array_shift($attributeKeys);
+        $attributeName = implode('.', $attributeKeys);
+        // The field ID is also the attribute object property
+        $attributeData = $this->attributes[$attributeId];
         return
-            ($attributeKeys[0] === 'environment')
-            ? $this->getEnvironmentAttribute($attributeData, $attributeKeys[1])
-            : $this->getClassicAttribute($attributeData, $attributeKeys[1])
+            ($attributeId === 'environment')
+            ? $this->getEnvironmentAttribute($attributeData, $attributeName)
+            : $this->getClassicAttribute($attributeData, $attributeName)
         ;
     }
     
