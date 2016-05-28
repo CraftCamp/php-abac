@@ -143,10 +143,15 @@ $check = $abac->enforce('edit-group', $user, $group, [
 ```
 
 Contribute
--------
+----------
 
 If you want to contribute, don't hesitate to fork the library and submit Pull Requests.
 
 You can also report issues, suggest enhancements, feel free to give advices and your feedback about this library.
 
 It's not finished yet, there's still a lot of features to implement to make it better. If you want to be a part of this library improvement, let us know  !
+
+See also
+--------
+
+* [Symfony bundle to support this library](https://github.com/Kilix/abac-bundle)
