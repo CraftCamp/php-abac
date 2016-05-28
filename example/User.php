@@ -11,6 +11,8 @@ class User {
     private $age;
     /** @var string **/
     private $parentNationality;
+    /** @var array **/
+    private $visas;
     /** @var bool **/
     private $hasDoneJapd;
     /** @var bool **/
@@ -82,6 +84,34 @@ class User {
      */
     public function getParentNationality() {
         return $this->parentNationality;
+    }
+    
+    /**
+     * @param \PhpAbac\Example\Visa $visa
+     * @return \PhpAbac\Example\User
+     */
+    public function addVisa(Visa $visa) {
+        $this->visas[$visa->getId()] = $visa;
+        
+        return $this;
+    }
+    
+    /**
+     * @param \PhpAbac\Example\Visa $visa
+     * @return \PhpAbac\Example\User
+     */
+    public function removeVisa(Visa $visa) {
+        if(isset($this->visas[$visa->getId()])) {
+            unset($this->visas[$visa->getId()]);
+        }
+        return $this;
+    }
+    
+    /**
+     * @return array
+     */
+    public function getVisas() {
+        return $this->visas;
     }
     
     /**
