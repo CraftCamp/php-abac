@@ -40,7 +40,7 @@ use PhpAbac\Abac;
 
 $check = $abac->enforce('medical-reports-access', $user, $report, [
     'dynamic-attributes' => [
-	'report-author' => $user->getId()
+        'report-author' => $user->getId()
     ]
 ]);
 ```
@@ -76,7 +76,7 @@ To enable cache for a specific call of the enforce method, add the following opt
 ```php
 $check = $abac->enforce('medical-reports-access', $user, $report, [
     'dynamic-attributes' => [
-	'report-author' => $user->getId()
+        'report-author' => $user->getId()
     ],
     'cache_result' => true, // enable cache
     'cache_ttl' => 60, // Time to live in seconds, default is one hour
