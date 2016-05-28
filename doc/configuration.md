@@ -28,7 +28,7 @@ The are two types of attributes :
 
 * **Object attributes**: these are the fields of your users and resources classes, like described above.
 To declare an object property as an attribute, it must have a getter. For example, an user with an ``$age`` property must have a ``getAge()`` public method.
-* **Environment attributes**: These attributes are accessed with the ``[getenv()](http://php.net/manual/fr/function.getenv.php)`` PHP native function.
+* **Environment attributes**: These attributes are accessed with the [``getenv()``](http://php.net/manual/fr/function.getenv.php) PHP native function.
 It allows your rules to check environment variables along with the object attributes.
 
 This is an example of configured attributes in a YAML file :

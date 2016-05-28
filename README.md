@@ -128,7 +128,7 @@ use PhpAbac\Abac;
 $abac = new Abac($pdoConnection);
 $check = $abac->enforce('edit-group', $user, $group, [
     'dynamic-attributes' => [
-	'group-owner' => $user->getId()
+        'group-owner' => $user->getId()
     ]
 ]);
 ```
