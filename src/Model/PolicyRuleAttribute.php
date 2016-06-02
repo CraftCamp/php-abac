@@ -12,6 +12,8 @@ class PolicyRuleAttribute
     protected $comparison;
     /** @var mixed **/
     protected $value;
+    /** @var array **/
+    protected $extraData;
 
     /**
      * @param \PhpAbac\Model\AbstractAttribute $attribute
@@ -91,5 +93,44 @@ class PolicyRuleAttribute
     public function getValue()
     {
         return $this->value;
+    }
+    
+    /**
+     * @param array $extraData
+     * @return \PhpAbac\Model\PolicyRuleAttribute
+     */
+    public function setExtraData($extraData) {
+        $this->extraData = $extraData;
+        
+        return $this;
+    }
+    
+    /**
+     * @param string $key
+     * @param string $value
+     * @return \PhpAbac\Model\PolicyRuleAttribute
+     */
+    public function addExtraData($key, $value) {
+        $this->extraData[$key] = $value;
+        
+        return $this;
+    }
+            
+    /**
+     * @param string $key
+     * @return \PhpAbac\Model\PolicyRuleAttribute
+     */
+    public function removeExtraData($key) {
+        if(isset($this->extraData[$key])) {
+            unset($this->extraData[$key]);
+        }
+        return $this;
+    }
+    
+    /**
+     * @return array
+     */
+    public function getExtraData() {
+        return $this->extraData;
     }
 }
