@@ -43,3 +43,5 @@ Boolean
 
 * ### boolAnd
 * ### boolOr
+* ### isNull
+* ### isNotNull

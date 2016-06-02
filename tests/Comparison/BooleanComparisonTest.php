@@ -30,4 +30,14 @@ class BooleanComparisonTest extends \PHPUnit_Framework_TestCase
         $this->assertTrue($this->comparison->boolOr(true, false));
         $this->assertFalse($this->comparison->boolOr(false, false));
     }
+    
+    public function testIsNull() {
+        $this->assertTrue($this->comparison->isNull(true, null));
+        $this->assertFalse($this->comparison->isNull(true, true));
+    }
+    
+    public function testIsNotNull() {
+        $this->assertTrue($this->comparison->isNotNull(true, true));
+        $this->assertFalse($this->comparison->isNotNull(true, null));
+    }
 }
