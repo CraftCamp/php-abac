@@ -39,22 +39,29 @@ class PolicyRuleManager
             (new PolicyRule())
             ->setName($ruleName)
         ;
-        $this->processRuleAttributes($rule);
+        foreach($this->processRuleAttributes($this->rules[$ruleName]['attributes']) as $pra) {
+            $rule->addPolicyRuleAttribute($pra);
+        }
         return $rule;
     }
     
     /**
-     * @param PolicyRule $rule
+     * @param array $attributes
      */
-    private function processRuleAttributes(PolicyRule $rule) {
-        foreach($this->rules[$rule->getName()]['attributes'] as $attributeName => $attribute) {
-            $rule->addPolicyRuleAttribute(
-                (new PolicyRuleAttribute())
+    public function processRuleAttributes($attributes) {
+        foreach($attributes as $attributeName => $attribute) {
+            $pra = (new PolicyRuleAttribute())
                 ->setAttribute($this->attributeManager->getAttribute($attributeName))
                 ->setComparison($attribute['comparison'])
                 ->setComparisonType($attribute['comparison_type'])
-                ->setValue($attribute['value'])
-            );
+                ->setValue((isset($attribute['value'])) ? $attribute['value'] : null)
+            ;
+            array_filter($attribute, function($value, $key) use ($pra) {
+                if(!in_array($key, ['comparison', 'comparison_type', 'value'])) {
+                    $pra->addExtraData($key, $value);
+                }
+            }, ARRAY_FILTER_USE_BOTH);
+            yield $pra;
         }
     }
 }
