@@ -12,6 +12,8 @@ attributes:
                 name: JAPD
             hasDrivingLicense:
                 name: Permis de conduire
+            visas:
+                name: Visas
             
     vehicle:
         class: PhpAbac\Example\Vehicle
@@ -25,6 +27,15 @@ attributes:
                 name: Date de sortie d'usine
             lastTechnicalReviewDate:
                 name: Dernière révision technique
+                
+    visa:
+        class: PhpAbac\Example\Visa
+        type: resource
+        fields:
+            country:
+                name: Pays
+            lastRenewal:
+                name: Dernier renouvellement
         
     environment:
         service_state:
@@ -73,7 +84,26 @@ rules:
                 comparison: isEqual
                 value: OPEN
     gunlaw:
-        main_user.age:
-            comparison_type: numeric
-            comparison: isGreaterThan
-            value: 21
+        attributes:
+            main_user.age:
+                comparison_type: numeric
+                comparison: isGreaterThan
+                value: 21
+    travel-to-usa:
+        attributes:
+            main_user.age:
+                comparison_type: numeric
+                comparison: isGreaterThan
+                value: 18
+            main_user.visas:
+                comparison_type: array
+                comparison: contains
+                with:
+                    visa.country:
+                        comparison_type: string
+                        comparison: isEqual
+                        value: US
+                    visa.lastRenewal:
+                        comparison_type: datetime
+                        comparison: isMoreRecentThan
+                        value: -1Y
