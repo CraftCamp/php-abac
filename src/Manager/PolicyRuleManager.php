@@ -56,11 +56,11 @@ class PolicyRuleManager
                 ->setComparisonType($attribute['comparison_type'])
                 ->setValue((isset($attribute['value'])) ? $attribute['value'] : null)
             ;
-            array_filter($attribute, function($value, $key) use ($pra) {
+            foreach($attribute as $key => $value) {
                 if(!in_array($key, ['comparison', 'comparison_type', 'value'])) {
                     $pra->addExtraData($key, $value);
                 }
-            }, 1);
+            }
             yield $pra;
         }
     }
