@@ -36,6 +36,7 @@ Array
 * ### isNotIn
 * ### intersect
 * ### doNotIntersect
+* ### contains
 
 Boolean
 ------
