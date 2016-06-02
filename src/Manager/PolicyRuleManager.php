@@ -60,7 +60,7 @@ class PolicyRuleManager
                 if(!in_array($key, ['comparison', 'comparison_type', 'value'])) {
                     $pra->addExtraData($key, $value);
                 }
-            }, ARRAY_FILTER_USE_BOTH);
+            }, 1);
             yield $pra;
         }
     }
