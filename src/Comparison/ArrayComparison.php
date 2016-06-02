@@ -2,7 +2,7 @@
 
 namespace PhpAbac\Comparison;
 
-class ArrayComparison
+class ArrayComparison extends AbstractComparison
 {
     /**
      * @param array $haystack
@@ -46,5 +46,32 @@ class ArrayComparison
     public function doNotIntersect($array1, $array2)
     {
         return !$this->intersect($array1, $array2);
+    }
+    
+    /**
+     * @param array $policyRuleAttributes
+     * @param array $attributes
+     * @return boolean
+     */
+    public function contains($policyRuleAttributes, $attributes, $extraData = []) {
+        foreach($extraData['attribute']->getValue() as $attribute) {
+            $result = true;
+            foreach($policyRuleAttributes as $pra) {
+                $attributeData = $pra->getAttribute();
+                if(!$this->comparisonManager->compare(
+                    $pra->getComparisonType(),
+                    $pra->getComparison(),
+                    $pra->getValue(),
+                    $this->comparisonManager->getAttributeManager()->retrieveAttribute($attributeData, $extraData['user'], $attribute)
+                )) {
+                    $result = false;
+                    break;
+                }
+            }
+            if($result === true) {
+                return true;
+            }
+        }
+        return false;
     }
 }
