@@ -111,3 +111,54 @@ rules:
 ```
 
 A [list](comparisons.md) of the available comparisons is created and will be updated with new comparisons.
+
+Extra Data
+===========
+
+Sometimes, you will have to do more complex comparisons.
+
+The basic configuration will not be sufficient to perform these comparisons.
+
+There is more advanced configuration properties available to make it.
+
+For example, we want to check if an user has a visa to travel to Germany.
+
+Each user can have several visas, we need to check that the visas collection contains a visa with the proper attributes :
+
+```yaml
+# abac_config.yml
+attributes:
+    visa:
+        class: PhpAbac\Example\Visa
+        type: resource
+        fields:
+            country:
+                name: Pays
+            lastRenewal:
+                name: Dernier renouvellement
+rules:
+    travel-to-germany:
+        attributes:
+            main_user.visas:
+                comparison_type: array
+                comparison: contains
+                with:
+                    visa.country:
+                        comparison_type: string
+                        comparison: isEqual
+                        value: DE
+                    visa.lastRenewal:
+                        comparison_type: datetime
+                        comparison: isMoreRecentThan
+                        value: -1Y
+```
+
+There is no value configured for the attribute, but a ``with`` property.
+
+This property contains an array of attributes to check.
+
+Then you can use ABAC the same way as before :
+
+```php
+$isGranted = $abac->enforce('travel-to-germany', $user);
+```
