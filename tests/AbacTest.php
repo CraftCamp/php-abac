@@ -16,6 +16,7 @@ class AbacTest extends \PHPUnit_Framework_TestCase
 
     public function testEnforce()
     {
+        $visas = include('tests/fixtures/visas.php');
         $users = include('tests/fixtures/users.php');
         $vehicles = include('tests/fixtures/vehicles.php');
         $this->assertTrue($this->abac->enforce('nationality-access', $users[3]));
@@ -39,5 +40,9 @@ class AbacTest extends \PHPUnit_Framework_TestCase
         ], $this->abac->enforce('vehicle-homologation', $users[3], $vehicles[3], [
             'dynamic_attributes' => ['proprietaire' => 4]
         ]));
+        $this->assertEquals([
+            'visas'
+        ], $this->abac->enforce('travel-to-usa', $users[0]));
+        $this->assertTrue($this->abac->enforce('travel-to-usa', $users[1]));
     }
 }

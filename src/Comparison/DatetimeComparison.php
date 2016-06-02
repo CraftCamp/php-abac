@@ -2,7 +2,7 @@
 
 namespace PhpAbac\Comparison;
 
-class DatetimeComparison
+class DatetimeComparison extends AbstractComparison
 {
     /**
      * Return true if the given formatted datetime is between two other datetimes.
@@ -55,7 +55,6 @@ class DatetimeComparison
             'm' => 60,
             's' => 1,
         ];
-
         $operator = $format{0};
         $format = substr($format, 1);
         $time = 0;

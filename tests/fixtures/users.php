@@ -8,12 +8,15 @@ return [
     ->setName('John Doe')
     ->setAge(36)
     ->setParentNationality('FR')
+    ->addVisa($visas[0])
+    ->addVisa($visas[1])
     ->setHasDoneJapd(false)
     ->setHasDrivingLicense(true),
     (new User())
     ->setId(2)
     ->setName('Thierry')
     ->setAge(24)
+    ->addVisa($visas[2])
     ->setParentNationality('FR')
     ->setHasDoneJapd(false)
     ->setHasDrivingLicense(false),

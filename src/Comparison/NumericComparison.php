@@ -2,7 +2,7 @@
 
 namespace PhpAbac\Comparison;
 
-class NumericComparison
+class NumericComparison extends AbstractComparison
 {
     /**
      * @param int $expected

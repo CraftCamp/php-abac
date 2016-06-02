@@ -2,7 +2,7 @@
 
 namespace PhpAbac\Comparison;
 
-class BooleanComparison
+class BooleanComparison extends AbstractComparison
 {
     /**
      * @param bool $expected

@@ -4,6 +4,9 @@ namespace PhpAbac\Test\Comparison;
 
 use PhpAbac\Comparison\DatetimeComparison;
 
+use PhpAbac\Manager\ComparisonManager;
+use PhpAbac\Manager\AttributeManager;
+
 class DattimeeComparisonTest extends \PHPUnit_Framework_TestCase
 {
     /** @var DateComparison **/
@@ -11,7 +14,7 @@ class DattimeeComparisonTest extends \PHPUnit_Framework_TestCase
 
     public function setUp()
     {
-        $this->comparison = new DatetimeComparison();
+        $this->comparison = new DatetimeComparison(new ComparisonManager(new AttributeManager([])));
     }
 
     public function testIsBetween()

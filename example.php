@@ -4,6 +4,7 @@
 
     use PhpAbac\Abac;
     
+    $visas = include('tests/fixtures/visas.php');
     $users = include('tests/fixtures/users.php');
     $vehicles = include('tests/fixtures/vehicles.php');
     
@@ -61,4 +62,16 @@
         echo("DENIED : The vehicle 4 is not able to be approved for the user 2 because he doesn't own the vehicle\n");
     } else {
         echo("FAIL : The system didn't deny access\n");
+    }
+    $userTravel1 = $abac->enforce('travel-to-usa', $users[0]);
+    if($userTravel1 !== true) {
+        echo("DENIED: The user 1 is not allowed to travel to the USA because he doesn't have an US visa\n");
+    } else {
+        echo('FAIL: The system didn\'t deny access');
+    }
+    $userTravel2 = $abac->enforce('travel-to-usa', $users[1]);
+    if($userTravel2 === true) {
+        echo("GRANTED: The user 2 is allowed to travel to the USA\n");
+    } else {
+        echo('FAIL: The system didn\'t deny access');
     }

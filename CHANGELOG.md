@@ -2,6 +2,11 @@
 All notable changes to this project will be documented in this file.
 This project adheres to [Semantic Versioning](http://semver.org/).
 
+## [Unreleased]
+### Added
+- Containing comparison for arrays
+- Extra data for policy rule attributes
+
 ## [2.0.0] - 2016-05-26
 ### Added
 - Configuration manager

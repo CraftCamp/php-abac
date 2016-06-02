@@ -4,6 +4,9 @@ namespace PhpAbac\Test\Comparison;
 
 use PhpAbac\Comparison\NumericComparison;
 
+use PhpAbac\Manager\ComparisonManager;
+use PhpAbac\Manager\AttributeManager;
+
 class NumericComparisonTest extends \PHPUnit_Framework_TestCase
 {
     /** @var NumericComparison **/
@@ -11,7 +14,7 @@ class NumericComparisonTest extends \PHPUnit_Framework_TestCase
 
     public function setUp()
     {
-        $this->comparison = new NumericComparison();
+        $this->comparison = new NumericComparison(new ComparisonManager(new AttributeManager([])));
     }
 
     public function testIsEqual()

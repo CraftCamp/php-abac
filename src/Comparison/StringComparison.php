@@ -2,7 +2,7 @@
 
 namespace PhpAbac\Comparison;
 
-class StringComparison
+class StringComparison extends AbstractComparison
 {
     /**
      * @param string $expected

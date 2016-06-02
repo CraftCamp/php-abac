@@ -6,8 +6,11 @@ use PhpAbac\Manager\AttributeManager;
 use PhpAbac\Manager\PolicyRuleManager;
 use PhpAbac\Manager\ConfigurationManager;
 use PhpAbac\Manager\CacheManager;
+use PhpAbac\Manager\ComparisonManager;
 
 use Symfony\Component\Config\FileLocator;
+
+use PhpAbac\Model\PolicyRuleAttribute;
 
 class Abac
 {
@@ -19,6 +22,8 @@ class Abac
     private $attributeManager;
     /** @var \PhpAbac\Manager\CacheManager **/
     private $cacheManager;
+    /** @var \PhpAbac\Manager\ComparisonManager **/
+    private $comparisonManager;
 
     /**
      * @param array $configPaths
@@ -29,6 +34,7 @@ class Abac
         $this->attributeManager = new AttributeManager($this->configuration->getAttributes());
         $this->policyRuleManager = new PolicyRuleManager($this->attributeManager, $this->configuration->getRules());
         $this->cacheManager = new CacheManager();
+        $this->comparisonManager = new ComparisonManager($this->attributeManager);
     }
     
     /**
@@ -57,15 +63,15 @@ class Abac
      * 
      * @param string $ruleName
      * @param object $user
-     * @param object $object
+     * @param object $resource
      * @param array $options
      * @return boolean|array
      */
-    public function enforce($ruleName, $user, $object = null, $options = []) {
+    public function enforce($ruleName, $user, $resource = null, $options = []) {
         // Retrieve cache value for the current rule and values if cache item is valid
         if(($cacheResult = isset($options['cache_result']) && $options['cache_result'] === true) === true) {
             $cacheItem = $this->cacheManager->getItem(
-                "$ruleName-{$user->getId()}-" . (($object !== null) ? $object->getId() : ''),
+                "$ruleName-{$user->getId()}-" . (($resource !== null) ? $resource->getId() : ''),
                 (isset($options['cache_driver'])) ? $options['cache_driver'] : null,
                 (isset($options['cache_ttl'])) ? $options['cache_ttl'] : null
             );
@@ -79,16 +85,23 @@ class Abac
 
         foreach ($policyRule->getPolicyRuleAttributes() as $pra) {
             $attribute = $pra->getAttribute();
-            $attribute->setValue($this->attributeManager->retrieveAttribute($attribute, $user, $object));
-            $comparisonClass = 'PhpAbac\\Comparison\\'.ucfirst($pra->getComparisonType()).'Comparison';
-            $comparison = new $comparisonClass();
+            $attribute->setValue($this->attributeManager->retrieveAttribute($attribute, $user, $resource));
             $dynamicAttributes = (isset($options['dynamic_attributes'])) ? $options['dynamic_attributes'] : [];
+            if(count($pra->getExtraData()) > 0) {
+                $this->processExtraData($pra, $user, $resource);
+            }
             $value =
                 ($pra->getValue() === 'dynamic')
                 ? $this->attributeManager->getDynamicAttribute($attribute->getSlug(), $dynamicAttributes)
                 : $pra->getValue()
             ;
-            if ($comparison->{$pra->getComparison()}($value, $attribute->getValue()) !== true) {
+            if ($this->comparisonManager->compare(
+                $pra->getComparisonType(),
+                $pra->getComparison(),
+                $value,
+                $attribute->getValue(),
+                $pra->getExtraData()
+            ) !== true) {
                 $rejectedAttributes[] = $attribute->getSlug();
             }
         }
@@ -98,5 +111,23 @@ class Abac
             $this->cacheManager->save($cacheItem);
         }
         return $result;
+    }
+    
+    public function processExtraData(PolicyRuleAttribute $pra, $user, $resource) {
+        foreach($pra->getExtraData() as $key => $data) {
+            switch($key) {
+                case 'with':
+                    $pra->removeExtraData('with');
+                    $subPolicyRuleAttributes = [];
+                    foreach($this->policyRuleManager->processRuleAttributes($data) as $subPolicyRuleAttribute) {
+                        $subPolicyRuleAttributes[] = $subPolicyRuleAttribute;
+                    }
+                    $pra->setValue($subPolicyRuleAttributes);
+                    $pra->addExtraData('attribute', $pra->getAttribute());
+                    $pra->addExtraData('user', $user);
+                    $pra->addExtraData('resource', $resource);
+                    break;
+            }
+        }
     }
 }
