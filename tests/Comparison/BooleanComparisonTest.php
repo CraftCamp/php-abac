@@ -4,6 +4,9 @@ namespace PhpAbac\Test\Comparison;
 
 use PhpAbac\Comparison\BooleanComparison;
 
+use PhpAbac\Manager\ComparisonManager;
+use PhpAbac\Manager\AttributeManager;
+
 class BooleanComparisonTest extends \PHPUnit_Framework_TestCase
 {
     /** @var BooleanComparison **/
@@ -11,7 +14,7 @@ class BooleanComparisonTest extends \PHPUnit_Framework_TestCase
 
     public function setUp()
     {
-        $this->comparison = new BooleanComparison();
+        $this->comparison = new BooleanComparison(new ComparisonManager(new AttributeManager([])));
     }
 
     public function testBoolAnd()

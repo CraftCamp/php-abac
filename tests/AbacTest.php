@@ -16,6 +16,7 @@ class AbacTest extends \PHPUnit_Framework_TestCase
 
     public function testEnforce()
     {
+        $visas = include('tests/fixtures/visas.php');
         $users = include('tests/fixtures/users.php');
         $vehicles = include('tests/fixtures/vehicles.php');
         $this->assertTrue($this->abac->enforce('nationality-access', $users[3]));

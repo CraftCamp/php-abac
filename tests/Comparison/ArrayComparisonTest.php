@@ -4,6 +4,9 @@ namespace PhpAbac\Test\Comparison;
 
 use PhpAbac\Comparison\ArrayComparison;
 
+use PhpAbac\Manager\ComparisonManager;
+use PhpAbac\Manager\AttributeManager;
+
 class ArrayComparisonTest extends \PHPUnit_Framework_TestCase
 {
     /** @var ArrayComparison **/
@@ -11,7 +14,7 @@ class ArrayComparisonTest extends \PHPUnit_Framework_TestCase
 
     public function setUp()
     {
-        $this->comparison = new ArrayComparison();
+        $this->comparison = new ArrayComparison(new ComparisonManager(new AttributeManager([])));
     }
 
     public function testIsIn()
