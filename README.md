@@ -96,7 +96,9 @@ class User{
 $user = new User();
 $user->setIsBanned(true);
 
-$abac = new Abac($pdoConnection);
+$abac = new Abac([
+    'policy_rule_configuration.yml'
+]);
 $abac->enforce('create-group', $user);
 ```
 The attributes checked by the rule can be :
@@ -109,7 +111,9 @@ The attributes checked by the rule can be :
 ```php
 use PhpAbac\Abac;
 
-$abac = new Abac($pdoConnection);
+$abac = new Abac([
+    'policy_rule_configuration.yml'
+]);
 $check = $abac->enforce('read-public-group', $user, $group);
 ```
 The checked attributes can be :
@@ -125,7 +129,9 @@ The checked attributes can be :
 
 use PhpAbac\Abac;
 
-$abac = new Abac($pdoConnection);
+$abac = new Abac([
+    'policy_rule_configuration.yml'
+]);
 $check = $abac->enforce('edit-group', $user, $group, [
     'dynamic-attributes' => [
         'group-owner' => $user->getId()

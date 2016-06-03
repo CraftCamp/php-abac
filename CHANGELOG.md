@@ -8,6 +8,9 @@ This project adheres to [Semantic Versioning](http://semver.org/).
 - Not null comparison
 - Chained attributes example and documentation
 
+### Fixed
+- Code example in documentation
+
 ## [2.0.1] - 2016-06-02
 ### Added
 - Containing comparison for arrays
