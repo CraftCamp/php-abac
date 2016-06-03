@@ -98,7 +98,7 @@ rules:
                 comparison_type: numeric
                 comparison: isGreaterThan
                 value: 21
-    travel-to-usa:
+    travel-to-foreign-country:
         attributes:
             main_user.age:
                 comparison_type: numeric
@@ -111,7 +111,7 @@ rules:
                     visa.country.code:
                         comparison_type: string
                         comparison: isEqual
-                        value: US
+                        value: dynamic
                     visa.lastRenewal:
                         comparison_type: datetime
                         comparison: isMoreRecentThan

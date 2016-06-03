@@ -42,8 +42,13 @@ class AbacTest extends \PHPUnit_Framework_TestCase
             'dynamic_attributes' => ['proprietaire' => 4]
         ]));
         $this->assertEquals([
+            'code-pays',
             'visas'
-        ], $this->abac->enforce('travel-to-usa', $users[0]));
-        $this->assertTrue($this->abac->enforce('travel-to-usa', $users[1]));
+        ], $this->abac->enforce('travel-to-foreign-country', $users[0], null, [
+            'dynamic_attributes' => ['code-pays' => 'US']
+        ]));
+        $this->assertTrue($this->abac->enforce('travel-to-foreign-country', $users[1], null, [
+            'dynamic_attributes' => ['code-pays' => 'US']
+        ]));
     }
 }

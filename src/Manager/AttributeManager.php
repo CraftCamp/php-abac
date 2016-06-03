@@ -113,22 +113,6 @@ class AttributeManager
     private function retrieveEnvironmentAttribute(EnvironmentAttribute $attribute) {
         return getenv($attribute->getVariableName());
     }
-
-    /**
-     * @param string $slug
-     * @param array  $dynamicAttributes
-     *
-     * @return mixed
-     *
-     * @throws \InvalidArgumentException
-     */
-    public function getDynamicAttribute($slug, $dynamicAttributes = [])
-    {
-        if (!isset($dynamicAttributes[$slug])) {
-            throw new \InvalidArgumentException('The "'.$slug.'" attribute is dynamic and its value must be given');
-        }
-        return $dynamicAttributes[$slug];
-    }
     
     /*
      * @param string $name

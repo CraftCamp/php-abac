@@ -68,6 +68,11 @@ class Abac
      * @return boolean|array
      */
     public function enforce($ruleName, $user, $resource = null, $options = []) {
+        // If there is dynamic attributes, we pass them to the comparison manager
+        // When a comparison will be performed, the passed values will be retrieved and used
+        if(isset($options['dynamic_attributes'])) {
+            $this->comparisonManager->setDynamicAttributes($options['dynamic_attributes']);
+        }
         // Retrieve cache value for the current rule and values if cache item is valid
         if(($cacheResult = isset($options['cache_result']) && $options['cache_result'] === true) === true) {
             $cacheItem = $this->cacheManager->getItem(
@@ -81,31 +86,18 @@ class Abac
             }
         }
         $policyRule = $this->policyRuleManager->getRule($ruleName);
-        $rejectedAttributes = [];
-
+        // For each policy rule attribute, we retrieve the attribute value and proceed configured extra data
         foreach ($policyRule->getPolicyRuleAttributes() as $pra) {
             $attribute = $pra->getAttribute();
             $attribute->setValue($this->attributeManager->retrieveAttribute($attribute, $user, $resource));
-            $dynamicAttributes = (isset($options['dynamic_attributes'])) ? $options['dynamic_attributes'] : [];
             if(count($pra->getExtraData()) > 0) {
                 $this->processExtraData($pra, $user, $resource);
             }
-            $value =
-                ($pra->getValue() === 'dynamic')
-                ? $this->attributeManager->getDynamicAttribute($attribute->getSlug(), $dynamicAttributes)
-                : $pra->getValue()
-            ;
-            if ($this->comparisonManager->compare(
-                $pra->getComparisonType(),
-                $pra->getComparison(),
-                $value,
-                $attribute->getValue(),
-                $pra->getExtraData()
-            ) !== true) {
-                $rejectedAttributes[] = $attribute->getSlug();
-            }
+            $this->comparisonManager->compare($pra);
         }
-        $result = (count($rejectedAttributes) === 0) ? : $rejectedAttributes;
+        // The given result could be an array of rejected attributes or true
+        // True means that the rule is correctly enforced for the given user and resource
+        $result = $this->comparisonManager->getResult();
         if($cacheResult) {
             $cacheItem->set($result);
             $this->cacheManager->save($cacheItem);
@@ -113,16 +105,26 @@ class Abac
         return $result;
     }
     
+    /**
+     * @param \PhpAbac\Model\PolicyRuleAttribute $pra
+     * @param object $user
+     * @param object $resource
+     */
     public function processExtraData(PolicyRuleAttribute $pra, $user, $resource) {
         foreach($pra->getExtraData() as $key => $data) {
             switch($key) {
                 case 'with':
+                    // This data has to be removed for it will be stored elsewhere
+                    // in the policy rule attribute
                     $pra->removeExtraData('with');
+                    // The "with" extra data is an array of attributes, which are objects
+                    // Once we process it as policy rule attributes, we set it as the main policy rule attribute value
                     $subPolicyRuleAttributes = [];
                     foreach($this->policyRuleManager->processRuleAttributes($data) as $subPolicyRuleAttribute) {
                         $subPolicyRuleAttributes[] = $subPolicyRuleAttribute;
                     }
                     $pra->setValue($subPolicyRuleAttributes);
+                    // This data can be used in complex comparisons
                     $pra->addExtraData('attribute', $pra->getAttribute());
                     $pra->addExtraData('user', $user);
                     $pra->addExtraData('resource', $resource);

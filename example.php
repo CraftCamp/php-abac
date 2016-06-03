@@ -64,15 +64,23 @@
     } else {
         echo("FAIL : The system didn't deny access\n");
     }
-    $userTravel1 = $abac->enforce('travel-to-usa', $users[0]);
+    $userTravel1 = $abac->enforce('travel-to-foreign-country', $users[0], null, [
+        'dynamic_attributes' => [
+            'code-pays' => 'US'
+        ]
+    ]);
     if($userTravel1 !== true) {
         echo("DENIED: The user 1 is not allowed to travel to the USA because he doesn't have an US visa\n");
     } else {
         echo('FAIL: The system didn\'t deny access');
     }
-    $userTravel2 = $abac->enforce('travel-to-usa', $users[1]);
+    $userTravel2 = $abac->enforce('travel-to-foreign-country', $users[1], null, [
+        'dynamic_attributes' => [
+            'code-pays' => 'US'
+        ]
+    ]);
     if($userTravel2 === true) {
         echo("GRANTED: The user 2 is allowed to travel to the USA\n");
     } else {
-        echo('FAIL: The system didn\'t deny access');
+        echo('FAIL: The system didn\'t grant access');
     }
