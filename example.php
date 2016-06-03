@@ -4,6 +4,7 @@
 
     use PhpAbac\Abac;
     
+    $countries = include('tests/fixtures/countries.php');
     $visas = include('tests/fixtures/visas.php');
     $users = include('tests/fixtures/users.php');
     $vehicles = include('tests/fixtures/vehicles.php');

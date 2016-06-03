@@ -5,7 +5,7 @@ namespace PhpAbac\Example;
 class Visa {
     /** @var int **/
     protected $id;
-    /** @var string **/
+    /** @var Country **/
     protected $country;
     /** @var \DateTime **/
     protected $createdAt;
@@ -30,17 +30,17 @@ class Visa {
     }   
     
     /**
-     * @param string $country
+     * @param Country $country
      * @return \PhpAbac\Example\Visa
      */
-    public function setCountry($country) {
+    public function setCountry(Country $country) {
         $this->country = $country;
         
         return $this;
     }
     
     /**
-     * @return string
+     * @return Country
      */
     public function getCountry() {
         return $this->country;

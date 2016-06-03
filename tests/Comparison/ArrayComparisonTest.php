@@ -88,15 +88,16 @@ class ArrayComparisonTest extends \PHPUnit_Framework_TestCase
     }
     
     public function testContains() {
+        $countries = include(__DIR__ . '/../fixtures/countries.php');
         $visas = include(__DIR__ . '/../fixtures/visas.php');
         $policyRuleAttributes = [
             (new PolicyRuleAttribute())
             ->setAttribute(
                 (new Attribute())
                 ->setType('resource')
-                ->setProperty('country')
-                ->setName('Pays')
-                ->setSlug('pays')
+                ->setProperty('country.code')
+                ->setName('Code Pays')
+                ->setSlug('code-pays')
             )
             ->setComparison('isEqual')
             ->setComparisonType('string')

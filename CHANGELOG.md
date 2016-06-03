@@ -6,6 +6,7 @@ This project adheres to [Semantic Versioning](http://semver.org/).
 ### Added
 - Null comparison
 - Not null comparison
+- Chained attributes example and documentation
 
 ## [2.0.1] - 2016-06-02
 ### Added

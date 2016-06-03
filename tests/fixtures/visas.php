@@ -5,17 +5,17 @@ use PhpAbac\Example\Visa;
 return [
     (new Visa())
     ->setId(1)
-    ->setCountry('FR')
+    ->setCountry($countries[0])
     ->setLastRenewal(new \DateTime())
     ->setCreatedAt(new \DateTime()),
     (new Visa())
     ->setId(2)
-    ->setCountry('UK')
+    ->setCountry($countries[1])
     ->setLastRenewal(new \DateTime())
     ->setCreatedAt(new \DateTime()),
     (new Visa())
     ->setId(3)
-    ->setCountry('US')
+    ->setCountry($countries[2])
     ->setLastRenewal(new \DateTime())
     ->setCreatedAt(new \DateTime()),
 ];

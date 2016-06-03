@@ -162,3 +162,54 @@ Then you can use ABAC the same way as before :
 ```php
 $isGranted = $abac->enforce('travel-to-germany', $user);
 ```
+
+Chained Attributes
+==================
+
+If you want to check an attribute which is an already configured attribute property, you can use a special syntax to declare chained attributes.
+
+With the previous extra data example, let's create a Country model class, which is a Visa property.
+
+The previous configuration would be updated to :
+
+```yaml
+# abac_config.yml
+attributes:
+    visa:
+        class: PhpAbac\Example\Visa
+        type: resource
+        fields:
+            country.code:
+                name: Code Pays
+            lastRenewal:
+                name: Dernier renouvellement
+
+    country:
+        class: PhpAbac\Example\Country
+        type: resource
+        fields:
+            code:
+                name: Code
+
+rules:
+    travel-to-germany:
+        attributes:
+            main_user.visas:
+                comparison_type: array
+                comparison: contains
+                with:
+                    visa.country.code:
+                        comparison_type: string
+                        comparison: isEqual
+                        value: DE
+                    visa.lastRenewal:
+                        comparison_type: datetime
+                        comparison: isMoreRecentThan
+                        value: -1Y
+```
+
+This way, the library will perform something similar to :
+
+```php
+$visa->getCountry()->getCode() === 'DE';
+```
