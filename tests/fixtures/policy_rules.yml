@@ -28,12 +28,21 @@ attributes:
             lastTechnicalReviewDate:
                 name: Dernière révision technique
                 
+    country:
+        class: PhpAbac\Example\Country
+        type: resource
+        fields:
+            name:
+                name: Nom du pays
+            code:
+                name: Code international
+                
     visa:
         class: PhpAbac\Example\Visa
         type: resource
         fields:
-            country:
-                name: Pays
+            country.code:
+                name: Code Pays
             lastRenewal:
                 name: Dernier renouvellement
         
@@ -99,7 +108,7 @@ rules:
                 comparison_type: array
                 comparison: contains
                 with:
-                    visa.country:
+                    visa.country.code:
                         comparison_type: string
                         comparison: isEqual
                         value: US
