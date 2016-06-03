@@ -8,6 +8,7 @@ This project adheres to [Semantic Versioning](http://semver.org/).
 - The comparison manager handles rejected attributes and result instead of ABAC class
 
 ### Fixed
+- Chained attributes can return null in case of unset object in the chain
 - Dynamic attributes for contained attributes
 
 ## [2.0.2] - 2016-06-03
