@@ -65,7 +65,9 @@ class ComparisonManager {
         // If the checked attribute is not valid, the attribute slug is marked as rejected
         // The rejected attributes will be returned instead of the expected true boolean
         if($result !== true) {
-            $this->rejectedAttributes[] = $attribute->getSlug();
+            if(!in_array($attribute->getSlug(), $this->rejectedAttributes)) {
+                $this->rejectedAttributes[] = $attribute->getSlug();
+            }
             return false;
         }
         return true;
