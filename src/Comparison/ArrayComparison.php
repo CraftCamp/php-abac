@@ -58,12 +58,10 @@ class ArrayComparison extends AbstractComparison
             $result = true;
             foreach($policyRuleAttributes as $pra) {
                 $attributeData = $pra->getAttribute();
-                if(!$this->comparisonManager->compare(
-                    $pra->getComparisonType(),
-                    $pra->getComparison(),
-                    $pra->getValue(),
+                $attributeData->setValue(
                     $this->comparisonManager->getAttributeManager()->retrieveAttribute($attributeData, $extraData['user'], $attribute)
-                )) {
+                );
+                if(!$this->comparisonManager->compare($pra)) {
                     $result = false;
                     break;
                 }

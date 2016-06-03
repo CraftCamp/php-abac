@@ -2,7 +2,6 @@
 
 namespace PhpAbac\Manager;
 
-use PhpAbac\Abac;
 use PhpAbac\Model\PolicyRule;
 use PhpAbac\Model\PolicyRuleAttribute;
 
@@ -39,6 +38,7 @@ class PolicyRuleManager
             (new PolicyRule())
             ->setName($ruleName)
         ;
+        // For each policy rule attribute, the data is formatted
         foreach($this->processRuleAttributes($this->rules[$ruleName]['attributes']) as $pra) {
             $rule->addPolicyRuleAttribute($pra);
         }
@@ -46,6 +46,8 @@ class PolicyRuleManager
     }
     
     /**
+     * This method is meant to convert attribute data from array to formatted policy rule attribute
+     * 
      * @param array $attributes
      */
     public function processRuleAttributes($attributes) {
@@ -56,11 +58,14 @@ class PolicyRuleManager
                 ->setComparisonType($attribute['comparison_type'])
                 ->setValue((isset($attribute['value'])) ? $attribute['value'] : null)
             ;
+            // In the case the user configured more keys than the basic ones
+            // it will be stored as extra data
             foreach($attribute as $key => $value) {
                 if(!in_array($key, ['comparison', 'comparison_type', 'value'])) {
                     $pra->addExtraData($key, $value);
                 }
             }
+            // This generator avoid useless memory consumption instead of returning a whole array
             yield $pra;
         }
     }
