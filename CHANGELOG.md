@@ -2,7 +2,11 @@
 All notable changes to this project will be documented in this file.
 This project adheres to [Semantic Versioning](http://semver.org/).
 
-## [Unreleased]
+## [2.0.3] - 2016-06-04
+### Changed
+- The comparison manager handles dynamic attributes instead of ABAC class
+- The comparison manager handles rejected attributes and result instead of ABAC class
+
 ### Fixed
 - Dynamic attributes for contained attributes
 
