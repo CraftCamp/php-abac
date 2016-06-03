@@ -100,7 +100,9 @@ class AttributeManager
             if(!method_exists($propertyValue, $getter)) {
                 throw new \InvalidArgumentException('There is no getter for the "'.$attribute->getProperty().'" attribute for object "'.get_class($propertyValue).'"');
             }
-            $propertyValue = $propertyValue->{$getter}();
+            if (($propertyValue = $propertyValue->{$getter}()) === null) {
+                return null;
+            }
         }
         return $propertyValue;
     }
