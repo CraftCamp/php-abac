@@ -44,19 +44,21 @@ class PolicyRuleManager
         }
         return $rule;
     }
-    
+
     /**
      * This method is meant to convert attribute data from array to formatted policy rule attribute
-     * 
+     *
      * @param array $attributes
+     * @param array $extraData
      */
-    public function processRuleAttributes($attributes) {
+    public function processRuleAttributes($attributes, $extraData = []) {
         foreach($attributes as $attributeName => $attribute) {
             $pra = (new PolicyRuleAttribute())
                 ->setAttribute($this->attributeManager->getAttribute($attributeName))
                 ->setComparison($attribute['comparison'])
                 ->setComparisonType($attribute['comparison_type'])
                 ->setValue((isset($attribute['value'])) ? $attribute['value'] : null)
+                ->setExtraData($extraData)
             ;
             // In the case the user configured more keys than the basic ones
             // it will be stored as extra data

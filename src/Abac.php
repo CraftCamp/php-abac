@@ -36,7 +36,7 @@ class Abac
         $this->cacheManager = new CacheManager();
         $this->comparisonManager = new ComparisonManager($this->attributeManager);
     }
-    
+
     /**
      * @param array $configPaths
      */
@@ -51,16 +51,16 @@ class Abac
      * If the objectId is null, policy rules about its attributes will be ignored
      * In case of mismatch between attributes and expected values,
      * an array with the concerned attributes slugs will be returned.
-     * 
+     *
      * Available options are :
      * * dynamic_attributes: array
      * * cache_result: boolean
      * * cache_ttl: integer
      * * cache_driver: string
-     * 
+     *
      * Available cache drivers are :
      * * memory
-     * 
+     *
      * @param string $ruleName
      * @param object $user
      * @param object $resource
@@ -104,7 +104,7 @@ class Abac
         }
         return $result;
     }
-    
+
     /**
      * @param \PhpAbac\Model\PolicyRuleAttribute $pra
      * @param object $user
@@ -120,7 +120,14 @@ class Abac
                     // The "with" extra data is an array of attributes, which are objects
                     // Once we process it as policy rule attributes, we set it as the main policy rule attribute value
                     $subPolicyRuleAttributes = [];
-                    foreach($this->policyRuleManager->processRuleAttributes($data) as $subPolicyRuleAttribute) {
+                    $extraData = [];
+                    // Add extra data to the sub policy rules
+                    if (array_values($data)[0]['comparison_type'] === 'object') {
+                        $extraData = [
+                            'resource' => $resource
+                        ];
+                    }
+                    foreach($this->policyRuleManager->processRuleAttributes($data, $extraData) as $subPolicyRuleAttribute) {
                         $subPolicyRuleAttributes[] = $subPolicyRuleAttribute;
                     }
                     $pra->setValue($subPolicyRuleAttributes);
