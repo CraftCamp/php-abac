@@ -8,6 +8,8 @@ use PhpAbac\Comparison\ArrayComparison;
 use PhpAbac\Comparison\BooleanComparison;
 use PhpAbac\Comparison\DatetimeComparison;
 use PhpAbac\Comparison\NumericComparison;
+use PhpAbac\Comparison\ObjectComparison;
+use PhpAbac\Comparison\UserComparison;
 use PhpAbac\Comparison\StringComparison;
 
 class ComparisonManager {
@@ -19,6 +21,8 @@ class ComparisonManager {
         'boolean' => BooleanComparison::class,
         'datetime' => DatetimeComparison::class,
         'numeric' => NumericComparison::class,
+        'object' => ObjectComparison::class,
+        'user' => UserComparison::class,
         'string' => StringComparison::class,
     ];
     /** @var array **/
