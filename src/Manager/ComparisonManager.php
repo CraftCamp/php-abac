@@ -73,9 +73,9 @@ class ComparisonManager {
         $result = $comparison->{$pra->getComparison()}($praValue, $attribute->getValue(), $pra->getExtraData());
         // If the checked attribute is not valid, the attribute slug is marked as rejected
         // The rejected attributes will be returned instead of the expected true boolean
-        // In case of sub comparing, the error reporting is disabled
-        if($result !== true && $subComparing === false) {
-            if(!in_array($attribute->getSlug(), $this->rejectedAttributes)) {
+        if($result !== true) {
+            // In case of sub comparing, the error reporting is disabled
+            if(!in_array($attribute->getSlug(), $this->rejectedAttributes) && $subComparing === false) {
                 $this->rejectedAttributes[] = $attribute->getSlug();
             }
             return false;
