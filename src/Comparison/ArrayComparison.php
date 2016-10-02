@@ -47,10 +47,11 @@ class ArrayComparison extends AbstractComparison
     {
         return !$this->intersect($array1, $array2);
     }
-    
+
     /**
      * @param array $policyRuleAttributes
      * @param array $attributes
+     * @param array $extraData
      * @return boolean
      */
     public function contains($policyRuleAttributes, $attributes, $extraData = []) {
@@ -61,7 +62,7 @@ class ArrayComparison extends AbstractComparison
                 $attributeData->setValue(
                     $this->comparisonManager->getAttributeManager()->retrieveAttribute($attributeData, $extraData['user'], $attribute)
                 );
-                if(!$this->comparisonManager->compare($pra)) {
+                if(!$this->comparisonManager->compare($pra, true)) {
                     $result = false;
                     break;
                 }
