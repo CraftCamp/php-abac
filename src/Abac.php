@@ -85,7 +85,7 @@ class Abac
                 return $cacheValue;
             }
         }
-        $policyRule = $this->policyRuleManager->getRule($ruleName);
+        $policyRule = $this->policyRuleManager->getRule($ruleName, $user, $resource);
         // For each policy rule attribute, we retrieve the attribute value and proceed configured extra data
         foreach ($policyRule->getPolicyRuleAttributes() as $pra) {
             $attribute = $pra->getAttribute();
@@ -121,13 +121,8 @@ class Abac
                     // Once we process it as policy rule attributes, we set it as the main policy rule attribute value
                     $subPolicyRuleAttributes = [];
                     $extraData = [];
-                    // Add extra data to the sub policy rules
-                    if (array_values($data)[0]['comparison_type'] === 'object') {
-                        $extraData = [
-                            'resource' => $resource
-                        ];
-                    }
-                    foreach($this->policyRuleManager->processRuleAttributes($data, $extraData) as $subPolicyRuleAttribute) {
+
+                    foreach($this->policyRuleManager->processRuleAttributes($data, $user, $resource) as $subPolicyRuleAttribute) {
                         $subPolicyRuleAttributes[] = $subPolicyRuleAttribute;
                     }
                     $pra->setValue($subPolicyRuleAttributes);
