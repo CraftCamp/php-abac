@@ -8,6 +8,8 @@ use PhpAbac\Comparison\ArrayComparison;
 use PhpAbac\Comparison\BooleanComparison;
 use PhpAbac\Comparison\DatetimeComparison;
 use PhpAbac\Comparison\NumericComparison;
+use PhpAbac\Comparison\ObjectComparison;
+use PhpAbac\Comparison\UserComparison;
 use PhpAbac\Comparison\StringComparison;
 
 class ComparisonManager {
@@ -19,29 +21,36 @@ class ComparisonManager {
         'boolean' => BooleanComparison::class,
         'datetime' => DatetimeComparison::class,
         'numeric' => NumericComparison::class,
+        'object' => ObjectComparison::class,
+        'user' => UserComparison::class,
         'string' => StringComparison::class,
     ];
     /** @var array **/
     protected $rejectedAttributes = [];
-    
+
     /**
      * @param \PhpAbac\Manager\AttributeManager $manager
      */
     public function __construct(AttributeManager $manager) {
         $this->attributeManager = $manager;
     }
-    
+
     /**
      * This method retrieve the comparison class, instanciate it,
      * and then perform the configured comparison
      * It does return a control value for special operations,
      * but the real check is at the end of the enforce() method,
-     * when the rejected attributes are counted
-     * 
+     * when the rejected attributes are counted.
+     *
+     * If the second parameter is set to true, compare will not report errors.
+     * This is used to test a bunch of comparisons expecting not all of them true to return a granted access.
+     * In fact, this parameter is used in comparisons which need to perform comparisons on their own.
+     *
      * @param PolicyRuleAttribute $pra
+     * @param boolean $subComparing
      * @return bool
      */
-    public function compare(PolicyRuleAttribute $pra) {
+    public function compare(PolicyRuleAttribute $pra, $subComparing = false) {
         $attribute = $pra->getAttribute();
         // The expected value can be set in the configuration as dynamic
         // In this case, we retrieve the expected value in the passed options
@@ -65,28 +74,29 @@ class ComparisonManager {
         // If the checked attribute is not valid, the attribute slug is marked as rejected
         // The rejected attributes will be returned instead of the expected true boolean
         if($result !== true) {
-            if(!in_array($attribute->getSlug(), $this->rejectedAttributes)) {
+            // In case of sub comparing, the error reporting is disabled
+            if(!in_array($attribute->getSlug(), $this->rejectedAttributes) && $subComparing === false) {
                 $this->rejectedAttributes[] = $attribute->getSlug();
             }
             return false;
         }
         return true;
     }
-    
+
     /**
      * @param array $dynamicAttributes
      */
     public function setDynamicAttributes($dynamicAttributes) {
         $this->dynamicAttributes = $dynamicAttributes;
     }
-    
+
     /**
      * A dynamic attribute is a value given by the user code as an option
      * If a policy rule attribute is dynamic,
      * we check that the developer has given a dynamic value in the options
-     * 
+     *
      * Dynamic attributes are given with slugs as key
-     * 
+     *
      * @param string $attributeSlug
      * @return mixed
      * @throws \InvalidArgumentException
@@ -97,7 +107,7 @@ class ComparisonManager {
         }
         return $this->dynamicAttributes[$attributeSlug];
     }
-    
+
     /**
      * @param string $type
      * @param string $class
@@ -105,19 +115,19 @@ class ComparisonManager {
     public function addComparison($type, $class) {
         $this->comparisons[$type] = $class;
     }
-    
+
     /**
      * @return \PhpAbac\Manager\AttributeManager
      */
     public function getAttributeManager() {
         return $this->attributeManager;
     }
-    
+
     /**
      * This method is called when all the policy rule attributes are checked
      * All along the comparisons, the failing attributes slugs are stored
      * If the rejected attributes array is not empty, it means that the rule is not enforced
-     * 
+     *
      * @return array|bool
      */
     public function getResult() {

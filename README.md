@@ -139,6 +139,47 @@ $check = $abac->enforce('edit-group', $user, $group, [
 ]);
 ```
 
+**Example with referenced attributes**
+
+The configuration shall be :
+
+```yaml
+attributes:
+    group:
+        class: MyApp\Model\Group
+        type: resource
+        fields:
+            author.id:
+                name: Author ID
+    app_user:
+        class: MyApp\Model\User
+        type: user
+        fields:
+            id:
+                name: User ID
+
+rules:
+    remove-group:
+        attributes:
+            app_user.id:
+                comparison: object
+                comparison_type: isFieldEqual
+                value: group.author.id
+```
+And then the code :
+
+```php
+<?php
+
+use PhpAbac\Abac;
+
+$abac = new Abac([
+    'policy_rule_configuration.yml'
+]);
+$check = $abac->enforce('remove-group', $user, $group);
+```
+
+
 **Example with cache**
 ```php
 $check = $abac->enforce('edit-group', $user, $group, [

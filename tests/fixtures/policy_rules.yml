@@ -4,6 +4,8 @@ attributes:
         class: PhpAbac\Example\User
         type: user
         fields:
+            id:
+                name: ID
             age:
                 name: Age
             parentNationality:
@@ -14,7 +16,7 @@ attributes:
                 name: Permis de conduire
             visas:
                 name: Visas
-            
+
     vehicle:
         class: PhpAbac\Example\Vehicle
         type: resource
@@ -27,7 +29,7 @@ attributes:
                 name: Date de sortie d'usine
             lastTechnicalReviewDate:
                 name: Dernière révision technique
-                
+
     country:
         class: PhpAbac\Example\Country
         type: resource
@@ -36,7 +38,7 @@ attributes:
                 name: Nom du pays
             code:
                 name: Code international
-                
+
     visa:
         class: PhpAbac\Example\Visa
         type: resource
@@ -45,7 +47,7 @@ attributes:
                 name: Code Pays
             lastRenewal:
                 name: Dernier renouvellement
-        
+
     environment:
         service_state:
             name: Statut du service
@@ -81,9 +83,9 @@ rules:
                 comparison: isMoreRecentThan
                 value: -25Y
             vehicle.owner.id:
-                comparison_type: numeric
-                comparison: isEqual
-                value: dynamic
+                comparison_type: user
+                comparison: isFieldEqual
+                value: main_user.id
             vehicle.origin:
                 comparison_type: array
                 comparison: isIn

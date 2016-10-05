@@ -22,7 +22,7 @@ class PolicyRuleManagerTest extends \PHPUnit_Framework_TestCase
     {
         $configuration = new ConfigurationManager(new FileLocator());
         $configuration->parseConfigurationFile([__DIR__.'/../fixtures/policy_rules.yml']);
-        
+
         $this->manager = new PolicyRuleManager(
             new AttributeManager($configuration->getAttributes()),
             $configuration->getRules()
@@ -31,14 +31,19 @@ class PolicyRuleManagerTest extends \PHPUnit_Framework_TestCase
 
     public function testGetRule()
     {
-        $policyRule = $this->manager->getRule('vehicle-homologation');
+        $countries = include('tests/fixtures/countries.php');
+        $visas = include('tests/fixtures/visas.php');
+        $users = include('tests/fixtures/users.php');
+        $vehicles = include('tests/fixtures/vehicles.php');
+        
+        $policyRule = $this->manager->getRule('vehicle-homologation', $users[0], $vehicles[0]);
 
         $this->assertInstanceof('PhpAbac\Model\PolicyRule', $policyRule);
         $this->assertEquals('vehicle-homologation', $policyRule->getName());
         $this->assertCount(6, $policyRule->getPolicyRuleAttributes());
-        
+
         $policyRuleAttribute = $policyRule->getPolicyRuleAttributes()[0];
-        
+
         $this->assertInstanceOf('PhpAbac\Model\PolicyRuleAttribute', $policyRuleAttribute);
         $this->assertInstanceOf('PhpAbac\Model\Attribute', $policyRuleAttribute->getAttribute());
         $this->assertEquals('boolean', $policyRuleAttribute->getComparisonType());

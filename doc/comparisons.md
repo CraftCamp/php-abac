@@ -45,3 +45,13 @@ Boolean
 * ### boolOr
 * ### isNull
 * ### isNotNull
+
+Object
+-------
+
+* ### isFieldEqual
+
+User
+-------
+
+* ### isFieldEqual
