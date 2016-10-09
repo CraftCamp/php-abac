@@ -5,3 +5,7 @@ build
 composer.phar
 composer.lock
 phpunit.xml
+data/cache/text/*
+!data/cache/text/.gitkeep
+data/cache/test/text/*
+!data/cache/test/text/.gitkeep
