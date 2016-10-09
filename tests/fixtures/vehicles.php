@@ -8,8 +8,8 @@ return [
     ->setOwner($users[0])
     ->setBrand('Renault')
     ->setModel('Mégane')
-    ->setLastTechnicalReviewDate(new \DateTime('2014-08-19 11:03:38'))
-    ->setManufactureDate(new \DateTime('2015-08-19 11:03:38'))
+    ->setLastTechnicalReviewDate(new \DateTime('-1 year'))
+    ->setManufactureDate(new \DateTime('-3 years'))
     ->setOrigin('FR')
     ->setEngineType('diesel')
     ->setEcoClass('C'),
@@ -18,8 +18,8 @@ return [
     ->setOwner($users[2])
     ->setBrand('Fiat')
     ->setModel('Stilo')
-    ->setLastTechnicalReviewDate(new \DateTime('2008-08-19 11:03:38'))
-    ->setManufactureDate(new \DateTime('2004-08-19 11:03:38'))
+    ->setLastTechnicalReviewDate(new \DateTime('-7 years'))
+    ->setManufactureDate(new \DateTime('-14 years'))
     ->setOrigin('IT')
     ->setEngineType('diesel')
     ->setEcoClass('C'),
@@ -28,8 +28,8 @@ return [
     ->setOwner($users[0])
     ->setBrand('Alpha Roméo')
     ->setModel('Mito')
-    ->setLastTechnicalReviewDate(new \DateTime('2014-08-19 11:03:38'))
-    ->setManufactureDate(new \DateTime('2013-08-19 11:03:38'))
+    ->setLastTechnicalReviewDate(new \DateTime('-2 years'))
+    ->setManufactureDate(new \DateTime('-4 years'))
     ->setOrigin('FR')
     ->setEngineType('gasoline')
     ->setEcoClass('D'),
@@ -38,8 +38,8 @@ return [
     ->setOwner($users[3])
     ->setBrand('Fiat')
     ->setModel('Punto')
-    ->setLastTechnicalReviewDate(new \DateTime('2015-08-19 11:03:38'))
-    ->setManufactureDate(new \DateTime('2010-08-19 11:03:38'))
+    ->setLastTechnicalReviewDate(new \DateTime('-1 year'))
+    ->setManufactureDate(new \DateTime('-6 years'))
     ->setOrigin('FR')
     ->setEngineType('diesel')
     ->setEcoClass('B'),

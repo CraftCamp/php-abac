@@ -18,7 +18,7 @@ class AttributeManager
     {
         $this->attributes = $attributes;
     }
-    
+
     /**
      * @param string $attributeId
      * @return \PhpAbac\Model\AbstractAttribute
@@ -36,7 +36,7 @@ class AttributeManager
             : $this->getClassicAttribute($attributeData, $attributeName)
         ;
     }
-    
+
     /**
      * @param array $attributeData
      * @param string $property
@@ -51,7 +51,7 @@ class AttributeManager
             ->setSlug($this->slugify($attributeData['fields'][$property]['name']))
         ;
     }
-    
+
     /**
      * @param array $attributeData
      * @param string $key
@@ -74,7 +74,7 @@ class AttributeManager
      * @param object $object
      * @return mixed
      */
-    public function retrieveAttribute(AbstractAttribute $attribute, $user, $object = null)
+    public function retrieveAttribute(AbstractAttribute $attribute, $user = null, $object = null)
     {
         switch($attribute->getType()) {
             case 'user':
@@ -106,16 +106,16 @@ class AttributeManager
         }
         return $propertyValue;
     }
-    
+
     /**
-     * 
+     *
      * @param \PhpAbac\Model\EnvironmentAttribute $attribute
      * @return mixed
      */
     private function retrieveEnvironmentAttribute(EnvironmentAttribute $attribute) {
         return getenv($attribute->getVariableName());
     }
-    
+
     /*
      * @param string $name
      * @return string

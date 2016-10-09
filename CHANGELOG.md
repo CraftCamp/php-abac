@@ -2,6 +2,16 @@
 All notable changes to this project will be documented in this file.
 This project adheres to [Semantic Versioning](http://semver.org/).
 
+## [Unreleased]
+### Added
+- Text cache driver
+- Cache folder configuration for cache files
+- Resource field comparison refering to user attribute
+- User field comparison refering to resource attribute
+
+### Changed
+- Auxiliary comparisons made by a comparison class does not generate rejected attributes anymore
+
 ## [2.0.3] - 2016-06-04
 ### Changed
 - The comparison manager handles dynamic attributes instead of ABAC class

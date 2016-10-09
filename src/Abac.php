@@ -27,16 +27,17 @@ class Abac
 
     /**
      * @param array $configPaths
+     * @param array $options
      */
-    public function __construct($configPaths)
+    public function __construct($configPaths, $options = [])
     {
         $this->configure($configPaths);
         $this->attributeManager = new AttributeManager($this->configuration->getAttributes());
         $this->policyRuleManager = new PolicyRuleManager($this->attributeManager, $this->configuration->getRules());
-        $this->cacheManager = new CacheManager();
+        $this->cacheManager = new CacheManager($options);
         $this->comparisonManager = new ComparisonManager($this->attributeManager);
     }
-    
+
     /**
      * @param array $configPaths
      */
@@ -51,16 +52,16 @@ class Abac
      * If the objectId is null, policy rules about its attributes will be ignored
      * In case of mismatch between attributes and expected values,
      * an array with the concerned attributes slugs will be returned.
-     * 
+     *
      * Available options are :
      * * dynamic_attributes: array
      * * cache_result: boolean
      * * cache_ttl: integer
      * * cache_driver: string
-     * 
+     *
      * Available cache drivers are :
      * * memory
-     * 
+     *
      * @param string $ruleName
      * @param object $user
      * @param object $resource
@@ -85,7 +86,7 @@ class Abac
                 return $cacheValue;
             }
         }
-        $policyRule = $this->policyRuleManager->getRule($ruleName);
+        $policyRule = $this->policyRuleManager->getRule($ruleName, $user, $resource);
         // For each policy rule attribute, we retrieve the attribute value and proceed configured extra data
         foreach ($policyRule->getPolicyRuleAttributes() as $pra) {
             $attribute = $pra->getAttribute();
@@ -104,7 +105,7 @@ class Abac
         }
         return $result;
     }
-    
+
     /**
      * @param \PhpAbac\Model\PolicyRuleAttribute $pra
      * @param object $user
@@ -120,7 +121,9 @@ class Abac
                     // The "with" extra data is an array of attributes, which are objects
                     // Once we process it as policy rule attributes, we set it as the main policy rule attribute value
                     $subPolicyRuleAttributes = [];
-                    foreach($this->policyRuleManager->processRuleAttributes($data) as $subPolicyRuleAttribute) {
+                    $extraData = [];
+
+                    foreach($this->policyRuleManager->processRuleAttributes($data, $user, $resource) as $subPolicyRuleAttribute) {
                         $subPolicyRuleAttributes[] = $subPolicyRuleAttribute;
                     }
                     $pra->setValue($subPolicyRuleAttributes);
