@@ -6,7 +6,7 @@ use Psr\Cache\CacheItemInterface;
 
 use PhpAbac\Cache\Exception\ExpiredCacheException;
 
-class MemoryCacheItem implements CacheItemInterface {
+class TextCacheItem implements CacheItemInterface {
     /** @var string **/
     protected $key;
     /** @var mixed **/
@@ -16,7 +16,7 @@ class MemoryCacheItem implements CacheItemInterface {
     /** @var \DateTime **/
     protected $expiresAt;
     /** @var string **/
-    protected $driver = 'memory';
+    protected $driver = 'text';
 
     /**
      * @param string $key
