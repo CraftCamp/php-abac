@@ -27,13 +27,14 @@ class Abac
 
     /**
      * @param array $configPaths
+     * @param array $options
      */
-    public function __construct($configPaths)
+    public function __construct($configPaths, $options = [])
     {
         $this->configure($configPaths);
         $this->attributeManager = new AttributeManager($this->configuration->getAttributes());
         $this->policyRuleManager = new PolicyRuleManager($this->attributeManager, $this->configuration->getRules());
-        $this->cacheManager = new CacheManager();
+        $this->cacheManager = new CacheManager($options);
         $this->comparisonManager = new ComparisonManager($this->attributeManager);
     }
 
