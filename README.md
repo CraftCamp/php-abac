@@ -56,6 +56,7 @@ Documentation
 * [Configuration](doc/configuration.md)
 * [Access-control](doc/access-control.md)
 * [Comparisons](doc/comparisons.md)
+* [Caching](doc/caching.md)
 
 Usage Examples
 -------------
