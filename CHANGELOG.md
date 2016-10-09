@@ -4,6 +4,8 @@ This project adheres to [Semantic Versioning](http://semver.org/).
 
 ## [Unreleased]
 ### Added
+- Text cache driver
+- Cache folder configuration for cache files
 - Resource field comparison refering to user attribute
 - User field comparison refering to resource attribute
 
