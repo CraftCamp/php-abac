@@ -1,11 +1,39 @@
 /nbproject/
 code-coverage
-vendor
 build
-composer.phar
-composer.lock
 phpunit.xml
 data/cache/text/*
 !data/cache/text/.gitkeep
 data/cache/test/text/*
 !data/cache/test/text/.gitkeep
+
+# Composer
+vendor
+composer.phar
+composer.lock
+
+# Exclude PHPStorm IDE File
+.idea/
+.idea/*
+
+# Exclude IntelliJ
+out/
+
+## OSX
+.DS_Store
+.AppleDouble
+.LSOverride
+
+# Thumbnails
+._*
+
+# Files that might appear on external disk
+.Spotlight-V100
+.Trashes
+
+# Directories potentially created on remote AFP share
+.AppleDB
+.AppleDesktop
+Network Trash Folder
+Temporary Items
+.apdisk
