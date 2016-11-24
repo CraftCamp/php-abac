@@ -2,11 +2,12 @@
 
 namespace PhpAbac\Loader;
 
-use Symfony\Component\Config\Loader\FileLoader;
 use Symfony\Component\Yaml\Yaml;
 
-class YamlAbacLoader extends FileLoader
+class YamlAbacLoader extends AbacLoader
 {
+	const EXTENSION_ALLOWED_A = ['yml','yaml'];
+	
     public function load($resource, $type = null)
     {
         return Yaml::parse(file_get_contents($resource));
@@ -14,9 +15,6 @@ class YamlAbacLoader extends FileLoader
 
     public function supports($resource, $type = null)
     {
-        return is_string($resource) && 'yml' === pathinfo(
-            $resource,
-            PATHINFO_EXTENSION
-        );
+        return is_string($resource) && self::supportsExtension($resource);
     }
 }
