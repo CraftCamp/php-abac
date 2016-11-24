@@ -87,19 +87,24 @@ class Abac {
 				return $cacheValue;
 			}
 		}
-		$policyRule = $this->policyRuleManager->getRule( $ruleName, $user, $resource );
-		// For each policy rule attribute, we retrieve the attribute value and proceed configured extra data
-		foreach ( $policyRule->getPolicyRuleAttributes() as $pra ) {
-			$attribute = $pra->getAttribute();
-			$attribute->setValue( $this->attributeManager->retrieveAttribute( $attribute, $user, $resource ) );
-			if ( count( $pra->getExtraData() ) > 0 ) {
-				$this->processExtraData( $pra, $user, $resource );
-			}
-			$this->comparisonManager->compare( $pra );
-		}
-		// The given result could be an array of rejected attributes or true
-		// True means that the rule is correctly enforced for the given user and resource
-		$result = $this->comparisonManager->getResult();
+		$policyRule_a = $this->policyRuleManager->getRule( $ruleName, $user, $resource );
+
+		foreach ($policyRule_a as $policyRule) {
+            // For each policy rule attribute, we retrieve the attribute value and proceed configured extra data
+            foreach ($policyRule->getPolicyRuleAttributes() as $pra) {
+                $attribute = $pra->getAttribute();
+                $attribute->setValue($this->attributeManager->retrieveAttribute($attribute, $user, $resource));
+                if (count($pra->getExtraData()) > 0) {
+                    $this->processExtraData($pra, $user, $resource);
+                }
+                $this->comparisonManager->compare($pra);
+            }
+            // The given result could be an array of rejected attributes or true
+            // True means that the rule is correctly enforced for the given user and resource
+            $result = $this->comparisonManager->getResult();
+            if (true === $result)
+                break;
+        }
 		if ( $cacheResult ) {
 			$cacheItem->set( $result );
 			$this->cacheManager->save( $cacheItem );

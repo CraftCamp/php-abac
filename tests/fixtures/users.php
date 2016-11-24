@@ -11,7 +11,8 @@ return [
     ->addVisa($visas[0])
     ->addVisa($visas[1])
     ->setHasDoneJapd(false)
-    ->setHasDrivingLicense(true),
+    ->setHasDrivingLicense(true)
+    ->setCountry('FR'),
     (new User())
     ->setId(2)
     ->setName('Thierry')
@@ -26,7 +27,8 @@ return [
     ->setAge(17)
     ->setParentNationality('FR')
     ->setHasDoneJapd(true)
-    ->setHasDrivingLicense(true),
+    ->setHasDrivingLicense(true)
+    ->setCountry('FR'),
     (new User())
     ->setId(4)
     ->setName('Bouddha')
@@ -34,4 +36,12 @@ return [
     ->setParentNationality('FR')
     ->setHasDoneJapd(true)
     ->setHasDrivingLicense(false),
+    (new User())
+    ->setId(5)
+    ->setName('Mickey')
+    ->setAge(22)
+    ->setParentNationality('FR')
+    ->setHasDoneJapd(true)
+    ->setHasDrivingLicense(false)
+    ->setCountry('US')
 ];

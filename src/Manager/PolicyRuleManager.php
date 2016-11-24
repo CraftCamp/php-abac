@@ -7,9 +7,9 @@ use PhpAbac\Model\PolicyRuleAttribute;
 
 class PolicyRuleManager
 {
-    /** @var \PhpAbac\Manager\AttributeManager **/
+    /** @var \PhpAbac\Manager\AttributeManager * */
     private $attributeManager;
-    /** @var array **/
+    /** @var array * */
     private $rules;
 
     /**
@@ -26,23 +26,33 @@ class PolicyRuleManager
      * @param string $ruleName
      * @param object $user
      * @param object $resource
-     * @return PolicyRule
+     * @return PolicyRule[]
      * @throws \InvalidArgumentException
      */
     public function getRule($ruleName, $user, $resource)
     {
-        if(!isset($this->rules[$ruleName])) {
+        if (!isset($this->rules[$ruleName])) {
             throw new \InvalidArgumentException('The given rule "' . $ruleName . '" is not configured');
         }
-        $rule =
-            (new PolicyRule())
-            ->setName($ruleName)
-        ;
-        // For each policy rule attribute, the data is formatted
-        foreach($this->processRuleAttributes($this->rules[$ruleName]['attributes'], $user, $resource) as $pra) {
-            $rule->addPolicyRuleAttribute($pra);
+
+        // force to treat always arrays
+        if (array_key_exists('attributes', $this->rules[$ruleName])) {
+            $this->rules[$ruleName] = [$this->rules[$ruleName]];
         }
-        return $rule;
+
+
+        $rule_a = [];
+        foreach ($this->rules[$ruleName] as $rule) {
+            $Policy =
+                (new PolicyRule())
+                    ->setName($ruleName);
+            // For each policy rule attribute, the data is formatted
+            foreach ($this->processRuleAttributes($rule['attributes'], $user, $resource) as $pra) {
+                $Policy->addPolicyRuleAttribute($pra);
+            }
+            $rule_a[] = $Policy;
+        }
+        return $rule_a;
     }
 
     /**
@@ -52,19 +62,19 @@ class PolicyRuleManager
      * @param object $user
      * @param object $resource
      */
-    public function processRuleAttributes($attributes, $user, $resource) {
-        foreach($attributes as $attributeName => $attribute) {
+    public function processRuleAttributes($attributes, $user, $resource)
+    {
+        foreach ($attributes as $attributeName => $attribute) {
             $pra = (new PolicyRuleAttribute())
                 ->setAttribute($this->attributeManager->getAttribute($attributeName))
                 ->setComparison($attribute['comparison'])
                 ->setComparisonType($attribute['comparison_type'])
-                ->setValue((isset($attribute['value'])) ? $attribute['value'] : null)
-            ;
+                ->setValue((isset($attribute['value'])) ? $attribute['value'] : null);
             $this->processRuleAttributeComparisonType($pra, $user, $resource);
             // In the case the user configured more keys than the basic ones
             // it will be stored as extra data
-            foreach($attribute as $key => $value) {
-                if(!in_array($key, ['comparison', 'comparison_type', 'value'])) {
+            foreach ($attribute as $key => $value) {
+                if (!in_array($key, ['comparison', 'comparison_type', 'value'])) {
                     $pra->addExtraData($key, $value);
                 }
             }
@@ -80,10 +90,15 @@ class PolicyRuleManager
      * @param object $user
      * @param object $resource
      */
-    public function processRuleAttributeComparisonType(PolicyRuleAttribute $pra, $user, $resource) {
-        switch($pra->getComparisonType()) {
-            case 'user': $pra->setExtraData(['user' => $user]); break;
-            case 'object': $pra->setExtraData(['resource' => $resource]); break;
+    public function processRuleAttributeComparisonType(PolicyRuleAttribute $pra, $user, $resource)
+    {
+        switch ($pra->getComparisonType()) {
+            case 'user':
+                $pra->setExtraData(['user' => $user]);
+                break;
+            case 'object':
+                $pra->setExtraData(['resource' => $resource]);
+                break;
         }
     }
 }

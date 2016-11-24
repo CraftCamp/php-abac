@@ -1,0 +1,63 @@
+{
+    "attributes": {
+        "main_user": {
+            "class": "PhpAbac\\Example\\User",
+            "type": "user",
+            "fields": {
+                "id": {
+                    "name": "ID"
+                },
+                "age": {
+                    "name": "Age"
+                },
+                "parentNationality": {
+                    "name": "Nationalité des parents"
+                },
+                "hasDoneJapd": {
+                    "name": "JAPD"
+                },
+                "hasDrivingLicense": {
+                    "name": "Permis de conduire"
+                },
+                "visas": {
+                    "name": "Visas"
+                },
+                "country": {
+                    "name": "Code ISO du pays"
+                }
+            }
+        }
+    },
+    "rules": {
+        "gunlaw": [
+            {
+                "attributes": {
+                    "main_user.age": {
+                        "comparison_type": "numeric",
+                        "comparison": "isGreaterThan",
+                        "value": 18
+                    },
+                    "main_user.country": {
+                        "comparison_type": "string",
+                        "comparison": "isEqual",
+                        "value": "FR"
+                    }
+                }
+            },
+            {
+                "attributes": {
+                    "main_user.age": {
+                        "comparison_type": "numeric",
+                        "comparison": "isGreaterThan",
+                        "value": 21
+                    },
+                    "main_user.country": {
+                        "comparison_type": "string",
+                        "comparison": "isNotEqual",
+                        "value": "FR"
+                    }
+                }
+            }
+        ]
+    }
+}
