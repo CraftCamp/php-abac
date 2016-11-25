@@ -7,7 +7,7 @@ use Symfony\Component\Serializer\Encoder\JsonEncoder;
 
 class JsonAbacLoader extends AbacLoader
 {
-	const EXTENSION_ALLOWED_A = ['json'];
+	protected static $_EXTENSION_ALLOWED_A = ['json'];
 	
     public function load($resource, $type = null)
     {

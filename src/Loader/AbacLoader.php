@@ -14,7 +14,7 @@ abstract class AbacLoader extends FileLoader {
 	/**
 	 * Must be overrided to contains an array of allowed extension
 	 */
-	const EXTENSION_ALLOWED_A = [];
+	protected static $_EXTENSION_ALLOWED_A = [];
 	
 	/**
 	 * Method to load a resource and return an array that contains decoded data of the resource
@@ -45,7 +45,15 @@ abstract class AbacLoader extends FileLoader {
 	 * @return boolean Return true if the extension of the ressource is supported by the loader
 	 */
 	public static final function supportsExtension( $resource ) {
-		return in_array( pathinfo( $resource, PATHINFO_EXTENSION ), static::EXTENSION_ALLOWED_A );
+		return in_array( pathinfo( $resource, PATHINFO_EXTENSION ), self::getExtensionAllowed() );
+	}
+
+    /**
+	 * Method to return allowed extension for file to load with the loader
+     * @return mixed
+     */
+	private static final function getExtensionAllowed() {
+		return static::$_EXTENSION_ALLOWED_A;
 	}
 }
 

@@ -6,7 +6,7 @@ use Symfony\Component\Yaml\Yaml;
 
 class YamlAbacLoader extends AbacLoader
 {
-	const EXTENSION_ALLOWED_A = ['yml','yaml'];
+	protected static $_EXTENSION_ALLOWED_A = ['yml','yaml'];
 	
     public function load($resource, $type = null)
     {
