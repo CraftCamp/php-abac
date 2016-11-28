@@ -11,7 +11,7 @@ class JsonAbacLoader extends AbacLoader
 	
     public function load($resource, $type = null)
     {
-    	return (new JsonDecode(true))->decode(file_get_contents($resource),JsonEncoder::FORMAT,[ 'json_decode_associative' => true ] );
+    	return (new JsonDecode(true))->decode(file_get_contents($this->locator->locate($resource)),JsonEncoder::FORMAT,[ 'json_decode_associative' => true ] );
     }
 
     public function supports($resource, $type = null)
