@@ -115,6 +115,23 @@ class User {
     public function getVisas() {
         return $this->visas;
     }
+	
+	/**
+	 * Return a specific visa
+	 *
+	 * @param Visa $visa
+	 *
+	 * @return mixed|null
+	 */
+    public function getVisa($country_code) {
+    	/** @var Visa $visa */
+    	$visas = [];
+		foreach($this->visas as $visa) {
+    		if ($visa->getCountry()->getCode() == $country_code)
+				$visas[] = $visa;
+		}
+		return $visas;
+	}
     
     /**
      * @param bool $hasDoneJapd

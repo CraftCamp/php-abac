@@ -1,0 +1,10 @@
+---
+attributes:
+    main_user:
+        class: PhpAbac\Example\User
+        type: user
+        fields:
+            - id:
+                name: ID
+            age:
+                name: Age

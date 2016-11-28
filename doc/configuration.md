@@ -44,6 +44,18 @@ If all configuration file are in the same folder, you can add this folder in 3th
     $abac->enforce('vehicle-homologation', $user, $vehicle);
 ```
 
+Configuration Options
+---------------------
+Abac constructor allow a 4th parameter called options : 
+```php 
+public function __construct( $configPaths, $cacheOptions = [], $configPaths_root = null, $options = [] );
+```
+
+This parameter must be an array and can contains this options : 
+- getter_prefix (default='get') : Prefix to add before getter name
+- getter_name_transformation_function (default='ucfirst') : Function to apply on the getter name ( before adding prefix ) 
+
+
 Attributes
 ----------
 
@@ -285,4 +297,75 @@ rules:
                             comparison_type: datetime
                             comparison: isMoreRecentThan
                             value: -1Y
+```
+
+
+Import property 
+=================
+
+The better way to define all attributes and rules is to make each definition in a specific file. Is more convenient to understand each rule an each objet{resource/user} definition. 
+
+file : users/main_user.yml
+```yaml 
+---
+attributes:
+    main_user:
+        class: PhpAbac\Example\User
+        type: user
+        fields:
+            id:
+                name: ID
+            age:
+                name: Age
+``` 
+
+
+file : travel-to-foreign-country.yml
+```yaml 
+---
+'@import':
+    - users/main_user.yml
+
+rules:
+    travel:
+        attributes:
+            main_user.age:
+                comparison_type: numeric
+                comparison: isGreaterThan
+                value: 18
+```
+
+
+
+Used Getter extended paramters 
+==============================
+
+Sometimes, you need to call getter with parameters. 
+
+it's possible by adding getter_params list in attributes rules specification. 
+
+```yaml
+---
+rules:
+    travel-to-foreign-country:
+        attributes:
+            main_user.age:
+                comparison_type: numeric
+                comparison: isGreaterThan
+                value: 18
+            main_user.visa:
+                comparison_type: array
+                comparison: contains
+                getter_params:
+                  visa:
+                    -
+                      param_name: '@country_code'
+                      param_value: country.code
+                # The executed code will be : $main_user->getVisa($country->getCode)
+                # If you want only simple value, remove @ in param_name value. 
+                with:
+                    visa.lastRenewal:
+                        comparison_type: datetime
+                        comparison: isMoreRecentThan
+                        value: -1Y
 ```

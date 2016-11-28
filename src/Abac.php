@@ -28,26 +28,27 @@ class Abac {
 	 * @param array  $configPaths
 	 * @param array  $cacheOptions     Option for cache
 	 * @param string $configPaths_root The origin folder to find $configPaths
+	 * @param array  $options
 	 */
-	public function __construct( $configPaths, $cacheOptions = [], $configPaths_root = null ) {
+	public function __construct( $configPaths, $cacheOptions = [], $configPaths_root = null, $options = [] ) {
 		$this->configure( $configPaths, $configPaths_root );
-		$this->attributeManager  = new AttributeManager( $this->configuration->getAttributes() );
+		$this->attributeManager = new AttributeManager( $this->configuration->getAttributes(), $options );
 		$this->policyRuleManager = new PolicyRuleManager( $this->attributeManager, $this->configuration->getRules() );
 		$this->cacheManager      = new CacheManager( $cacheOptions );
 		$this->comparisonManager = new ComparisonManager( $this->attributeManager );
 	}
 	
 	/**
-	 * @param array $configPaths
+	 * @param array  $configPaths
 	 * @param string $configPaths_root The origin folder to find $configPaths
 	 */
 	public function configure( $configPaths, $configPaths_root = null ) {
-		foreach($configPaths as &$configPath) {
-			$configPath = $configPaths_root.$configPath;
-		}
+//		foreach ( $configPaths as &$configPath ) {
+//			$configPath = $configPaths_root . $configPath;
+//		}
 		$locator             = new FileLocator( $configPaths_root );
 		$this->configuration = new ConfigurationManager( $locator );
-		$this->configuration->setConfigPathRoot($configPaths_root);
+		$this->configuration->setConfigPathRoot( $configPaths_root );
 		$this->configuration->parseConfigurationFile( $configPaths );
 	}
 	
@@ -88,29 +89,60 @@ class Abac {
 			}
 		}
 		$policyRule_a = $this->policyRuleManager->getRule( $ruleName, $user, $resource );
-
-		foreach ($policyRule_a as $policyRule) {
-            // For each policy rule attribute, we retrieve the attribute value and proceed configured extra data
-            foreach ($policyRule->getPolicyRuleAttributes() as $pra) {
-                $attribute = $pra->getAttribute();
-                $attribute->setValue($this->attributeManager->retrieveAttribute($attribute, $user, $resource));
-                if (count($pra->getExtraData()) > 0) {
-                    $this->processExtraData($pra, $user, $resource);
-                }
-                $this->comparisonManager->compare($pra);
-            }
-            // The given result could be an array of rejected attributes or true
-            // True means that the rule is correctly enforced for the given user and resource
-            $result = $this->comparisonManager->getResult();
-            if (true === $result)
-                break;
-        }
+		
+		foreach ( $policyRule_a as $policyRule ) {
+			// For each policy rule attribute, we retrieve the attribute value and proceed configured extra data
+			foreach ( $policyRule->getPolicyRuleAttributes() as $pra ) {
+				/** @var PolicyRuleAttribute $pra */
+				$attribute = $pra->getAttribute();
+				
+				$getter_params = $this->prepareGetterParams($pra->getGetterParams(), $user, $resource);
+//				var_dump($pra->getGetterParams());
+//				var_dump($getter_params);
+				$attribute->setValue( $this->attributeManager->retrieveAttribute( $attribute, $user, $resource, $getter_params ) );
+				if ( count( $pra->getExtraData() ) > 0 ) {
+					$this->processExtraData( $pra, $user, $resource );
+				}
+				$this->comparisonManager->compare( $pra );
+			}
+			// The given result could be an array of rejected attributes or true
+			// True means that the rule is correctly enforced for the given user and resource
+			$result = $this->comparisonManager->getResult();
+			if ( true === $result ) {
+				break;
+			}
+		}
 		if ( $cacheResult ) {
 			$cacheItem->set( $result );
 			$this->cacheManager->save( $cacheItem );
 		}
 		
 		return $result;
+	}
+	
+	/**
+	 * Function to prepare Getter Params when getter require parameters ( this parameters must be specified in configuration file)
+	 *
+	 * @param $getter_params
+	 * @param $user
+	 * @param $resource
+	 *
+	 * @return array
+	 */
+	private function prepareGetterParams($getter_params, $user, $resource) {
+		if (empty($getter_params)) return [];
+		$values = [];
+		foreach($getter_params as $getter_name=>$params) {
+			foreach($params as $param) {
+				if ( '@' !== $param[ 'param_name' ][ 0 ] ) {
+					$values[$getter_name][] = $param[ 'param_value' ];
+				}
+				else {
+					$values[$getter_name][] = $this->attributeManager->retrieveAttribute( $this->attributeManager->getAttribute( $param[ 'param_value' ] ) , $user, $resource );
+				}
+			}
+		}
+		return $values;
 	}
 	
 	/**

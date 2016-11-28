@@ -69,12 +69,13 @@ class PolicyRuleManager
                 ->setAttribute($this->attributeManager->getAttribute($attributeName))
                 ->setComparison($attribute['comparison'])
                 ->setComparisonType($attribute['comparison_type'])
-                ->setValue((isset($attribute['value'])) ? $attribute['value'] : null);
+                ->setValue((isset($attribute['value'])) ? $attribute['value'] : null)
+				->setGetterParams( isset( $attribute[ 'getter_params' ] ) ? $attribute[ 'getter_params' ] : [] );
             $this->processRuleAttributeComparisonType($pra, $user, $resource);
             // In the case the user configured more keys than the basic ones
             // it will be stored as extra data
             foreach ($attribute as $key => $value) {
-                if (!in_array($key, ['comparison', 'comparison_type', 'value'])) {
+                if (!in_array($key, ['comparison', 'comparison_type', 'value','getter_params'])) {
                     $pra->addExtraData($key, $value);
                 }
             }

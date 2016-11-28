@@ -1,0 +1,58 @@
+---
+attributes:
+    main_user:
+        class: PhpAbac\Example\User
+        type: user
+        fields:
+            id:
+                name: ID
+            age:
+                name: Age
+            parentNationality:
+                name: Nationalité des parents
+            hasDoneJapd:
+                name: JAPD
+            hasDrivingLicense:
+                name: Permis de conduire
+            visa:
+                name: Visa specific
+            visas:
+                name: Visas
+            country:
+                name: Code ISO du pays
+    visa:
+        class: PhpAbac\Example\Visa
+        type: resource
+        fields:
+            country.code:
+                name: Code Pays
+            lastRenewal:
+                name: Dernier renouvellement
+    country:
+        class: PhpAbac\Example\Country
+        type: resource
+        fields:
+            name:
+                name: Nom du pays
+            code:
+                name: Code international
+rules:
+    travel-to-foreign-country:
+        attributes:
+            main_user.age:
+                comparison_type: numeric
+                comparison: isGreaterThan
+                value: 18
+            main_user.visa:
+                comparison_type: array
+                comparison: contains
+                getter_params:
+                  visa:
+                    -
+                      param_name: '@country_code'
+                      param_value: country.code
+                with:
+                    visa.lastRenewal:
+                        comparison_type: datetime
+                        comparison: isMoreRecentThan
+                        value: -1Y

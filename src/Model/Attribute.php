@@ -9,7 +9,7 @@ class Attribute extends AbstractAttribute
     
     /**
      * @param string $property
-     * @return \PhpAbac\Model\Attribute
+     * @return static
      */
     public function setProperty($property) {
         $this->property = $property;

@@ -63,7 +63,7 @@ class PolicyRule
     }
 
     /**
-     * @return array<PhpAbac\Model\PolicyRuleAttribute>
+     * @return \PhpAbac\Model\PolicyRuleAttribute[]
      */
     public function getPolicyRuleAttributes()
     {
