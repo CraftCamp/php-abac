@@ -16,6 +16,8 @@ Usage
 ```php
 use PhpAbac\Abac;
 
+$abac = new Abac([...]);
+
 $check = $abac->enforce('medical-reports-access', $user, $report);
 ```
 

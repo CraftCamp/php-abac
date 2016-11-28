@@ -1,0 +1,26 @@
+---
+'@import':
+    - users/main_user.yml
+    - resources/visa.yml
+    - resources/country.yml
+
+rules:
+    travel-to-foreign-country:
+        attributes:
+            main_user.age:
+                comparison_type: numeric
+                comparison: isGreaterThan
+                value: 18
+            main_user.visa:
+                comparison_type: array
+                comparison: contains
+                getter_params:
+                  visa:
+                    -
+                      param_name: '@country_code'
+                      param_value: country.code
+                with:
+                    visa.lastRenewal:
+                        comparison_type: datetime
+                        comparison: isMoreRecentThan
+                        value: -1Y

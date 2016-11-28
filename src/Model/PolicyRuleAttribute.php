@@ -14,6 +14,8 @@ class PolicyRuleAttribute
     protected $value;
     /** @var array **/
     protected $extraData;
+	/** @var array Extended parameter */
+	protected $getter_params_a = [];
 
     /**
      * @param \PhpAbac\Model\AbstractAttribute $attribute
@@ -133,4 +135,22 @@ class PolicyRuleAttribute
     public function getExtraData() {
         return $this->extraData;
     }
+    
+	/**
+	 * @param array $value
+	 *
+	 * @return static
+	 */
+	public function setGetterParams($value) {
+		$this->getter_params_a = $value;
+		
+		return $this;
+	}
+	
+	/**
+	 * @return array
+	 */
+	public function getGetterParams() {
+		return $this->getter_params_a;
+	}
 }

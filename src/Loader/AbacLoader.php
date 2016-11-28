@@ -35,15 +35,15 @@ abstract class AbacLoader extends FileLoader {
 	 */
 	abstract public function load( $resource, $type = null );
 	
-	/**
-	 * Method to check if a resource ( by his path ) is supported by the loader
-	 *
-	 * @param string $resource The path of the resource to check
-	 * @param null   $type     ??
-	 *
-	 * @return boolean Return true if the resource is supported by the loader
-	 */
-	abstract public function supports( $resource, $type = null );
+//	/**
+//	 * Method to check if a resource ( by his path ) is supported by the loader
+//	 *
+//	 * @param string $resource The path of the resource to check
+//	 * @param null   $type     ??
+//	 *
+//	 * @return boolean Return true if the resource is supported by the loader
+//	 */
+//	abstract public function supports( $resource, $type = null );
 	
 	/**
 	 * Method to check if a resource is supported by the loader

@@ -18,7 +18,7 @@ class ConfigurationManager {
 	/** @var array * */
 	protected $attributes;
 	
-	protected $config_path_route;
+//	protected $config_path_route;
 	
 	/** @var array List of File Already Loader */
 	protected $config_files_loaded;
@@ -41,10 +41,14 @@ class ConfigurationManager {
 		if ( in_array( 'json', $format ) ) {
 			$this->loaders[ 'json' ] = new JsonAbacLoader( $locator, $this );
 		}
+		
 	}
 	
 	public function setConfigPathRoot($configPaths_root = null) {
-		$this->config_path_route = $configPaths_root;
+//		$this->config_path_route = $configPaths_root;
+		foreach($this->loaders as $loader) {
+			$loader->setCurrentDir($configPaths_root);
+		}
 	}
 		
 	/**
@@ -52,7 +56,19 @@ class ConfigurationManager {
 	 */
 	public function parseConfigurationFile( $configurationFiles ) {
 		foreach ( $configurationFiles as $configurationFile ) {
-			$config = $this->getLoader( $configurationFile )->load( $configurationFile );
+			$config = $this->getLoader( $configurationFile )->import( $configurationFile, pathinfo( $configurationFile, PATHINFO_EXTENSION ) );
+			
+			if (in_array($config['path'],$this->config_files_loaded)) {
+				continue;
+			}
+			
+			$this->config_files_loaded[] = $config['path'];
+			
+			if (isset($config['@import'])) {
+				$this->parseConfigurationFile($config['@import']);
+				unset($config['@import']);
+			}
+			
 			if ( isset( $config[ 'attributes' ] ) ) {
 				$this->attributes = array_merge( $this->attributes, $config[ 'attributes' ] );
 			}

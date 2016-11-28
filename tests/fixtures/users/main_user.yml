@@ -1,0 +1,22 @@
+---
+attributes:
+    main_user:
+        class: PhpAbac\Example\User
+        type: user
+        fields:
+            id:
+                name: ID
+            age:
+                name: Age
+            parentNationality:
+                name: Nationalité des parents
+            hasDoneJapd:
+                name: JAPD
+            hasDrivingLicense:
+                name: Permis de conduire
+            visa:
+                name: Visa specific
+            visas:
+                name: Visas
+            country:
+                name: Code ISO du pays

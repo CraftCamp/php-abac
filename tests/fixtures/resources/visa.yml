@@ -1,0 +1,10 @@
+---
+attributes:
+    visa:
+        class: PhpAbac\Example\Visa
+        type: resource
+        fields:
+            country.code:
+                name: Code Pays
+            lastRenewal:
+                name: Dernier renouvellement
