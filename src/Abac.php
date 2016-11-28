@@ -45,7 +45,7 @@ class Abac {
 		foreach($configPaths as &$configPath) {
 			$configPath = $configPaths_root.$configPath;
 		}
-		$locator             = new FileLocator( $configPaths );
+		$locator             = new FileLocator( $configPaths_root );
 		$this->configuration = new ConfigurationManager( $locator );
 		$this->configuration->setConfigPathRoot($configPaths_root);
 		$this->configuration->parseConfigurationFile( $configPaths );

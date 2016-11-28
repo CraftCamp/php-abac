@@ -8,6 +8,8 @@
 
 namespace PhpAbac\Loader;
 
+use PhpAbac\Manager\ConfigurationManager;
+use Symfony\Component\Config\FileLocatorInterface;
 use Symfony\Component\Config\Loader\FileLoader;
 
 abstract class AbacLoader extends FileLoader {
@@ -15,6 +17,13 @@ abstract class AbacLoader extends FileLoader {
 	 * Must be overrided to contains an array of allowed extension
 	 */
 	protected static $_EXTENSION_ALLOWED_A = [];
+	
+	/** @var  ConfigurationManager The configuration manage instanciator and user of this AbacLoader Instance */
+	protected $configurationManger;
+	
+	public function __construct( FileLocatorInterface $locator ) {
+		parent::__construct( $locator );
+	}
 	
 	/**
 	 * Method to load a resource and return an array that contains decoded data of the resource

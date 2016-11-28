@@ -20,6 +20,9 @@ class ConfigurationManager {
 	
 	protected $config_path_route;
 	
+	/** @var array List of File Already Loader */
+	protected $config_files_loaded;
+	
 	/**
 	 * @param FileLocatorInterface $locator
 	 * @param string|array         $format A format or an array of format
@@ -28,21 +31,22 @@ class ConfigurationManager {
 		'yaml',
 		'json',
 	] ) {
-		$this->locator    = $locator;
-		$this->attributes = [];
-		$this->rules      = [];
+		$this->locator             = $locator;
+		$this->attributes          = [];
+		$this->rules               = [];
+		$this->config_files_loaded = [];
 		if ( in_array( 'yaml', $format ) ) {
-			$this->loaders[ 'yaml' ] = new YamlAbacLoader( $locator );
+			$this->loaders[ 'yaml' ] = new YamlAbacLoader( $locator, $this );
 		}
 		if ( in_array( 'json', $format ) ) {
-			$this->loaders[ 'json' ] = new JsonAbacLoader( $locator );
+			$this->loaders[ 'json' ] = new JsonAbacLoader( $locator, $this );
 		}
 	}
 	
 	public function setConfigPathRoot($configPaths_root = null) {
 		$this->config_path_route = $configPaths_root;
 	}
-	
+		
 	/**
 	 * @param array $configurationFiles
 	 */
@@ -57,6 +61,8 @@ class ConfigurationManager {
 			}
 		}
 	}
+	
+	
 	
 	/**
 	 * Function to retrieve the good loader for the configuration file

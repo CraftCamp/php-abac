@@ -10,7 +10,7 @@ class YamlAbacLoader extends AbacLoader
 	
     public function load($resource, $type = null)
     {
-        return Yaml::parse(file_get_contents($resource));
+        return Yaml::parse(file_get_contents($this->locator->locate($resource)));
     }
 
     public function supports($resource, $type = null)
