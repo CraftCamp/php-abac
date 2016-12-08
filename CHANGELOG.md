@@ -2,6 +2,16 @@
 All notable changes to this project will be documented in this file.
 This project adheres to [Semantic Versioning](http://semver.org/).
 
+## [*.*.*] - 2016-12-09
+### Added 
+- JSON configuration file compatibility
+- Using Symfony Locator for configuration file 
+- Multiple Set of Rules for an unique Rule name
+- Allow simple configuration by include file ( via @import attribute )
+- Allow to specify getter prefix (default = get ) and method to apply on getter name method instead of ucfist(default)
+- Allow getter addional paramters in config file.
+
+
 ## [2.1.0] - 2016-10-09
 ### Added
 - Text cache driver
