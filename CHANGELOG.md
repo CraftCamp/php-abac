@@ -9,7 +9,7 @@ This project adheres to [Semantic Versioning](http://semver.org/).
 - Multiple Set of Rules for an unique Rule name
 - Allow simple configuration by include file ( via @import attribute )
 - Allow to specify getter prefix (default = get ) and method to apply on getter name method instead of ucfist(default)
-- Allow getter addional paramters in config file.
+- Allow addional parameters for getters in config file.
 
 
 ## [2.1.0] - 2016-10-09
