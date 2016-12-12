@@ -16,7 +16,7 @@ abstract class AbstractAttribute
     /**
      * @param string $name
      *
-     * @return \PhpAbac\Model\AbstractAttribute
+     * @return static
      */
     public function setName($name)
     {
@@ -36,7 +36,7 @@ abstract class AbstractAttribute
     /**
      * @param string $type
      *
-     * @return \PhpAbac\Model\PolicyRuleAttribute
+     * @return static
      */
     public function setType($type)
     {
@@ -56,7 +56,7 @@ abstract class AbstractAttribute
     /**
      * @param string $slug
      *
-     * @return \PhpAbac\Model\AbstractAttribute
+     * @return static
      */
     public function setSlug($slug)
     {
@@ -76,7 +76,7 @@ abstract class AbstractAttribute
     /**
      * @param mixed $value
      *
-     * @return \PhpAbac\Model\Attribute
+     * @return static
      */
     public function setValue($value)
     {
@@ -92,4 +92,5 @@ abstract class AbstractAttribute
     {
         return $this->value;
     }
+	
 }

@@ -190,6 +190,82 @@ $check = $abac->enforce('edit-group', $user, $group, [
 ]);
 ```
 
+**Example with multiple rules (ruleSet) for an unique rule.**
+Each rule are tested and the treatment stop when the first rule of the ruleSet allow access
+
+The configuration shall be (alcoolaw.yml):
+
+```yaml
+attributes:
+    main_user:
+        class: PhpAbac\Example\User
+        type: user
+        fields:
+            age:
+                name: Age
+            country:
+                name: Code ISO du pays
+rules:
+    alcoollaw:
+        -
+            attributes:
+                main_user.age:
+                    comparison_type: numeric
+                    comparison: isGreaterThan
+                    value: 18
+                main_user.country:
+                    comparison_type: string
+                    comparison: isEqual
+                    value: FR
+        -
+            attributes:
+                main_user.age:
+                    comparison_type: numeric
+                    comparison: isGreaterThan
+                    value: 21
+                main_user.country:
+                    comparison_type: string
+                    comparison: isNotEqual
+                    value: FR
+
+```
+
+And then the code :
+
+```php
+<?php
+
+use PhpAbac\Abac;
+
+$abac = new Abac([
+    'alcoollaw.yml'
+]);
+$check = $abac->enforce('alcoollaw', $user);
+```
+
+**Example with rules root directory passed to Abac class.**
+This feature allow to give a policy definition rules directory path directly to the Abac class without adding to all files :
+ 
+Considering we have 3 yaml files :
+- rest/conf/policy/user_def.yml
+- rest/conf/policy/gunlaw.yml 
+
+The php code can be :
+```php
+<?php
+
+use PhpAbac\Abac;
+
+$abac = new Abac([
+    'user_def.yml',
+    'gunlaw.yml',
+],[],'rest/conf/policy/');
+$check = $abac->enforce('gunlaw', $user);
+ 
+```
+
+
+
 Contribute
 ----------
 

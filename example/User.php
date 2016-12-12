@@ -17,6 +17,8 @@ class User {
     private $hasDoneJapd;
     /** @var bool **/
     private $hasDrivingLicense;
+    /** @var string Iso code of user country */
+    private $country;
 
     /**
      * @param int $id
@@ -113,6 +115,23 @@ class User {
     public function getVisas() {
         return $this->visas;
     }
+	
+	/**
+	 * Return a specific visa
+	 *
+	 * @param Visa $visa
+	 *
+	 * @return mixed|null
+	 */
+    public function getVisa($country_code) {
+    	/** @var Visa $visa */
+    	$visas = [];
+		foreach($this->visas as $visa) {
+    		if ($visa->getCountry()->getCode() == $country_code)
+				$visas[] = $visa;
+		}
+		return $visas;
+	}
     
     /**
      * @param bool $hasDoneJapd
@@ -146,5 +165,24 @@ class User {
      */
     public function getHasDrivingLicense() {
         return $this->hasDrivingLicense;
+    }
+
+
+    /**
+     * Function to set the iso code of the user country
+     *
+     * @param $country
+     */
+    public function setCountry($country) {
+        $this->country = $country;
+
+        return $this;
+    }
+
+    /**
+     * @return string Iso code of the user country
+     */
+    public function getCountry() {
+        return $this->country;
     }
 }

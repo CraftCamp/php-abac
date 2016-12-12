@@ -35,14 +35,18 @@ class PolicyRuleManagerTest extends \PHPUnit_Framework_TestCase
         $visas = include('tests/fixtures/visas.php');
         $users = include('tests/fixtures/users.php');
         $vehicles = include('tests/fixtures/vehicles.php');
-        
-        $policyRule = $this->manager->getRule('vehicle-homologation', $users[0], $vehicles[0]);
+
+        $policyRule_a = $this->manager->getRule('vehicle-homologation', $users[0], $vehicles[0]);
+
+        $policyRule = $policyRule_a[0];
 
         $this->assertInstanceof('PhpAbac\Model\PolicyRule', $policyRule);
         $this->assertEquals('vehicle-homologation', $policyRule->getName());
         $this->assertCount(6, $policyRule->getPolicyRuleAttributes());
 
         $policyRuleAttribute = $policyRule->getPolicyRuleAttributes()[0];
+
+
 
         $this->assertInstanceOf('PhpAbac\Model\PolicyRuleAttribute', $policyRuleAttribute);
         $this->assertInstanceOf('PhpAbac\Model\Attribute', $policyRuleAttribute->getAttribute());

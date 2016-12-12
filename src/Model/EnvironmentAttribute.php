@@ -10,7 +10,7 @@ class EnvironmentAttribute extends AbstractAttribute
     /**
      * @param string $variableName
      *
-     * @return \PhpAbac\Model\EnvironmentAttribute
+     * @return static
      */
     public function setVariableName($variableName)
     {
