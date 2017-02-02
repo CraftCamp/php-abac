@@ -6,7 +6,7 @@ data/cache/text/*
 !data/cache/text/.gitkeep
 data/cache/test/text/*
 !data/cache/test/text/.gitkeep
-
+.php_cs.cache
 # Composer
 vendor
 composer.phar
