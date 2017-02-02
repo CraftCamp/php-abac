@@ -7,7 +7,8 @@ use Psr\Cache\CacheItemInterface;
 
 use PhpAbac\Cache\Item\MemoryCacheItem;
 
-class MemoryCacheItemPool implements CacheItemPoolInterface {
+class MemoryCacheItemPool implements CacheItemPoolInterface
+{
     /** @var array **/
     protected $items;
     /** @var array **/
@@ -15,11 +16,12 @@ class MemoryCacheItemPool implements CacheItemPoolInterface {
     /**
      * {@inheritdoc}
      */
-    public function deleteItem($key) {
-        if(isset($this->items[$key])) {
+    public function deleteItem($key)
+    {
+        if (isset($this->items[$key])) {
             unset($this->items[$key]);
         }
-        if(isset($this->deferredItems[$key])) {
+        if (isset($this->deferredItems[$key])) {
             unset($this->deferredItems[$key]);
         }
         return true;
@@ -28,9 +30,10 @@ class MemoryCacheItemPool implements CacheItemPoolInterface {
     /**
      * {@inheritdoc}
      */
-    public function deleteItems(array $keys) {
-        foreach($keys as $key) {
-            if(!$this->deleteItem($key)) {
+    public function deleteItems(array $keys)
+    {
+        foreach ($keys as $key) {
+            if (!$this->deleteItem($key)) {
                 return false;
             }
         }
@@ -40,7 +43,8 @@ class MemoryCacheItemPool implements CacheItemPoolInterface {
     /**
      * {@inheritdoc}
      */
-    public function save(CacheItemInterface $item) {
+    public function save(CacheItemInterface $item)
+    {
         $this->items[$item->getKey()] = $item;
         
         return true;
@@ -49,7 +53,8 @@ class MemoryCacheItemPool implements CacheItemPoolInterface {
     /**
      * {@inheritdoc}
      */
-    public function saveDeferred(CacheItemInterface $item) {
+    public function saveDeferred(CacheItemInterface $item)
+    {
         $this->deferredItems[$item->getKey()] = $item;
         
         return true;
@@ -58,8 +63,9 @@ class MemoryCacheItemPool implements CacheItemPoolInterface {
     /**
      * {@inheritdoc}
      */
-    public function commit() {
-        foreach($this->deferredItems as $key => $item) {
+    public function commit()
+    {
+        foreach ($this->deferredItems as $key => $item) {
             $this->items[$key] = $item;
             unset($this->deferredItems[$key]);
         }
@@ -69,15 +75,17 @@ class MemoryCacheItemPool implements CacheItemPoolInterface {
     /**
      * {@inheritdoc}
      */
-    public function hasItem($key) {
+    public function hasItem($key)
+    {
         return isset($this->items[$key]);
     }
     
     /**
      * {@inheritdoc}
      */
-    public function getItem($key) {
-        if(!$this->hasItem($key)) {
+    public function getItem($key)
+    {
+        if (!$this->hasItem($key)) {
             return new MemoryCacheItem($key);
         }
         return $this->items[$key];
@@ -86,10 +94,11 @@ class MemoryCacheItemPool implements CacheItemPoolInterface {
     /**
      * {@inheritdoc}
      */
-    public function getItems(array $keys = array()) {
+    public function getItems(array $keys = array())
+    {
         $items = [];
-        foreach($keys as $key) {
-            if($this->hasItem($key)) {
+        foreach ($keys as $key) {
+            if ($this->hasItem($key)) {
                 $items[$key] = $this->getItem($key);
             }
         }
@@ -99,7 +108,8 @@ class MemoryCacheItemPool implements CacheItemPoolInterface {
     /**
      * {@inheritdoc}
      */
-    public function clear() {
+    public function clear()
+    {
         $this->items = [];
         $this->deferredItems = [];
         return true;

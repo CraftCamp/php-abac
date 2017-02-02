@@ -7,15 +7,18 @@ use PhpAbac\Manager\ComparisonManager;
 use PhpAbac\Model\PolicyRuleAttribute;
 use PhpAbac\Model\Attribute;
 
-class ComparisonManagerTest extends \PHPUnit_Framework_TestCase {
+class ComparisonManagerTest extends \PHPUnit_Framework_TestCase
+{
     /** @var \PhpAbac\Manager\ComparisonManager **/
     protected $manager;
     
-    public function setUp() {
+    public function setUp()
+    {
         $this->manager = new ComparisonManager($this->getAttributeManagerMock());
     }
     
-    public function testCompare() {
+    public function testCompare()
+    {
         $this->assertTrue($this->manager->compare(
             (new PolicyRuleAttribute())
             ->setAttribute(
@@ -31,7 +34,8 @@ class ComparisonManagerTest extends \PHPUnit_Framework_TestCase {
         $this->assertTrue($this->manager->getResult());
     }
     
-    public function testCompareWithInvalidAttribute() {
+    public function testCompareWithInvalidAttribute()
+    {
         $this->assertFalse($this->manager->compare(
             (new PolicyRuleAttribute())
             ->setAttribute(
@@ -53,7 +57,8 @@ class ComparisonManagerTest extends \PHPUnit_Framework_TestCase {
      * @expectedException \InvalidArgumentException
      * @expectedExceptionMessage The requested comparison class does not exist
      */
-    public function testCompareWithInvalidType() {
+    public function testCompareWithInvalidType()
+    {
         $this->manager->compare(
             (new PolicyRuleAttribute())
             ->setAttribute(
@@ -72,7 +77,8 @@ class ComparisonManagerTest extends \PHPUnit_Framework_TestCase {
      * @expectedException \InvalidArgumentException
      * @expectedExceptionMessage The requested comparison method does not exist
      */
-    public function testCompareWithInvalidMethod() {
+    public function testCompareWithInvalidMethod()
+    {
         $this->manager->compare(
             (new PolicyRuleAttribute())
             ->setAttribute(
@@ -87,7 +93,8 @@ class ComparisonManagerTest extends \PHPUnit_Framework_TestCase {
         );
     }
     
-    public function testDynamicAttributes() {
+    public function testDynamicAttributes()
+    {
         $this->manager->setDynamicAttributes([
             'owner-id' => 13
         ]);
@@ -98,11 +105,13 @@ class ComparisonManagerTest extends \PHPUnit_Framework_TestCase {
      * @expectedException \InvalidArgumentException
      * @expectedExceptionMessage The dynamic value for attribute owner-id was not given
      */
-    public function testGetMissingDynamicAttribute() {
+    public function testGetMissingDynamicAttribute()
+    {
         $this->manager->getDynamicAttribute('owner-id');
     }
     
-    public function getAttributeManagerMock() {
+    public function getAttributeManagerMock()
+    {
         $managerMock = $this
             ->getMockBuilder('PhpAbac\Manager\AttributeManager')
             ->disableOriginalConstructor()

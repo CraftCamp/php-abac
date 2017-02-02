@@ -17,7 +17,7 @@ class NumericComparison extends AbstractComparison
 
     /**
      * If strict is set to false, equal values will return true.
-     * 
+     *
      * @param int  $expected
      * @param int  $value
      * @param bool $strict
@@ -35,7 +35,7 @@ class NumericComparison extends AbstractComparison
 
     /**
      * If strict is set to false, equal values will return true.
-     * 
+     *
      * @param int  $expected
      * @param int  $value
      * @param bool $strict

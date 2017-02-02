@@ -39,7 +39,8 @@ class BooleanComparison extends AbstractComparison
      * @param mixed $expected
      * @param mixed $value
      */
-    public function isNotNull($expected, $value) {
+    public function isNotNull($expected, $value)
+    {
         return $value !== null;
     }
 }

@@ -14,8 +14,8 @@ class PolicyRuleAttribute
     protected $value;
     /** @var array **/
     protected $extraData;
-	/** @var array Extended parameter */
-	protected $getter_params_a = [];
+    /** @var array Extended parameter */
+    protected $getter_params_a = [];
 
     /**
      * @param \PhpAbac\Model\AbstractAttribute $attribute
@@ -101,7 +101,8 @@ class PolicyRuleAttribute
      * @param array $extraData
      * @return \PhpAbac\Model\PolicyRuleAttribute
      */
-    public function setExtraData($extraData) {
+    public function setExtraData($extraData)
+    {
         $this->extraData = $extraData;
         
         return $this;
@@ -112,7 +113,8 @@ class PolicyRuleAttribute
      * @param string $value
      * @return \PhpAbac\Model\PolicyRuleAttribute
      */
-    public function addExtraData($key, $value) {
+    public function addExtraData($key, $value)
+    {
         $this->extraData[$key] = $value;
         
         return $this;
@@ -122,8 +124,9 @@ class PolicyRuleAttribute
      * @param string $key
      * @return \PhpAbac\Model\PolicyRuleAttribute
      */
-    public function removeExtraData($key) {
-        if(isset($this->extraData[$key])) {
+    public function removeExtraData($key)
+    {
+        if (isset($this->extraData[$key])) {
             unset($this->extraData[$key]);
         }
         return $this;
@@ -132,25 +135,28 @@ class PolicyRuleAttribute
     /**
      * @return array
      */
-    public function getExtraData() {
+    public function getExtraData()
+    {
         return $this->extraData;
     }
     
-	/**
-	 * @param array $value
-	 *
-	 * @return static
-	 */
-	public function setGetterParams($value) {
-		$this->getter_params_a = $value;
-		
-		return $this;
-	}
-	
-	/**
-	 * @return array
-	 */
-	public function getGetterParams() {
-		return $this->getter_params_a;
-	}
+    /**
+     * @param array $value
+     *
+     * @return static
+     */
+    public function setGetterParams($value)
+    {
+        $this->getter_params_a = $value;
+        
+        return $this;
+    }
+    
+    /**
+     * @return array
+     */
+    public function getGetterParams()
+    {
+        return $this->getter_params_a;
+    }
 }

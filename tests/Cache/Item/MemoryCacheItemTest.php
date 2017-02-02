@@ -4,41 +4,49 @@ namespace PhpAbac\Test\Cache\Item;
 
 use PhpAbac\Cache\Item\MemoryCacheItem;
 
-class MemoryCacheItemTest extends \PHPUnit_Framework_TestCase {
+class MemoryCacheItemTest extends \PHPUnit_Framework_TestCase
+{
     /** @var \PhpAbac\Cache\Item\MemoryCacheItem **/
     protected $item;
     
-    public function setUp() {
+    public function setUp()
+    {
         $this->item = new MemoryCacheItem('php_abac.test');
     }
     
-    public function testSet() {
+    public function testSet()
+    {
         $this->item->set('test');
         
         $this->assertEquals('test', $this->item->get());
     }
     
-    public function testIsHit() {
+    public function testIsHit()
+    {
         $this->assertTrue($this->item->isHit());
     }
     
-    public function testIsHitWithMissItem() {
+    public function testIsHitWithMissItem()
+    {
         $this->item->expiresAt((new \DateTime())->setTimestamp(time() - 100));
         
         $this->assertFalse($this->item->isHit());
     }
     
-    public function testGetKey() {
+    public function testGetKey()
+    {
         $this->assertEquals('php_abac.test', $this->item->getKey());
     }
     
-    public function testGet() {
+    public function testGet()
+    {
         $this->item->set('test');
         
         $this->assertEquals('test', $this->item->get());
     }
     
-    public function testExpiresAt() {
+    public function testExpiresAt()
+    {
         $time = time();
         
         $this->item->expiresAt((new \DateTime())->setTimestamp($time));
@@ -46,7 +54,8 @@ class MemoryCacheItemTest extends \PHPUnit_Framework_TestCase {
         $this->assertEquals($time, $this->item->getExpirationDate()->getTimestamp());
     }
     
-    public function testExpiresAfter() {
+    public function testExpiresAfter()
+    {
         $time = time() + 1500;
         
         $this->item->expiresAfter(1500);

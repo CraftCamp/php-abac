@@ -6,7 +6,8 @@ use Psr\Cache\CacheItemInterface;
 
 use PhpAbac\Cache\Exception\ExpiredCacheException;
 
-class TextCacheItem implements CacheItemInterface {
+class TextCacheItem implements CacheItemInterface
+{
     /** @var string **/
     protected $key;
     /** @var mixed **/
@@ -22,7 +23,8 @@ class TextCacheItem implements CacheItemInterface {
      * @param string $key
      * @param int $ttl
      */
-    public function __construct($key, $ttl = null) {
+    public function __construct($key, $ttl = null)
+    {
         $this->key = $key;
         $this->expiresAfter($ttl);
     }
@@ -30,7 +32,8 @@ class TextCacheItem implements CacheItemInterface {
     /**
      * {@inheritdoc}
      */
-    public function set($value) {
+    public function set($value)
+    {
         $this->value = $value;
 
         return $this;
@@ -39,22 +42,25 @@ class TextCacheItem implements CacheItemInterface {
     /**
      * {@inheritdoc}
      */
-    public function isHit() {
+    public function isHit()
+    {
         return $this->expiresAt >= new \DateTime();
     }
 
     /**
      * {@inheritdoc}
      */
-    public function getKey() {
+    public function getKey()
+    {
         return $this->key;
     }
 
     /**
      * {@inheritdoc}
      */
-    public function get() {
-        if(!$this->isHit()) {
+    public function get()
+    {
+        if (!$this->isHit()) {
             throw new ExpiredCacheException('Cache item is expired');
         }
         return $this->value;
@@ -63,7 +69,8 @@ class TextCacheItem implements CacheItemInterface {
     /**
      * {@inheritdoc}
      */
-    public function expiresAfter($time) {
+    public function expiresAfter($time)
+    {
         $lifetime = ($time !== null) ? $time : $this->defaultLifetime;
 
         $this->expiresAt = (new \DateTime())->setTimestamp(time() + $lifetime);
@@ -74,7 +81,8 @@ class TextCacheItem implements CacheItemInterface {
     /**
      * {@inheritdoc}
      */
-    public function expiresAt($expiration) {
+    public function expiresAt($expiration)
+    {
         $this->expiresAt =
             ($expiration === null)
             ? (new \DateTime())->setTimestamp(time() + $this->defaultLifetime)
@@ -86,14 +94,16 @@ class TextCacheItem implements CacheItemInterface {
     /**
      * @return \DateTime
      */
-    public function getExpirationDate() {
+    public function getExpirationDate()
+    {
         return $this->expiresAt;
     }
 
     /**
      * @return string
      */
-    public function getDriver() {
+    public function getDriver()
+    {
         return $this->driver;
     }
 }

@@ -2,7 +2,8 @@
 
 namespace PhpAbac\Example;
 
-class Vehicle {
+class Vehicle
+{
     /** @var int **/
     private $id;
     /** @var \PhpAbac\Example\User **/
@@ -26,7 +27,8 @@ class Vehicle {
      * @param int $id
      * @return \PhpAbac\Example\Vehicle
      */
-    public function setId($id) {
+    public function setId($id)
+    {
         $this->id = $id;
         
         return $this;
@@ -35,7 +37,8 @@ class Vehicle {
     /**
      * @return int
      */
-    public function getId() {
+    public function getId()
+    {
         return $this->id;
     }
 
@@ -43,7 +46,8 @@ class Vehicle {
      * @param \PhpAbac\Example\User $owner
      * @return \PhpAbac\Example\Vehicle
      */
-    public function setOwner(User $owner) {
+    public function setOwner(User $owner)
+    {
         $this->owner = $owner;
         
         return $this;
@@ -52,7 +56,8 @@ class Vehicle {
     /**
      * @return \PhpAbac\Example\User
      */
-    public function getOwner() {
+    public function getOwner()
+    {
         return $this->owner;
     }
     
@@ -60,7 +65,8 @@ class Vehicle {
      * @param string $brand
      * @return \PhpAbac\Example\Vehicle
      */
-    public function setBrand($brand) {
+    public function setBrand($brand)
+    {
         $this->brand = $brand;
         
         return $this;
@@ -69,16 +75,18 @@ class Vehicle {
     /**
      * @return string
      */
-    public function getBrand() {
+    public function getBrand()
+    {
         return $this->brand;
     }
     
     /**
-     * 
+     *
      * @param string $model
      * @return \PhpAbac\Example\Vehicle
      */
-    public function setModel($model) {
+    public function setModel($model)
+    {
         $this->model = $model;
         
         return $this;
@@ -87,7 +95,8 @@ class Vehicle {
     /**
      * @return string
      */
-    public function getModel() {
+    public function getModel()
+    {
         return $this->model;
     }
     
@@ -95,7 +104,8 @@ class Vehicle {
      * @param \DateTime $lastTechnicalReviewDate
      * @return \PhpAbac\Example\Vehicle
      */
-    public function setLastTechnicalReviewDate(\DateTime $lastTechnicalReviewDate) {
+    public function setLastTechnicalReviewDate(\DateTime $lastTechnicalReviewDate)
+    {
         $this->lastTechnicalReviewDate = $lastTechnicalReviewDate;
         
         return $this;
@@ -104,7 +114,8 @@ class Vehicle {
     /**
      * @return \DateTime
      */
-    public function getLastTechnicalReviewDate() {
+    public function getLastTechnicalReviewDate()
+    {
         return $this->lastTechnicalReviewDate;
     }
     
@@ -112,43 +123,51 @@ class Vehicle {
      * @param \DateTime $manufactureDate
      * @return \PhpAbac\Example\Vehicle
      */
-    public function setManufactureDate(\DateTime $manufactureDate) {
+    public function setManufactureDate(\DateTime $manufactureDate)
+    {
         $this->manufactureDate = $manufactureDate;
         
         return $this;
     }
     
-    public function getManufactureDate() {
+    public function getManufactureDate()
+    {
         return $this->manufactureDate;
     }
     
-    public function setOrigin($origin) {
+    public function setOrigin($origin)
+    {
         $this->origin = $origin;
         
         return $this;
     }
     
-    public function getOrigin() {
+    public function getOrigin()
+    {
         return $this->origin;
     }
     
-    public function setEngineType($engineType) {
+    public function setEngineType($engineType)
+    {
         $this->engineType = $engineType;
         
         return $this;
     }
     
-    public function getEngineType() {
+    public function getEngineType()
+    {
         return $this->engineType;
     }
     
-    public function setEcoClass($ecoClass) {
+    public function setEcoClass($ecoClass)
+    {
         $this->ecoClass = $ecoClass;
         
         return $this;
     }
     
-    public function getEcoClass() {
+    public function getEcoClass()
+    {
         return $this->ecoClass;
     }
 }

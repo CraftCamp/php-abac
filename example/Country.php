@@ -2,7 +2,8 @@
 
 namespace PhpAbac\Example;
 
-class Country {
+class Country
+{
     /** @var string **/
     protected $name;
     /** @var string **/
@@ -12,7 +13,8 @@ class Country {
      * @param string $name
      * @return \PhpAbac\Example\Country
      */
-    public function setName($name) {
+    public function setName($name)
+    {
         $this->name = $name;
         
         return $this;
@@ -21,7 +23,8 @@ class Country {
     /**
      * @return string
      */
-    public function getName() {
+    public function getName()
+    {
         return $this->name;
     }
     
@@ -29,7 +32,8 @@ class Country {
      * @param string $code
      * @return \PhpAbac\Example\Country
      */
-    public function setCode($code) {
+    public function setCode($code)
+    {
         $this->code = $code;
         
         return $this;
@@ -38,7 +42,8 @@ class Country {
     /**
      * @return string
      */
-    public function getCode() {
+    public function getCode()
+    {
         return $this->code;
     }
 }

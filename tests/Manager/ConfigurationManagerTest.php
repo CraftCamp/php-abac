@@ -6,12 +6,15 @@ use Symfony\Component\Config\FileLocator;
 
 use PhpAbac\Manager\ConfigurationManager;
 
-class ConfigurationManagerTest extends \PHPUnit_Framework_TestCase {
-    public function setUp() {
+class ConfigurationManagerTest extends \PHPUnit_Framework_TestCase
+{
+    public function setUp()
+    {
         $this->manager = new ConfigurationManager(new FileLocator());
     }
     
-    public function testParseConfigurationFile() {
+    public function testParseConfigurationFile()
+    {
         $this->manager->parseConfigurationFile([__DIR__.'/../fixtures/policy_rules.yml']);
         
         $this->assertCount(5, $this->manager->getAttributes());

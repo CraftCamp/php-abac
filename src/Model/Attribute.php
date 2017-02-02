@@ -11,7 +11,8 @@ class Attribute extends AbstractAttribute
      * @param string $property
      * @return static
      */
-    public function setProperty($property) {
+    public function setProperty($property)
+    {
         $this->property = $property;
         
         return $this;
@@ -20,7 +21,8 @@ class Attribute extends AbstractAttribute
     /**
      * @return string
      */
-    public function getProperty() {
+    public function getProperty()
+    {
         return $this->property;
     }
 }

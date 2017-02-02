@@ -29,7 +29,8 @@ class ObjectComparisonTest extends \PHPUnit_Framework_TestCase
         $this->comparison = new ObjectComparison(new ComparisonManager(new AttributeManager($configuration->getAttributes())));
     }
 
-    public function testIsFieldEqual() {
+    public function testIsFieldEqual()
+    {
         $countries = include(__DIR__ . '/../fixtures/countries.php');
         $visas = include(__DIR__ . '/../fixtures/visas.php');
         $extraData = [

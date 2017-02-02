@@ -2,7 +2,8 @@
 
 namespace PhpAbac\Example;
 
-class User {
+class User
+{
     /** @var int **/
     private $id;
     /** @var string **/
@@ -24,7 +25,8 @@ class User {
      * @param int $id
      * @return \PhpAbac\Example\User
      */
-    public function setId($id) {
+    public function setId($id)
+    {
         $this->id = $id;
         
         return $this;
@@ -33,7 +35,8 @@ class User {
     /**
      * @return int
      */
-    public function getId() {
+    public function getId()
+    {
         return $this->id;
     }
     
@@ -41,7 +44,8 @@ class User {
      * @param string $name
      * @return \PhpAbac\Example\User
      */
-    public function setName($name) {
+    public function setName($name)
+    {
         $this->name = $name;
         
         return $this;
@@ -50,7 +54,8 @@ class User {
     /**
      * @return string
      */
-    public function getName() {
+    public function getName()
+    {
         return $this->name;
     }
     
@@ -58,7 +63,8 @@ class User {
      * @param int $age
      * @return \PhpAbac\Example\User
      */
-    public function setAge($age) {
+    public function setAge($age)
+    {
         $this->age = $age;
         
         return $this;
@@ -67,7 +73,8 @@ class User {
     /**
      * @return int
      */
-    public function getAge() {
+    public function getAge()
+    {
         return $this->age;
     }
     
@@ -75,7 +82,8 @@ class User {
      * @param string $parentNationality
      * @return \PhpAbac\Example\User
      */
-    public function setParentNationality($parentNationality) {
+    public function setParentNationality($parentNationality)
+    {
         $this->parentNationality = $parentNationality;
         
         return $this;
@@ -84,7 +92,8 @@ class User {
     /**
      * @return bool
      */
-    public function getParentNationality() {
+    public function getParentNationality()
+    {
         return $this->parentNationality;
     }
     
@@ -92,7 +101,8 @@ class User {
      * @param \PhpAbac\Example\Visa $visa
      * @return \PhpAbac\Example\User
      */
-    public function addVisa(Visa $visa) {
+    public function addVisa(Visa $visa)
+    {
         $this->visas[$visa->getId()] = $visa;
         
         return $this;
@@ -102,8 +112,9 @@ class User {
      * @param \PhpAbac\Example\Visa $visa
      * @return \PhpAbac\Example\User
      */
-    public function removeVisa(Visa $visa) {
-        if(isset($this->visas[$visa->getId()])) {
+    public function removeVisa(Visa $visa)
+    {
+        if (isset($this->visas[$visa->getId()])) {
             unset($this->visas[$visa->getId()]);
         }
         return $this;
@@ -112,32 +123,36 @@ class User {
     /**
      * @return array
      */
-    public function getVisas() {
+    public function getVisas()
+    {
         return $this->visas;
     }
-	
-	/**
-	 * Return a specific visa
-	 *
-	 * @param Visa $visa
-	 *
-	 * @return mixed|null
-	 */
-    public function getVisa($country_code) {
-    	/** @var Visa $visa */
-    	$visas = [];
-		foreach($this->visas as $visa) {
-    		if ($visa->getCountry()->getCode() == $country_code)
-				$visas[] = $visa;
-		}
-		return $visas;
-	}
+    
+    /**
+     * Return a specific visa
+     *
+     * @param Visa $visa
+     *
+     * @return mixed|null
+     */
+    public function getVisa($country_code)
+    {
+        /** @var Visa $visa */
+        $visas = [];
+        foreach ($this->visas as $visa) {
+            if ($visa->getCountry()->getCode() == $country_code) {
+                $visas[] = $visa;
+            }
+        }
+        return $visas;
+    }
     
     /**
      * @param bool $hasDoneJapd
      * @return \PhpAbac\Example\User
      */
-    public function setHasDoneJapd($hasDoneJapd) {
+    public function setHasDoneJapd($hasDoneJapd)
+    {
         $this->hasDoneJapd = $hasDoneJapd;
         
         return $this;
@@ -146,7 +161,8 @@ class User {
     /**
      * @return bool
      */
-    public function getHasDoneJapd() {
+    public function getHasDoneJapd()
+    {
         return $this->hasDoneJapd;
     }
     
@@ -154,7 +170,8 @@ class User {
      * @param bool $hasDrivingLicense
      * @return \PhpAbac\Example\User
      */
-    public function setHasDrivingLicense($hasDrivingLicense) {
+    public function setHasDrivingLicense($hasDrivingLicense)
+    {
         $this->hasDrivingLicense = $hasDrivingLicense;
         
         return $this;
@@ -163,7 +180,8 @@ class User {
     /**
      * @return bool
      */
-    public function getHasDrivingLicense() {
+    public function getHasDrivingLicense()
+    {
         return $this->hasDrivingLicense;
     }
 
@@ -173,7 +191,8 @@ class User {
      *
      * @param $country
      */
-    public function setCountry($country) {
+    public function setCountry($country)
+    {
         $this->country = $country;
 
         return $this;
@@ -182,7 +201,8 @@ class User {
     /**
      * @return string Iso code of the user country
      */
-    public function getCountry() {
+    public function getCountry()
+    {
         return $this->country;
     }
 }
