@@ -5,14 +5,17 @@ namespace PhpAbac\Test\Cache\Pool;
 use PhpAbac\Cache\Pool\MemoryCacheItemPool;
 use PhpAbac\Cache\Item\MemoryCacheItem;
 
-class MemoryCacheItemPoolTest extends \PHPUnit_Framework_TestCase {
+class MemoryCacheItemPoolTest extends \PHPUnit_Framework_TestCase
+{
     protected $pool;
     
-    public function setUp() {
+    public function setUp()
+    {
         $this->pool = new MemoryCacheItemPool();
     }
     
-    public function testGetItem() {
+    public function testGetItem()
+    {
         $this->pool->save((new MemoryCacheItem('php_abac.test'))->set('test'));
 
         $item = $this->pool->getItem('php_abac.test');
@@ -21,7 +24,8 @@ class MemoryCacheItemPoolTest extends \PHPUnit_Framework_TestCase {
         $this->assertEquals('test', $item->get());
     }
     
-    public function testGetUnknownItem() {
+    public function testGetUnknownItem()
+    {
         $item = $this->pool->getItem('php_abac.test');
         
         $this->assertInstanceOf('PhpAbac\\Cache\\Item\\MemoryCacheItem', $item);
@@ -29,7 +33,8 @@ class MemoryCacheItemPoolTest extends \PHPUnit_Framework_TestCase {
         $this->assertNull($item->get());
     }
     
-    public function testGetItems() {
+    public function testGetItems()
+    {
         $this->pool->save((new MemoryCacheItem('php_abac.test1'))->set('test 1'));
         $this->pool->save((new MemoryCacheItem('php_abac.test2'))->set('test 2'));
         $this->pool->save((new MemoryCacheItem('php_abac.test3'))->set('test 3'));
@@ -44,14 +49,16 @@ class MemoryCacheItemPoolTest extends \PHPUnit_Framework_TestCase {
         $this->assertEquals('test 2', $items['php_abac.test2']->get());
     }
     
-    public function testHasItem() {
+    public function testHasItem()
+    {
         $this->pool->save(new MemoryCacheItem('php_abac.test'));
         
         $this->assertFalse($this->pool->hasItem('php_abac.unknown_value'));
         $this->assertTrue($this->pool->hasItem('php_abac.test'));
     }
     
-    public function testSave() {
+    public function testSave()
+    {
         $this->pool->save((new MemoryCacheItem('php_abac.test'))->set('test'));
 
         $item = $this->pool->getItem('php_abac.test');
@@ -60,7 +67,8 @@ class MemoryCacheItemPoolTest extends \PHPUnit_Framework_TestCase {
         $this->assertEquals('test', $item->get());
     }
     
-    public function testSaveDeferred() {
+    public function testSaveDeferred()
+    {
         $this->pool->saveDeferred(new MemoryCacheItem('php_abac.test'));
         
         $this->assertFalse($this->pool->hasItem('php_abac.test'));
@@ -70,7 +78,8 @@ class MemoryCacheItemPoolTest extends \PHPUnit_Framework_TestCase {
         $this->assertTrue($this->pool->hasItem('php_abac.test'));
     }
     
-    public function testCommit() {
+    public function testCommit()
+    {
         $key = 'php_abac.test_deferred';
         $value = 'Cached value';
         
@@ -83,14 +92,16 @@ class MemoryCacheItemPoolTest extends \PHPUnit_Framework_TestCase {
         $this->assertEquals($value, $this->pool->getItem($key)->get());
     }
     
-    public function testClear() {
+    public function testClear()
+    {
         $this->pool->save(new MemoryCacheItem('php_abac.test'));
         
         $this->assertTrue($this->pool->clear());
         $this->assertFalse($this->pool->hasItem('php_abac.test'));
     }
     
-    public function testDeleteItem() {
+    public function testDeleteItem()
+    {
         $this->pool->save(new MemoryCacheItem('php_abac.test1'));
         
         $this->pool->deleteItem('php_abac.test1');
@@ -98,7 +109,8 @@ class MemoryCacheItemPoolTest extends \PHPUnit_Framework_TestCase {
         $this->assertFalse($this->pool->hasItem('php_abac.test1'));
     }
     
-    public function testDeleteItems() {
+    public function testDeleteItems()
+    {
         $this->pool->save((new MemoryCacheItem('php_abac.test1'))->set('test 1'));
         $this->pool->save((new MemoryCacheItem('php_abac.test2'))->set('test 2'));
         $this->pool->save((new MemoryCacheItem('php_abac.test3'))->set('test 3'));

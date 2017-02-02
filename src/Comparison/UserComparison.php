@@ -12,7 +12,8 @@ class UserComparison extends AbstractComparison
      * @param array $extraData
      * @return boolean
      */
-    public function isFieldEqual($attributeId, $value, $extraData = []) {
+    public function isFieldEqual($attributeId, $value, $extraData = [])
+    {
         $attributeManager = $this->comparisonManager->getAttributeManager();
         // Create an attribute out of the extra data we have and compare its retrieved value to the expected one
         return $attributeManager->retrieveAttribute(

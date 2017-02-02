@@ -10,11 +10,11 @@ class AbacTest extends \PHPUnit_Framework_TestCase
 {
     /** @var Abac[] $abac_a * */
     protected $abac_a;
-	/** @var Abac[] $abac_array_a * */
+    /** @var Abac[] $abac_array_a * */
     protected $abac_array_a;
-	/** @var Abac[] $abac_getter_params_a * */
+    /** @var Abac[] $abac_getter_params_a * */
     protected $abac_getter_params_a;
-	/** @var Abac[] $abac_import_a * */
+    /** @var Abac[] $abac_import_a * */
     protected $abac_import_a;
 
     public function setUp()
@@ -26,17 +26,15 @@ class AbacTest extends \PHPUnit_Framework_TestCase
         $this->abac_array_a = [
             new Abac([__DIR__ . '/fixtures/policy_rules_with_array.yml']),
             new Abac([__DIR__ . '/fixtures/policy_rules_with_array.json']),
-            new Abac(['policy_rules_with_array.yml'],[],__DIR__.'/fixtures/'),
-            new Abac(['policy_rules_with_array.json'],[],__DIR__.'/fixtures/'),
+            new Abac(['policy_rules_with_array.yml'], [], __DIR__.'/fixtures/'),
+            new Abac(['policy_rules_with_array.json'], [], __DIR__.'/fixtures/'),
         ];
         $this->abac_getter_params_a = [
-			new Abac(['policy_rules_with_getter_params.yml'],[],__DIR__.'/fixtures/'),
-		];
-		$this->abac_import_a = [
-			new Abac(['policy_rules_with_import.yml'],[],__DIR__.'/fixtures/'),
-		];
-
-
+            new Abac(['policy_rules_with_getter_params.yml'], [], __DIR__.'/fixtures/'),
+        ];
+        $this->abac_import_a = [
+            new Abac(['policy_rules_with_import.yml'], [], __DIR__.'/fixtures/'),
+        ];
     }
 
     public function testEnforce()
@@ -47,7 +45,6 @@ class AbacTest extends \PHPUnit_Framework_TestCase
         $vehicles = include('tests/fixtures/vehicles.php');
 
         foreach ($this->abac_a as $abac) {
-
             $this->assertTrue($abac->enforce('nationality-access', $users[3]));
             $this->assertEquals([
                 'japd',
@@ -87,42 +84,40 @@ class AbacTest extends \PHPUnit_Framework_TestCase
         foreach ($this->abac_array_a as $abac) {
 
             // for this test, the attribute in error are the attributes tester une the last rule of the ruleset
-            $this->assertEquals(['age','code-iso-du-pays'],$abac->enforce('gunlaw', $users[2]));
+            $this->assertEquals(['age','code-iso-du-pays'], $abac->enforce('gunlaw', $users[2]));
 
             $this->assertTrue($abac->enforce('gunlaw', $users[4]));
             $this->assertTrue($abac->enforce('gunlaw', $users[0]));
             $this->assertTrue($abac->enforce('gunlaw', $users[1]));
-
         }
     }
-	
     
-    public function testEnforceGetterParams() {
-		$countries = include('tests/fixtures/countries.php');
-		$visas = include('tests/fixtures/visas.php');
-		$users = include('tests/fixtures/users.php');
-	
-		foreach ($this->abac_getter_params_a as $abac) {
-		
-			// for this test, the attribute in error are the attributes tester une the last rule of the ruleset
-			$this->assertEquals(['visa-specific'],$abac->enforce('travel-to-foreign-country', $users[0], $countries[2]));
-			$this->assertTrue($abac->enforce('travel-to-foreign-country', $users[1], $countries[2]));
-		
-		}
-    	
-	}
+    
+    public function testEnforceGetterParams()
+    {
+        $countries = include('tests/fixtures/countries.php');
+        $visas = include('tests/fixtures/visas.php');
+        $users = include('tests/fixtures/users.php');
+    
+        foreach ($this->abac_getter_params_a as $abac) {
+        
+            // for this test, the attribute in error are the attributes tester une the last rule of the ruleset
+            $this->assertEquals(['visa-specific'], $abac->enforce('travel-to-foreign-country', $users[0], $countries[2]));
+            $this->assertTrue($abac->enforce('travel-to-foreign-country', $users[1], $countries[2]));
+        }
+    }
 
-	
-	public function testEnforceImport() {
-		$countries = include('tests/fixtures/countries.php');
-		$visas = include('tests/fixtures/visas.php');
-		$users = include('tests/fixtures/users.php');
-		foreach ($this->abac_import_a as $abac) {
-			
-			// for this test, the attribute in error are the attributes tester une the last rule of the ruleset
-			$this->assertEquals(['visa-specific'],$abac->enforce('travel-to-foreign-country', $users[0], $countries[2]));
-			$this->assertTrue($abac->enforce('travel-to-foreign-country', $users[1], $countries[2]));
-			
-		}
-	}
+    
+    public function testEnforceImport()
+    {
+        $countries = include('tests/fixtures/countries.php');
+        $visas = include('tests/fixtures/visas.php');
+        $users = include('tests/fixtures/users.php');
+        foreach ($this->abac_import_a as $abac) {
+            
+            // for this test, the attribute in error are the attributes tester une the last rule of the ruleset
+            $this->assertEquals(['visa-specific'], $abac->enforce('travel-to-foreign-country', $users[0], $countries[2]));
+            $this->assertTrue($abac->enforce('travel-to-foreign-country', $users[1], $countries[2]));
+        }
+    }
 }

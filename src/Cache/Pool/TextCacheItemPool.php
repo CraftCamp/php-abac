@@ -7,7 +7,8 @@ use Psr\Cache\CacheItemInterface;
 
 use PhpAbac\Cache\Item\TextCacheItem;
 
-class TextCacheItemPool implements CacheItemPoolInterface {
+class TextCacheItemPool implements CacheItemPoolInterface
+{
     /** @var array **/
     protected $deferredItems;
     /** @var string **/
@@ -16,14 +17,16 @@ class TextCacheItemPool implements CacheItemPoolInterface {
     /**
      * @param array $options
      */
-    public function __construct($options = []) {
+    public function __construct($options = [])
+    {
         $this->configure($options);
     }
 
     /**
      * @param array $options
      */
-    protected function configure($options) {
+    protected function configure($options)
+    {
         $this->cacheFolder =
             (isset($options['cache_folder']))
             ? "{$options['cache_folder']}/text"
@@ -34,11 +37,12 @@ class TextCacheItemPool implements CacheItemPoolInterface {
     /**
      * {@inheritdoc}
      */
-    public function deleteItem($key) {
-        if(is_file("{$this->cacheFolder}/$key.txt")) {
+    public function deleteItem($key)
+    {
+        if (is_file("{$this->cacheFolder}/$key.txt")) {
             unlink("{$this->cacheFolder}/$key.txt");
         }
-        if(isset($this->deferredItems[$key])) {
+        if (isset($this->deferredItems[$key])) {
             unset($this->deferredItems[$key]);
         }
         return true;
@@ -47,9 +51,10 @@ class TextCacheItemPool implements CacheItemPoolInterface {
     /**
      * {@inheritdoc}
      */
-    public function deleteItems(array $keys) {
-        foreach($keys as $key) {
-            if(!$this->deleteItem($key)) {
+    public function deleteItems(array $keys)
+    {
+        foreach ($keys as $key) {
+            if (!$this->deleteItem($key)) {
                 return false;
             }
         }
@@ -59,7 +64,8 @@ class TextCacheItemPool implements CacheItemPoolInterface {
     /**
      * {@inheritdoc}
      */
-    public function save(CacheItemInterface $item) {
+    public function save(CacheItemInterface $item)
+    {
         $data = "{$item->get()};{$item->getExpirationDate()->format('Y-m-d H:i:s')}";
 
         file_put_contents("{$this->cacheFolder}/{$item->getKey()}.txt", $data);
@@ -70,7 +76,8 @@ class TextCacheItemPool implements CacheItemPoolInterface {
     /**
      * {@inheritdoc}
      */
-    public function saveDeferred(CacheItemInterface $item) {
+    public function saveDeferred(CacheItemInterface $item)
+    {
         $this->deferredItems[$item->getKey()] = $item;
 
         return true;
@@ -79,8 +86,9 @@ class TextCacheItemPool implements CacheItemPoolInterface {
     /**
      * {@inheritdoc}
      */
-    public function commit() {
-        foreach($this->deferredItems as $key => $item) {
+    public function commit()
+    {
+        foreach ($this->deferredItems as $key => $item) {
             $this->save($item);
             unset($this->deferredItems[$key]);
         }
@@ -90,19 +98,21 @@ class TextCacheItemPool implements CacheItemPoolInterface {
     /**
      * {@inheritdoc}
      */
-    public function hasItem($key) {
+    public function hasItem($key)
+    {
         return is_file("{$this->cacheFolder}/{$key}.txt");
     }
 
     /**
      * {@inheritdoc}
      */
-    public function getItem($key) {
+    public function getItem($key)
+    {
         $item = new TextCacheItem($key);
-        if(!$this->hasItem($key)) {
+        if (!$this->hasItem($key)) {
             return $item;
         }
-        $data = explode(';',file_get_contents("{$this->cacheFolder}/{$key}.txt"));
+        $data = explode(';', file_get_contents("{$this->cacheFolder}/{$key}.txt"));
         return $item
             ->set($data[0])
             ->expiresAt((new \DateTime($data[1])))
@@ -112,10 +122,11 @@ class TextCacheItemPool implements CacheItemPoolInterface {
     /**
      * {@inheritdoc}
      */
-    public function getItems(array $keys = array()) {
+    public function getItems(array $keys = array())
+    {
         $items = [];
-        foreach($keys as $key) {
-            if($this->hasItem($key)) {
+        foreach ($keys as $key) {
+            if ($this->hasItem($key)) {
                 $items[$key] = $this->getItem($key);
             }
         }
@@ -125,11 +136,13 @@ class TextCacheItemPool implements CacheItemPoolInterface {
     /**
      * {@inheritdoc}
      */
-    public function clear() {
+    public function clear()
+    {
         $items = glob("{$this->cacheFolder}/*.txt"); // get all file names
-        foreach($items as $item){ // iterate files
-          if(is_file($item))
-            unlink($item); // delete file
+        foreach ($items as $item) { // iterate files
+          if (is_file($item)) {
+              unlink($item);
+          } // delete file
         }
         $this->deferredItems = [];
         return true;

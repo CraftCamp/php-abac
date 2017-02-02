@@ -2,7 +2,8 @@
 
 namespace PhpAbac\Example;
 
-class Visa {
+class Visa
+{
     /** @var int **/
     protected $id;
     /** @var Country **/
@@ -16,7 +17,8 @@ class Visa {
      * @param int $id
      * @return \PhpAbac\Example\Visa
      */
-    public function setId($id) {
+    public function setId($id)
+    {
         $this->id = $id;
         
         return $this;
@@ -25,15 +27,17 @@ class Visa {
     /**
      * @return int
      */
-    public function getId() {
+    public function getId()
+    {
         return $this->id;
-    }   
+    }
     
     /**
      * @param Country $country
      * @return \PhpAbac\Example\Visa
      */
-    public function setCountry(Country $country) {
+    public function setCountry(Country $country)
+    {
         $this->country = $country;
         
         return $this;
@@ -42,7 +46,8 @@ class Visa {
     /**
      * @return Country
      */
-    public function getCountry() {
+    public function getCountry()
+    {
         return $this->country;
     }
     
@@ -50,7 +55,8 @@ class Visa {
      * @param \DateTime $createdAt
      * @return \PhpAbac\Example\Visa
      */
-    public function setCreatedAt(\DateTime $createdAt) {
+    public function setCreatedAt(\DateTime $createdAt)
+    {
         $this->createdAt = $createdAt;
         
         return $this;
@@ -59,7 +65,8 @@ class Visa {
     /**
      * @return \DateTime
      */
-    public function getCreatedAt() {
+    public function getCreatedAt()
+    {
         return $this->createdAt;
     }
     
@@ -67,7 +74,8 @@ class Visa {
      * @param \DateTime $lastRenewal
      * @return \PhpAbac\Example\Visa
      */
-    public function setLastRenewal(\DateTime $lastRenewal) {
+    public function setLastRenewal(\DateTime $lastRenewal)
+    {
         $this->lastRenewal = $lastRenewal;
         
         return $this;
@@ -76,7 +84,8 @@ class Visa {
     /**
      * @return \DateTime
      */
-    public function getLastRenewal() {
+    public function getLastRenewal()
+    {
         return $this->lastRenewal;
     }
 }

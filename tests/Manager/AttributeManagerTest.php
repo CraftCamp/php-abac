@@ -22,7 +22,8 @@ class AttributeManagerTest extends \PHPUnit_Framework_TestCase
         $this->manager = new AttributeManager($configuration->getAttributes());
     }
     
-    public function testGetClassicAttribute() {
+    public function testGetClassicAttribute()
+    {
         $attribute = $this->manager->getAttribute('main_user.age');
         
         $this->assertInstanceOf('PhpAbac\Model\Attribute', $attribute);
@@ -33,7 +34,8 @@ class AttributeManagerTest extends \PHPUnit_Framework_TestCase
         $this->assertNull($attribute->getValue());
     }
     
-    public function testGetEnvironmentAttribute() {
+    public function testGetEnvironmentAttribute()
+    {
         $attribute = $this->manager->getAttribute('environment.service_state');
         
         $this->assertInstanceOf('PhpAbac\Model\EnvironmentAttribute', $attribute);
@@ -44,14 +46,16 @@ class AttributeManagerTest extends \PHPUnit_Framework_TestCase
         $this->assertNull($attribute->getValue());
     }
     
-    public function testRetrieveClassicAttribute() {
+    public function testRetrieveClassicAttribute()
+    {
         $this->assertEquals(18, $this->manager->retrieveAttribute(
             $this->manager->getAttribute('main_user.age'),
             (new User())->setAge(18)
         ));
     }
     
-    public function testRetrieveEnvironmentAttribute() {
+    public function testRetrieveEnvironmentAttribute()
+    {
         $this->assertEquals('OPEN', $this->manager->retrieveAttribute(
             $this->manager->getAttribute('environment.service_state'),
             (new User())->setAge(18)

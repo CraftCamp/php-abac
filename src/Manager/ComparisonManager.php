@@ -12,7 +12,8 @@ use PhpAbac\Comparison\ObjectComparison;
 use PhpAbac\Comparison\UserComparison;
 use PhpAbac\Comparison\StringComparison;
 
-class ComparisonManager {
+class ComparisonManager
+{
     /** @var \PhpAbac\Manager\AttributeManager **/
     protected $attributeManager;
     /** @var array **/
@@ -31,7 +32,8 @@ class ComparisonManager {
     /**
      * @param \PhpAbac\Manager\AttributeManager $manager
      */
-    public function __construct(AttributeManager $manager) {
+    public function __construct(AttributeManager $manager)
+    {
         $this->attributeManager = $manager;
     }
 
@@ -50,7 +52,8 @@ class ComparisonManager {
      * @param boolean $subComparing
      * @return bool
      */
-    public function compare(PolicyRuleAttribute $pra, $subComparing = false) {
+    public function compare(PolicyRuleAttribute $pra, $subComparing = false)
+    {
         $attribute = $pra->getAttribute();
         // The expected value can be set in the configuration as dynamic
         // In this case, we retrieve the expected value in the passed options
@@ -60,22 +63,22 @@ class ComparisonManager {
             : $pra->getValue()
         ;
         // Checking that the configured comparison type is available
-        if(!isset($this->comparisons[$pra->getComparisonType()])) {
+        if (!isset($this->comparisons[$pra->getComparisonType()])) {
             throw new \InvalidArgumentException('The requested comparison class does not exist');
         }
         // The comparison class will perform the attribute check with the configured method
         // For more complex comparisons, the comparison manager is injected
         $comparison = new $this->comparisons[$pra->getComparisonType()]($this);
-        if(!method_exists($comparison, $pra->getComparison())) {
+        if (!method_exists($comparison, $pra->getComparison())) {
             throw new \InvalidArgumentException('The requested comparison method does not exist');
         }
         // Then the comparison is performed with needed
         $result = $comparison->{$pra->getComparison()}($praValue, $attribute->getValue(), $pra->getExtraData());
         // If the checked attribute is not valid, the attribute slug is marked as rejected
         // The rejected attributes will be returned instead of the expected true boolean
-        if($result !== true) {
+        if ($result !== true) {
             // In case of sub comparing, the error reporting is disabled
-            if(!in_array($attribute->getSlug(), $this->rejectedAttributes) && $subComparing === false) {
+            if (!in_array($attribute->getSlug(), $this->rejectedAttributes) && $subComparing === false) {
                 $this->rejectedAttributes[] = $attribute->getSlug();
             }
             return false;
@@ -86,7 +89,8 @@ class ComparisonManager {
     /**
      * @param array $dynamicAttributes
      */
-    public function setDynamicAttributes($dynamicAttributes) {
+    public function setDynamicAttributes($dynamicAttributes)
+    {
         $this->dynamicAttributes = $dynamicAttributes;
     }
 
@@ -101,8 +105,9 @@ class ComparisonManager {
      * @return mixed
      * @throws \InvalidArgumentException
      */
-    public function getDynamicAttribute($attributeSlug) {
-        if(!isset($this->dynamicAttributes[$attributeSlug])) {
+    public function getDynamicAttribute($attributeSlug)
+    {
+        if (!isset($this->dynamicAttributes[$attributeSlug])) {
             throw new \InvalidArgumentException("The dynamic value for attribute $attributeSlug was not given");
         }
         return $this->dynamicAttributes[$attributeSlug];
@@ -112,14 +117,16 @@ class ComparisonManager {
      * @param string $type
      * @param string $class
      */
-    public function addComparison($type, $class) {
+    public function addComparison($type, $class)
+    {
         $this->comparisons[$type] = $class;
     }
 
     /**
      * @return \PhpAbac\Manager\AttributeManager
      */
-    public function getAttributeManager() {
+    public function getAttributeManager()
+    {
         return $this->attributeManager;
     }
 
@@ -130,7 +137,8 @@ class ComparisonManager {
      *
      * @return array|bool
      */
-    public function getResult() {
+    public function getResult()
+    {
         $result =
             (count($this->rejectedAttributes) > 0)
             ? $this->rejectedAttributes

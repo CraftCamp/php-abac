@@ -87,7 +87,8 @@ class ArrayComparisonTest extends \PHPUnit_Framework_TestCase
         ]));
     }
     
-    public function testContains() {
+    public function testContains()
+    {
         $countries = include(__DIR__ . '/../fixtures/countries.php');
         $visas = include(__DIR__ . '/../fixtures/visas.php');
         $policyRuleAttributes = [
@@ -115,7 +116,7 @@ class ArrayComparisonTest extends \PHPUnit_Framework_TestCase
             ->setValue('-1Y'),
         ];
         $extraData = [
-            'attribute' => 
+            'attribute' =>
                 (new Attribute())
                 ->setProperty('visas')
                 ->setName('Visas')
@@ -123,7 +124,7 @@ class ArrayComparisonTest extends \PHPUnit_Framework_TestCase
                 ->setType('resource')
                 ->setValue([$visas[0], $visas[1]])
             ,
-            'user' => 
+            'user' =>
                 (new User())
                 ->setId(1)
                 ->setName('John Doe')

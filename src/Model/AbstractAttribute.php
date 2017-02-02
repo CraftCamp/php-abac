@@ -92,5 +92,4 @@ abstract class AbstractAttribute
     {
         return $this->value;
     }
-	
 }
