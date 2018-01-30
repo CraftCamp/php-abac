@@ -2,7 +2,10 @@
 All notable changes to this project will be documented in this file.
 This project adheres to [Semantic Versioning](http://semver.org/).
 
-## [Unreleased]
+## [2.1.2] - 2018-01-31
+### Added
+- Support of Symfony 4 components
+
 ### Fixed
 - Code style (PSR-2 compliant)
 
@@ -14,7 +17,6 @@ This project adheres to [Semantic Versioning](http://semver.org/).
 - Allow simple configuration by include file ( via @import attribute )
 - Allow to specify getter prefix (default = get ) and method to apply on getter name method instead of ucfist(default)
 - Allow addional parameters for getters in config file.
-
 
 ## [2.1.0] - 2016-10-09
 ### Added
