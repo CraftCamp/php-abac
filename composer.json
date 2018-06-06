@@ -8,21 +8,20 @@
     "authors": [
         {
             "name": "Axel Venet",
-            "email": "avenet@kilix.fr",
-            "homepage": "http://www.kilix.fr",
+            "email": "kern046@gmail.com",
             "role": "Developer"
         }
     ],
     "require": {
-        "php": ">=5.5.9",
+        "php": ">=7.0",
         "psr/cache": "~1.0",
         "symfony/config": "~3.0|^4.0",
 	  	"symfony/yaml" : "~3.0|^4.0",
 	  	"symfony/serializer" : "~3.0|^4.0",
-        "friendsofphp/php-cs-fixer": "^2.0"
+        "friendsofphp/php-cs-fixer": "^2.12"
     },
     "support": {
-        "email": "avenet@kilix.fr"
+        "email": "kern046@gmail.com"
     },
     "autoload" : {
         "psr-4": {
