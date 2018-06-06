@@ -1,15 +1,15 @@
-[Kilix] php-abac
+[CraftCamp] php-abac
 ========
 
 ### Attribute-Based Access Control implementation library
 
-[![Latest Stable Version](https://poser.pugx.org/kilix/php-abac/v/stable)](https://packagist.org/packages/kilix/php-abac)
-[![Latest Unstable Version](https://poser.pugx.org/kilix/php-abac/v/unstable)](https://packagist.org/packages/kilix/php-abac)
-[![Build Status](https://travis-ci.org/Kilix/php-abac.svg?branch=master)](https://travis-ci.org/Kilix/php-abac)
-[![Code Coverage](https://scrutinizer-ci.com/g/Kilix/php-abac/badges/coverage.png?b=master)](https://scrutinizer-ci.com/g/Kilix/php-abac/?branch=master)
-[![Scrutinizer Code Quality](https://scrutinizer-ci.com/g/Kilix/php-abac/badges/quality-score.png?b=master)](https://scrutinizer-ci.com/g/Kilix/php-abac/?branch=master)
-[![Total Downloads](https://poser.pugx.org/kilix/php-abac/downloads)](https://packagist.org/packages/kilix/php-abac)
-[![License](https://poser.pugx.org/kilix/php-abac/license)](https://packagist.org/packages/kilix/php-abac)
+[![Latest Stable Version](https://poser.pugx.org/craftcamp/php-abac/v/stable)](https://packagist.org/packages/craftcamp/php-abac)
+[![Latest Unstable Version](https://poser.pugx.org/craftcamp/php-abac/v/unstable)](https://packagist.org/packages/craftcamp/php-abac)
+[![Build Status](https://travis-ci.org/CraftCamp/php-abac.svg?branch=master)](https://travis-ci.org/CraftCamp/php-abac)
+[![Code Coverage](https://scrutinizer-ci.com/g/CraftCamp/php-abac/badges/coverage.png?b=master)](https://scrutinizer-ci.com/g/CraftCamp/php-abac/?branch=master)
+[![Scrutinizer Code Quality](https://scrutinizer-ci.com/g/CraftCamp/php-abac/badges/quality-score.png?b=master)](https://scrutinizer-ci.com/g/CraftCamp/php-abac/?branch=master)
+[![Total Downloads](https://poser.pugx.org/craftcamp/php-abac/downloads)](https://packagist.org/packages/craftcamp/php-abac)
+[![License](https://poser.pugx.org/craftcamp/php-abac/license)](https://packagist.org/packages/craftcamp/php-abac)
 
 Introduction
 ------------
@@ -32,18 +32,8 @@ Installation
 
 **Using composer :**
 
-Write the following line in your composer.json file :
-
-```json
-"require" : {
-    "kilix/php-abac": "dev-master"
-}
-```
-
-Then just do :
-
 ```sh
-composer install
+composer require craftcamp/php-abac
 ```
 
 Then you will have to configure the attributes and the rules of your application.
@@ -278,4 +268,4 @@ It's not finished yet, there's still a lot of features to implement to make it b
 See also
 --------
 
-* [Symfony bundle to support this library](https://github.com/Kilix/abac-bundle)
+* [Symfony bundle to support this library](https://github.com/CraftCamp/abac-bundle)
