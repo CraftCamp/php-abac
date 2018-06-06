@@ -1,5 +1,5 @@
 {
-    "name": "kilix/php-abac",
+    "name": "craftcamp/php-abac",
     "description": "Library used to implement Attribute-Based Access Control in a PHP application",
     "type": "library",
     "keywords": ["access-control", "attributes", "security"],
