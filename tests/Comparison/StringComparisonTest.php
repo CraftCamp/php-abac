@@ -4,8 +4,10 @@ namespace PhpAbac\Test\Comparison;
 
 use PhpAbac\Comparison\StringComparison;
 
-use PhpAbac\Manager\ComparisonManager;
-use PhpAbac\Manager\AttributeManager;
+use PhpAbac\Manager\{
+    AttributeManager,
+    ComparisonManager
+};
 
 class StringComparisonTest extends \PHPUnit\Framework\TestCase
 {

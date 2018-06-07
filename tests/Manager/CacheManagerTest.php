@@ -4,9 +4,14 @@ namespace PhpAbac\Test\Manager;
 
 use PhpAbac\Manager\CacheManager;
 
+use Psr\Cache\{
+    CacheItemInterface,
+    CacheItemPoolInterface
+};
+
 class CacheManagerTest extends \PHPUnit\Framework\TestCase
 {
-    /** @var \PhpAbac\Manager\CacheManager **/
+    /** @var CacheManager **/
     protected $cacheManager;
     
     public function setUp()
@@ -31,7 +36,7 @@ class CacheManagerTest extends \PHPUnit\Framework\TestCase
     {
         $item = $this->cacheManager->getItemPool('memory')->getItem('php_abac.test');
         
-        $this->assertInstanceOf('Psr\\Cache\\CacheItemInterface', $item);
+        $this->assertInstanceOf(CacheItemInterface::class, $item);
         $this->assertEquals('php_abac.test', $item->getKey());
         $this->assertNull($item->get());
     }
@@ -43,7 +48,7 @@ class CacheManagerTest extends \PHPUnit\Framework\TestCase
         $this->cacheManager->save($item);
         $items = $pool->getItems(['php_abac.test']);
         
-        $this->assertInstanceOf('Psr\\Cache\\CacheItemPoolInterface', $pool);
+        $this->assertInstanceOf(CacheItemPoolInterface::class, $pool);
         $this->assertCount(1, $items);
         $this->assertarrayHasKey('php_abac.test', $items);
         $this->assertEquals($item, $items['php_abac.test']);

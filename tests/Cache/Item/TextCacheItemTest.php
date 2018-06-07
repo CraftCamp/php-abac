@@ -6,7 +6,7 @@ use PhpAbac\Cache\Item\TextCacheItem;
 
 class TextCacheItemTest extends \PHPUnit\Framework\TestCase
 {
-    /** @var \PhpAbac\Cache\Item\TextCacheItem **/
+    /** @var TextCacheItem **/
     protected $item;
 
     public function setUp()

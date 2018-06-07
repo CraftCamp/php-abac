@@ -4,8 +4,10 @@ namespace PhpAbac\Test\Comparison;
 
 use PhpAbac\Comparison\DatetimeComparison;
 
-use PhpAbac\Manager\ComparisonManager;
-use PhpAbac\Manager\AttributeManager;
+use PhpAbac\Manager\{
+    AttributeManager,
+    ComparisonManager
+};
 
 class DattimeeComparisonTest extends \PHPUnit\Framework\TestCase
 {

@@ -20,7 +20,7 @@ class MemoryCacheItemPoolTest extends \PHPUnit\Framework\TestCase
 
         $item = $this->pool->getItem('php_abac.test');
         
-        $this->assertInstanceOf('PhpAbac\\Cache\\Item\\MemoryCacheItem', $item);
+        $this->assertInstanceOf(MemoryCacheItem::class, $item);
         $this->assertEquals('test', $item->get());
     }
     
@@ -28,7 +28,7 @@ class MemoryCacheItemPoolTest extends \PHPUnit\Framework\TestCase
     {
         $item = $this->pool->getItem('php_abac.test');
         
-        $this->assertInstanceOf('PhpAbac\\Cache\\Item\\MemoryCacheItem', $item);
+        $this->assertInstanceOf(MemoryCacheItem::class, $item);
         $this->assertEquals('php_abac.test', $item->getKey());
         $this->assertNull($item->get());
     }
@@ -45,7 +45,7 @@ class MemoryCacheItemPoolTest extends \PHPUnit\Framework\TestCase
         ]);
         $this->assertCount(2, $items);
         $this->assertArrayHasKey('php_abac.test2', $items);
-        $this->assertInstanceOf('PhpAbac\\Cache\\Item\\MemoryCacheItem', $items['php_abac.test2']);
+        $this->assertInstanceOf(MemoryCacheItem::class, $items['php_abac.test2']);
         $this->assertEquals('test 2', $items['php_abac.test2']->get());
     }
     
@@ -63,7 +63,7 @@ class MemoryCacheItemPoolTest extends \PHPUnit\Framework\TestCase
 
         $item = $this->pool->getItem('php_abac.test');
         
-        $this->assertInstanceOf('PhpAbac\\Cache\\Item\\MemoryCacheItem', $item);
+        $this->assertInstanceOf(MemoryCacheItem::class, $item);
         $this->assertEquals('test', $item->get());
     }
     
@@ -88,7 +88,7 @@ class MemoryCacheItemPoolTest extends \PHPUnit\Framework\TestCase
         $this->pool->commit();
         
         $this->assertTrue($this->pool->hasItem($key));
-        $this->assertInstanceOf('PhpAbac\\Cache\\Item\\MemoryCacheItem', $this->pool->getItem($key));
+        $this->assertInstanceOf(MemoryCacheItem::class, $this->pool->getItem($key));
         $this->assertEquals($value, $this->pool->getItem($key)->get());
     }
     
