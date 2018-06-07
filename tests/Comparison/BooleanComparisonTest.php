@@ -4,10 +4,12 @@ namespace PhpAbac\Test\Comparison;
 
 use PhpAbac\Comparison\BooleanComparison;
 
-use PhpAbac\Manager\ComparisonManager;
-use PhpAbac\Manager\AttributeManager;
+use PhpAbac\Manager\{
+    AttributeManager,
+    ComparisonManager
+};
 
-class BooleanComparisonTest extends \PHPUnit_Framework_TestCase
+class BooleanComparisonTest extends \PHPUnit\Framework\TestCase
 {
     /** @var BooleanComparison **/
     protected $comparison;

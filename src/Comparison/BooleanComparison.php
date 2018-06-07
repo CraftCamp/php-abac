@@ -4,42 +4,22 @@ namespace PhpAbac\Comparison;
 
 class BooleanComparison extends AbstractComparison
 {
-    /**
-     * @param bool $expected
-     * @param bool $value
-     *
-     * @return bool
-     */
-    public function boolAnd($expected, $value)
+    public function boolAnd(bool $expected, bool $value): bool
     {
         return $expected && $value;
     }
 
-    /**
-     * @param bool $expected
-     * @param bool $value
-     *
-     * @return bool
-     */
-    public function boolOr($expected, $value)
+    public function boolOr($expected, $value): bool
     {
         return $expected || $value;
     }
     
-    /**
-     * @param mixed $expected
-     * @param mixed $value
-     */
-    public function isNull($expected, $value)
+    public function isNull($expected, $value): bool
     {
         return $value === null;
     }
     
-    /**
-     * @param mixed $expected
-     * @param mixed $value
-     */
-    public function isNotNull($expected, $value)
+    public function isNotNull($expected, $value): bool
     {
         return $value !== null;
     }

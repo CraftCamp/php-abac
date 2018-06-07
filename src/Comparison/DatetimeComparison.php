@@ -4,48 +4,22 @@ namespace PhpAbac\Comparison;
 
 class DatetimeComparison extends AbstractComparison
 {
-    /**
-     * Return true if the given formatted datetime is between two other datetimes.
-     *
-     * @param \DateTime $start
-     * @param \DateTime $end
-     * @param \DateTime $datetime
-     *
-     * @return bool
-     */
-    public function isBetween(\DateTime $start, \DateTime $end, $datetime)
+    public function isBetween(\DateTime $start, \DateTime $end, \DateTime $datetime): bool
     {
         return $start <= $datetime && $end >= $datetime;
     }
 
-    /**
-     * @param string $format
-     * @param \DateTime $datetime
-     *
-     * @return bool
-     */
-    public function isMoreRecentThan($format, $datetime)
+    public function isMoreRecentThan(string $format, \DateTime $datetime): bool
     {
         return $this->getDatetimeFromFormat($format) <= $datetime;
     }
 
-    /**
-     * @param string $format
-     * @param \DateTime $datetime
-     *
-     * @return bool
-     */
-    public function isLessRecentThan($format, $datetime)
+    public function isLessRecentThan(string $format, \DateTime $datetime): bool
     {
         return $this->getDatetimeFromFormat($format) >= $datetime;
     }
 
-    /**
-     * @param string $format
-     *
-     * @return \DateTime
-     */
-    public function getDatetimeFromFormat($format)
+    public function getDatetimeFromFormat(string $format): \DateTime
     {
         $formats = [
             'Y' => 31104000,

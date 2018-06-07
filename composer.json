@@ -1,5 +1,5 @@
 {
-    "name": "kilix/php-abac",
+    "name": "craftcamp/php-abac",
     "description": "Library used to implement Attribute-Based Access Control in a PHP application",
     "type": "library",
     "keywords": ["access-control", "attributes", "security"],
@@ -8,21 +8,20 @@
     "authors": [
         {
             "name": "Axel Venet",
-            "email": "avenet@kilix.fr",
-            "homepage": "http://www.kilix.fr",
+            "email": "kern046@gmail.com",
             "role": "Developer"
         }
     ],
     "require": {
-        "php": ">=5.5.9",
+        "php": ">=7.0",
         "psr/cache": "~1.0",
         "symfony/config": "~3.0|^4.0",
 	  	"symfony/yaml" : "~3.0|^4.0",
 	  	"symfony/serializer" : "~3.0|^4.0",
-        "friendsofphp/php-cs-fixer": "^2.0"
+        "friendsofphp/php-cs-fixer": "^2.12"
     },
     "support": {
-        "email": "avenet@kilix.fr"
+        "email": "kern046@gmail.com"
     },
     "autoload" : {
         "psr-4": {
@@ -30,5 +29,8 @@
             "PhpAbac\\Example\\": "example/",
             "PhpAbac\\Test\\": "tests/"
         }
+    },
+    "require-dev": {
+        "phpunit/phpunit": "^6.5"
     }
 }

@@ -4,16 +4,17 @@ namespace PhpAbac\Test\Comparison;
 
 use PhpAbac\Comparison\ArrayComparison;
 
-use PhpAbac\Manager\ComparisonManager;
-use PhpAbac\Manager\AttributeManager;
-
-use PhpAbac\Model\PolicyRuleAttribute;
-use PhpAbac\Model\Attribute;
-
+use PhpAbac\Manager\{
+    AttributeManager,
+    ComparisonManager
+};
+use PhpAbac\Model\{
+    Attribute,
+    PolicyRuleAttribute
+};
 use PhpAbac\Example\User;
-use PhpAbac\Example\Visa;
 
-class ArrayComparisonTest extends \PHPUnit_Framework_TestCase
+class ArrayComparisonTest extends \PHPUnit\Framework\TestCase
 {
     /** @var ArrayComparison **/
     protected $comparison;

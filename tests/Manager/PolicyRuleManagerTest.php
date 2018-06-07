@@ -2,20 +2,21 @@
 
 namespace PhpAbac\Test\Manager;
 
-use PhpAbac\Manager\PolicyRuleManager;
-use PhpAbac\Manager\AttributeManager;
-use PhpAbac\Manager\ConfigurationManager;
-
+use PhpAbac\Manager\{
+    PolicyRuleManager,
+    ConfigurationManager,
+    AttributeManager
+};
+use PhpAbac\Model\{
+    Attribute,
+    PolicyRule,
+    PolicyRuleAttribute
+};
 use Symfony\Component\Config\FileLocator;
 
-use PhpAbac\Model\PolicyRule;
-use PhpAbac\Model\PolicyRuleAttribute;
-use PhpAbac\Model\Attribute;
-use PhpAbac\Model\EnvironmentAttribute;
-
-class PolicyRuleManagerTest extends \PHPUnit_Framework_TestCase
+class PolicyRuleManagerTest extends \PHPUnit\Framework\TestCase
 {
-    /** @var \PhpAbac\Manager\PolicyRuleManager **/
+    /** @var PolicyRuleManager **/
     private $manager;
 
     public function setUp()
@@ -40,16 +41,14 @@ class PolicyRuleManagerTest extends \PHPUnit_Framework_TestCase
 
         $policyRule = $policyRule_a[0];
 
-        $this->assertInstanceof('PhpAbac\Model\PolicyRule', $policyRule);
+        $this->assertInstanceof(PolicyRule::class, $policyRule);
         $this->assertEquals('vehicle-homologation', $policyRule->getName());
         $this->assertCount(6, $policyRule->getPolicyRuleAttributes());
 
         $policyRuleAttribute = $policyRule->getPolicyRuleAttributes()[0];
 
-
-
-        $this->assertInstanceOf('PhpAbac\Model\PolicyRuleAttribute', $policyRuleAttribute);
-        $this->assertInstanceOf('PhpAbac\Model\Attribute', $policyRuleAttribute->getAttribute());
+        $this->assertInstanceOf(PolicyRuleAttribute::class, $policyRuleAttribute);
+        $this->assertInstanceOf(Attribute::class, $policyRuleAttribute->getAttribute());
         $this->assertEquals('boolean', $policyRuleAttribute->getComparisonType());
         $this->assertEquals('boolAnd', $policyRuleAttribute->getComparison());
         $this->assertTrue($policyRuleAttribute->getValue());

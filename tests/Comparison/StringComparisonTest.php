@@ -4,10 +4,12 @@ namespace PhpAbac\Test\Comparison;
 
 use PhpAbac\Comparison\StringComparison;
 
-use PhpAbac\Manager\ComparisonManager;
-use PhpAbac\Manager\AttributeManager;
+use PhpAbac\Manager\{
+    AttributeManager,
+    ComparisonManager
+};
 
-class StringComparisonTest extends \PHPUnit_Framework_TestCase
+class StringComparisonTest extends \PHPUnit\Framework\TestCase
 {
     /** @var StringComparison **/
     protected $comparison;

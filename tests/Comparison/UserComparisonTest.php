@@ -6,17 +6,14 @@ use PhpAbac\Comparison\UserComparison;
 
 use Symfony\Component\Config\FileLocator;
 
-use PhpAbac\Manager\ConfigurationManager;
-use PhpAbac\Manager\ComparisonManager;
-use PhpAbac\Manager\AttributeManager;
-
-use PhpAbac\Model\PolicyRuleAttribute;
-use PhpAbac\Model\Attribute;
-
+use PhpAbac\Manager\{
+    AttributeManager,
+    ComparisonManager,
+    ConfigurationManager
+};
 use PhpAbac\Example\User;
-use PhpAbac\Example\Vehicle;
 
-class UserComparisonTest extends \PHPUnit_Framework_TestCase
+class UserComparisonTest extends \PHPUnit\Framework\TestCase
 {
     /** @var ArrayComparison **/
     protected $comparison;

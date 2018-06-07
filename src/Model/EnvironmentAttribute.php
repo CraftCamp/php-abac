@@ -7,22 +7,14 @@ class EnvironmentAttribute extends AbstractAttribute
     /** @var string **/
     protected $variableName;
 
-    /**
-     * @param string $variableName
-     *
-     * @return static
-     */
-    public function setVariableName($variableName)
+    public function setVariableName(string $variableName): EnvironmentAttribute
     {
         $this->variableName = $variableName;
 
         return $this;
     }
 
-    /**
-     * @return string
-     */
-    public function getVariableName()
+    public function getVariableName(): string
     {
         return $this->variableName;
     }

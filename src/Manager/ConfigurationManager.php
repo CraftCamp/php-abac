@@ -2,9 +2,11 @@
 
 namespace PhpAbac\Manager;
 
-use PhpAbac\Loader\AbacLoader;
-use PhpAbac\Loader\JsonAbacLoader;
-use PhpAbac\Loader\YamlAbacLoader;
+use PhpAbac\Loader\{
+    AbacLoader,
+    JsonAbacLoader,
+    YamlAbacLoader
+};
 
 use Symfony\Component\Config\FileLocatorInterface;
 
@@ -15,28 +17,15 @@ class ConfigurationManager
     /** @var AbacLoader[] * */
     protected $loaders;
     /** @var array * */
-    protected $rules;
+    protected $rules = [];
     /** @var array * */
-    protected $attributes;
+    protected $attributes = [];
+    /** @var array List of File Already Loaded */
+    protected $loadedFiles = [];
     
-//	protected $config_path_route;
-    
-    /** @var array List of File Already Loader */
-    protected $config_files_loaded;
-    
-    /**
-     * @param FileLocatorInterface $locator
-     * @param string|array         $format A format or an array of format
-     */
-    public function __construct(FileLocatorInterface $locator, $format = [
-        'yaml',
-        'json',
-    ])
+    public function __construct(FileLocatorInterface $locator, array $format = ['yaml', 'json'])
     {
-        $this->locator             = $locator;
-        $this->attributes          = [];
-        $this->rules               = [];
-        $this->config_files_loaded = [];
+        $this->locator = $locator;
         if (in_array('yaml', $format)) {
             $this->loaders[ 'yaml' ] = new YamlAbacLoader($locator, $this);
         }
@@ -45,27 +34,23 @@ class ConfigurationManager
         }
     }
     
-    public function setConfigPathRoot($configPaths_root = null)
+    public function setConfigPathRoot(string $configDir = null)
     {
-        //		$this->config_path_route = $configPaths_root;
         foreach ($this->loaders as $loader) {
-            $loader->setCurrentDir($configPaths_root);
+            $loader->setCurrentDir($configDir);
         }
     }
-        
-    /**
-     * @param array $configurationFiles
-     */
-    public function parseConfigurationFile($configurationFiles)
+    
+    public function parseConfigurationFile(array $configurationFiles)
     {
         foreach ($configurationFiles as $configurationFile) {
             $config = $this->getLoader($configurationFile)->import($configurationFile, pathinfo($configurationFile, PATHINFO_EXTENSION));
             
-            if (in_array($config['path'], $this->config_files_loaded)) {
+            if (in_array($config['path'], $this->loadedFiles)) {
                 continue;
             }
             
-            $this->config_files_loaded[] = $config['path'];
+            $this->loadedFiles[] = $config['path'];
             
             if (isset($config['@import'])) {
                 $this->parseConfigurationFile($config['@import']);
@@ -81,18 +66,10 @@ class ConfigurationManager
         }
     }
     
-    
-    
     /**
      * Function to retrieve the good loader for the configuration file
-     *
-     * @param $configurationFile
-     *
-     * @return AbacLoader
-     *
-     * @throws \Exception
      */
-    private function getLoader($configurationFile)
+    private function getLoader(string $configurationFile): AbacLoader
     {
         foreach ($this->loaders as $AbacLoader) {
             if ($AbacLoader::supportsExtension($configurationFile)) {
@@ -102,18 +79,12 @@ class ConfigurationManager
         throw new \Exception('Loader not found for the file ' . $configurationFile);
     }
     
-    /**
-     * @return array
-     */
-    public function getAttributes()
+    public function getAttributes(): array
     {
         return $this->attributes;
     }
     
-    /**
-     * @return array
-     */
-    public function getRules()
+    public function getRules(): array
     {
         return $this->rules;
     }

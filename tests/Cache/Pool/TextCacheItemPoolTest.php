@@ -5,7 +5,7 @@ namespace PhpAbac\Test\Cache\Pool;
 use PhpAbac\Cache\Pool\TextCacheItemPool;
 use PhpAbac\Cache\Item\TextCacheItem;
 
-class TextCacheItemPoolTest extends \PHPUnit_Framework_TestCase
+class TextCacheItemPoolTest extends \PHPUnit\Framework\TestCase
 {
     protected $pool;
 
@@ -27,7 +27,7 @@ class TextCacheItemPoolTest extends \PHPUnit_Framework_TestCase
 
         $item = $this->pool->getItem('php_abac.test');
 
-        $this->assertInstanceOf('PhpAbac\\Cache\\Item\\TextCacheItem', $item);
+        $this->assertInstanceOf(TextCacheItem::class, $item);
         $this->assertEquals('test', $item->get());
     }
 
@@ -35,7 +35,7 @@ class TextCacheItemPoolTest extends \PHPUnit_Framework_TestCase
     {
         $item = $this->pool->getItem('php_abac.test');
 
-        $this->assertInstanceOf('PhpAbac\\Cache\\Item\\TextCacheItem', $item);
+        $this->assertInstanceOf(TextCacheItem::class, $item);
         $this->assertEquals('php_abac.test', $item->getKey());
         $this->assertNull($item->get());
     }
@@ -52,7 +52,7 @@ class TextCacheItemPoolTest extends \PHPUnit_Framework_TestCase
         ]);
         $this->assertCount(2, $items);
         $this->assertArrayHasKey('php_abac.test2', $items);
-        $this->assertInstanceOf('PhpAbac\\Cache\\Item\\TextCacheItem', $items['php_abac.test2']);
+        $this->assertInstanceOf(TextCacheItem::class, $items['php_abac.test2']);
         $this->assertEquals('test 2', $items['php_abac.test2']->get());
     }
 
@@ -70,7 +70,7 @@ class TextCacheItemPoolTest extends \PHPUnit_Framework_TestCase
 
         $item = $this->pool->getItem('php_abac.test');
 
-        $this->assertInstanceOf('PhpAbac\\Cache\\Item\\TextCacheItem', $item);
+        $this->assertInstanceOf(TextCacheItem::class, $item);
         $this->assertEquals('test', $item->get());
     }
 
@@ -95,7 +95,7 @@ class TextCacheItemPoolTest extends \PHPUnit_Framework_TestCase
         $this->pool->commit();
 
         $this->assertTrue($this->pool->hasItem($key));
-        $this->assertInstanceOf('PhpAbac\\Cache\\Item\\TextCacheItem', $this->pool->getItem($key));
+        $this->assertInstanceOf(TextCacheItem::class, $this->pool->getItem($key));
         $this->assertEquals($value, $this->pool->getItem($key)->get());
     }
 
