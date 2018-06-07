@@ -6,7 +6,7 @@ use PhpAbac\Cache\Item\MemoryCacheItem;
 
 class MemoryCacheItemTest extends \PHPUnit\Framework\TestCase
 {
-    /** @var \PhpAbac\Cache\Item\MemoryCacheItem **/
+    /** @var MemoryCacheItem **/
     protected $item;
     
     public function setUp()

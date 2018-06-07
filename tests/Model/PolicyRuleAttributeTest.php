@@ -2,8 +2,10 @@
 
 namespace PhpAbac\Test\Model;
 
-use PhpAbac\Model\Attribute;
-use PhpAbac\Model\PolicyRuleAttribute;
+use PhpAbac\Model\{
+    Attribute,
+    PolicyRuleAttribute
+};
 
 class PolicyRuleAttributeTest extends \PHPUnit\Framework\TestCase
 {

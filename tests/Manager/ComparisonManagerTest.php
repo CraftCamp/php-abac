@@ -2,14 +2,18 @@
 
 namespace PhpAbac\Test\Manager;
 
-use PhpAbac\Manager\ComparisonManager;
-
-use PhpAbac\Model\PolicyRuleAttribute;
-use PhpAbac\Model\Attribute;
+use PhpAbac\Manager\{
+    AttributeManager,
+    ComparisonManager
+};
+use PhpAbac\Model\{
+    Attribute,
+    PolicyRuleAttribute
+};
 
 class ComparisonManagerTest extends \PHPUnit\Framework\TestCase
 {
-    /** @var \PhpAbac\Manager\ComparisonManager **/
+    /** @var ComparisonManager **/
     protected $manager;
     
     public function setUp()
@@ -31,7 +35,7 @@ class ComparisonManagerTest extends \PHPUnit\Framework\TestCase
             ->setComparison('isEqual')
             ->setValue('Value')
         ));
-        $this->assertTrue($this->manager->getResult());
+        $this->assertEquals([], $this->manager->getResult());
     }
     
     public function testCompareWithInvalidAttribute()
@@ -48,9 +52,7 @@ class ComparisonManagerTest extends \PHPUnit\Framework\TestCase
             ->setComparison('isEqual')
             ->setValue('Value')
         ));
-        $this->assertEquals([
-            'test'
-        ], $this->manager->getResult());
+        $this->assertEquals(['test'], $this->manager->getResult());
     }
     
     /**
@@ -95,9 +97,7 @@ class ComparisonManagerTest extends \PHPUnit\Framework\TestCase
     
     public function testDynamicAttributes()
     {
-        $this->manager->setDynamicAttributes([
-            'owner-id' => 13
-        ]);
+        $this->manager->setDynamicAttributes(['owner-id' => 13]);
         $this->assertEquals(13, $this->manager->getDynamicAttribute('owner-id'));
     }
     
@@ -113,7 +113,7 @@ class ComparisonManagerTest extends \PHPUnit\Framework\TestCase
     public function getAttributeManagerMock()
     {
         $managerMock = $this
-            ->getMockBuilder('PhpAbac\Manager\AttributeManager')
+            ->getMockBuilder(AttributeManager::class)
             ->disableOriginalConstructor()
             ->getMock()
         ;
