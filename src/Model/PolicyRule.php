@@ -6,7 +6,7 @@ class PolicyRule
 {
     /** @var string **/
     protected $name;
-    /** @var array<PhpAbac\Model\PolicyRuleAttribute> **/
+    /** @var array<PolicyRuleAttribute> **/
     protected $policyRuleAttributes;
 
     public function __construct()
@@ -14,46 +14,27 @@ class PolicyRule
         $this->policyRuleAttributes = [];
     }
 
-    /**
-     * @param string $name
-     *
-     * @return \PhpAbac\Model\PolicyRule
-     */
-    public function setName($name)
+    public function setName(string $name): PolicyRule
     {
         $this->name = $name;
 
         return $this;
     }
 
-    /**
-     * @return string
-     */
-    public function getName()
+    public function getName(): string
     {
         return $this->name;
     }
 
-    /**
-     * @param PolicyRuleAttribute $pra
-     *
-     * @return \PhpAbac\Model\PolicyRule
-     */
-    public function addPolicyRuleAttribute(PolicyRuleAttribute $pra)
+    public function addPolicyRuleAttribute(PolicyRuleAttribute $pra): PolicyRule
     {
         if (!in_array($pra, $this->policyRuleAttributes, true)) {
             $this->policyRuleAttributes[] = $pra;
         }
-
         return $this;
     }
 
-    /**
-     * @param PolicyRuleAttribute $pra
-     *
-     * @return \PhpAbac\Model\PolicyRule
-     */
-    public function removePolicyRuleAttribute(PolicyRuleAttribute $pra)
+    public function removePolicyRuleAttribute(PolicyRuleAttribute $pra): PolicyRule
     {
         if (($key = array_search($pra, $this->policyRuleAttributes)) !== false) {
             unset($this->policyRuleAttributes[$key]);
@@ -62,10 +43,7 @@ class PolicyRule
         return $this;
     }
 
-    /**
-     * @return \PhpAbac\Model\PolicyRuleAttribute[]
-     */
-    public function getPolicyRuleAttributes()
+    public function getPolicyRuleAttributes(): array
     {
         return $this->policyRuleAttributes;
     }

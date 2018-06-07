@@ -2,34 +2,25 @@
 
 namespace PhpAbac\Manager;
 
-use PhpAbac\Model\PolicyRule;
-use PhpAbac\Model\PolicyRuleAttribute;
+use PhpAbac\Model\{
+    PolicyRule,
+    PolicyRuleAttribute
+};
 
 class PolicyRuleManager
 {
-    /** @var \PhpAbac\Manager\AttributeManager * */
+    /** @var AttributeManager * */
     private $attributeManager;
     /** @var array * */
     private $rules;
 
-    /**
-     * @param \PhpAbac\Manager\AttributeManager $attributeManager
-     * @param array $rules
-     */
-    public function __construct(AttributeManager $attributeManager, $rules)
+    public function __construct(AttributeManager $attributeManager, array $rules)
     {
         $this->attributeManager = $attributeManager;
         $this->rules = $rules;
     }
 
-    /**
-     * @param string $ruleName
-     * @param object $user
-     * @param object $resource
-     * @return PolicyRule[]
-     * @throws \InvalidArgumentException
-     */
-    public function getRule($ruleName, $user, $resource)
+    public function getRule(string $ruleName, $user, $resource): array
     {
         if (!isset($this->rules[$ruleName])) {
             throw new \InvalidArgumentException('The given rule "' . $ruleName . '" is not configured');
@@ -40,29 +31,22 @@ class PolicyRuleManager
             $this->rules[$ruleName] = [$this->rules[$ruleName]];
         }
 
-
-        $rule_a = [];
+        $rules = [];
         foreach ($this->rules[$ruleName] as $rule) {
-            $Policy =
-                (new PolicyRule())
-                    ->setName($ruleName);
+            $policyRule = (new PolicyRule())->setName($ruleName);
             // For each policy rule attribute, the data is formatted
             foreach ($this->processRuleAttributes($rule['attributes'], $user, $resource) as $pra) {
-                $Policy->addPolicyRuleAttribute($pra);
+                $policyRule->addPolicyRuleAttribute($pra);
             }
-            $rule_a[] = $Policy;
+            $rules[] = $policyRule;
         }
-        return $rule_a;
+        return $rules;
     }
 
     /**
      * This method is meant to convert attribute data from array to formatted policy rule attribute
-     *
-     * @param array $attributes
-     * @param object $user
-     * @param object $resource
      */
-    public function processRuleAttributes($attributes, $user, $resource)
+    public function processRuleAttributes(array $attributes, $user, $resource)
     {
         foreach ($attributes as $attributeName => $attribute) {
             $pra = (new PolicyRuleAttribute())
@@ -86,10 +70,6 @@ class PolicyRuleManager
 
     /**
      * This method is meant to set appropriated extra data to $pra depending on comparison type
-     *
-     * @param PolicyRuleAttribute $pra
-     * @param object $user
-     * @param object $resource
      */
     public function processRuleAttributeComparisonType(PolicyRuleAttribute $pra, $user, $resource)
     {

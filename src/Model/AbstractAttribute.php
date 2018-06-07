@@ -13,81 +13,49 @@ abstract class AbstractAttribute
     /** @var mixed **/
     protected $value;
 
-    /**
-     * @param string $name
-     *
-     * @return static
-     */
-    public function setName($name)
+    public function setName(string $name): AbstractAttribute
     {
         $this->name = $name;
 
         return $this;
     }
 
-    /**
-     * @return string
-     */
-    public function getName()
+    public function getName(): string
     {
         return $this->name;
     }
 
-    /**
-     * @param string $type
-     *
-     * @return static
-     */
-    public function setType($type)
+    public function setType(string $type): AbstractAttribute
     {
         $this->type = $type;
 
         return $this;
     }
 
-    /**
-     * @return string
-     */
-    public function getType()
+    public function getType(): string
     {
         return $this->type;
     }
 
-    /**
-     * @param string $slug
-     *
-     * @return static
-     */
-    public function setSlug($slug)
+    public function setSlug(string $slug): AbstractAttribute
     {
         $this->slug = $slug;
 
         return $this;
     }
 
-    /**
-     * @return string
-     */
-    public function getSlug()
+    public function getSlug(): string
     {
         return $this->slug;
     }
 
-    /**
-     * @param mixed $value
-     *
-     * @return static
-     */
-    public function setValue($value)
+    public function setValue($value): AbstractAttribute
     {
         $this->value = $value;
 
         return $this;
     }
 
-    /**
-     * @return mixed
-     */
     public function getValue()
     {
         return $this->value;

@@ -4,50 +4,28 @@ namespace PhpAbac\Comparison;
 
 class NumericComparison extends AbstractComparison
 {
-    /**
-     * @param int $expected
-     * @param int $value
-     *
-     * @return bool
-     */
-    public function isEqual($expected, $value)
+    public function isEqual(int $expected, int $value): bool
     {
-        return (int) $expected === (int) $value;
+        return $expected === $value;
     }
 
-    /**
-     * If strict is set to false, equal values will return true.
-     *
-     * @param int  $expected
-     * @param int  $value
-     * @param bool $strict
-     *
-     * @return bool
-     */
-    public function isLesserThan($expected, $value, $strict = true)
+    public function isLesserThan(int $expected, int $value): bool
     {
-        return
-            ($strict === true)
-            ? $expected > $value
-            : $expected >= $value
-        ;
+        return $expected > $value;
     }
 
-    /**
-     * If strict is set to false, equal values will return true.
-     *
-     * @param int  $expected
-     * @param int  $value
-     * @param bool $strict
-     *
-     * @return bool
-     */
-    public function isGreaterThan($expected, $value, $strict = true)
+    public function isLesserThanOrEqual(int $expected, int $value): bool
     {
-        return
-            ($strict === true)
-            ? $expected < $value
-            : $expected <= $value
-        ;
+        return $expected >= $value;
+    }
+
+    public function isGreaterThan(int $expected, int $value): bool
+    {
+        return $expected < $value;
+    }
+
+    public function isGreaterThanOrEqual(int $expected, int $value): bool
+    {
+        return $expected <= $value;
     }
 }
