@@ -4,17 +4,19 @@ namespace PhpAbac\Manager;
 
 use PhpAbac\Model\PolicyRuleAttribute;
 
-use PhpAbac\Comparison\ArrayComparison;
-use PhpAbac\Comparison\BooleanComparison;
-use PhpAbac\Comparison\DatetimeComparison;
-use PhpAbac\Comparison\NumericComparison;
-use PhpAbac\Comparison\ObjectComparison;
-use PhpAbac\Comparison\UserComparison;
-use PhpAbac\Comparison\StringComparison;
+use PhpAbac\Comparison\{
+    ArrayComparison,
+    BooleanComparison,
+    DatetimeComparison,
+    NumericComparison,
+    ObjectComparison,
+    UserComparison,
+    StringComparison
+};
 
 class ComparisonManager
 {
-    /** @var \PhpAbac\Manager\AttributeManager **/
+    /** @var AttributeManager **/
     protected $attributeManager;
     /** @var array **/
     protected $comparisons = [
@@ -29,9 +31,6 @@ class ComparisonManager
     /** @var array **/
     protected $rejectedAttributes = [];
 
-    /**
-     * @param \PhpAbac\Manager\AttributeManager $manager
-     */
     public function __construct(AttributeManager $manager)
     {
         $this->attributeManager = $manager;
@@ -47,12 +46,8 @@ class ComparisonManager
      * If the second parameter is set to true, compare will not report errors.
      * This is used to test a bunch of comparisons expecting not all of them true to return a granted access.
      * In fact, this parameter is used in comparisons which need to perform comparisons on their own.
-     *
-     * @param PolicyRuleAttribute $pra
-     * @param boolean $subComparing
-     * @return bool
      */
-    public function compare(PolicyRuleAttribute $pra, $subComparing = false)
+    public function compare(PolicyRuleAttribute $pra, bool $subComparing = false): bool
     {
         $attribute = $pra->getAttribute();
         // The expected value can be set in the configuration as dynamic
@@ -86,10 +81,7 @@ class ComparisonManager
         return true;
     }
 
-    /**
-     * @param array $dynamicAttributes
-     */
-    public function setDynamicAttributes($dynamicAttributes)
+    public function setDynamicAttributes(array $dynamicAttributes)
     {
         $this->dynamicAttributes = $dynamicAttributes;
     }
@@ -105,7 +97,7 @@ class ComparisonManager
      * @return mixed
      * @throws \InvalidArgumentException
      */
-    public function getDynamicAttribute($attributeSlug)
+    public function getDynamicAttribute(string $attributeSlug)
     {
         if (!isset($this->dynamicAttributes[$attributeSlug])) {
             throw new \InvalidArgumentException("The dynamic value for attribute $attributeSlug was not given");
@@ -113,19 +105,12 @@ class ComparisonManager
         return $this->dynamicAttributes[$attributeSlug];
     }
 
-    /**
-     * @param string $type
-     * @param string $class
-     */
-    public function addComparison($type, $class)
+    public function addComparison(string $type, string $class)
     {
         $this->comparisons[$type] = $class;
     }
 
-    /**
-     * @return \PhpAbac\Manager\AttributeManager
-     */
-    public function getAttributeManager()
+    public function getAttributeManager(): AttributeManager
     {
         return $this->attributeManager;
     }
@@ -134,15 +119,13 @@ class ComparisonManager
      * This method is called when all the policy rule attributes are checked
      * All along the comparisons, the failing attributes slugs are stored
      * If the rejected attributes array is not empty, it means that the rule is not enforced
-     *
-     * @return array|bool
      */
-    public function getResult()
+    public function getResult(): array
     {
         $result =
             (count($this->rejectedAttributes) > 0)
             ? $this->rejectedAttributes
-            : true
+            : []
         ;
         $this->rejectedAttributes = [];
         return $result;

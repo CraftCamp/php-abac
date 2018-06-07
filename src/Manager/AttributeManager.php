@@ -2,29 +2,28 @@
 
 namespace PhpAbac\Manager;
 
-use PhpAbac\Model\AbstractAttribute;
-use PhpAbac\Model\Attribute;
-use PhpAbac\Model\EnvironmentAttribute;
+use PhpAbac\Model\{
+    AbstractAttribute,
+    Attribute,
+    EnvironmentAttribute
+};
 
 class AttributeManager
 {
     /** @var array **/
     private $attributes;
-    
     /** @var string Prefix to add before getter name (default)'get' */
     private $getter_prefix = 'get';
     /** @var string Function to apply on the getter name ( before adding prefix ) (default)'ucfirst' */
     private $getter_name_transformation_function = 'ucfirst';
     
-
     /**
-     * @param array $attributes
-     * @param array $options           A List of option to configure This Abac Instance
-     *                                 Options list :
-     *                                 'getter_prefix' => Prefix to add before getter name (default)'get'
-     *                                 'getter_name_transformation_function' => Function to apply on the getter name ( before adding prefix ) (default)'ucfirst'
+     *  A List of option to configure This Abac Instance
+     *  Options list :
+     *    'getter_prefix' => Prefix to add before getter name (default)'get'
+     *    'getter_name_transformation_function' => Function to apply on the getter name ( before adding prefix ) (default)'ucfirst'
      */
-    public function __construct($attributes, $options = [])
+    public function __construct(array $attributes, array $options = [])
     {
         $this->attributes = $attributes;
     
@@ -38,11 +37,7 @@ class AttributeManager
         }
     }
 
-    /**
-     * @param string $attributeId
-     * @return \PhpAbac\Model\AbstractAttribute
-     */
-    public function getAttribute($attributeId)
+    public function getAttribute(string $attributeId): AbstractAttribute
     {
         $attributeKeys = explode('.', $attributeId);
         // The first element will be the attribute ID, then the field ID
@@ -57,12 +52,7 @@ class AttributeManager
         ;
     }
 
-    /**
-     * @param array $attributeData
-     * @param string $property
-     * @return \PhpAbac\Model\Attribute
-     */
-    private function getClassicAttribute($attributeData, $property)
+    private function getClassicAttribute(array $attributeData, string $property): Attribute
     {
         return
             (new Attribute())
@@ -73,12 +63,7 @@ class AttributeManager
         ;
     }
 
-    /**
-     * @param array $attributeData
-     * @param string $key
-     * @return \PhpAbac\Model\EnvironmentAttribute
-     */
-    private function getEnvironmentAttribute($attributeData, $key)
+    private function getEnvironmentAttribute(array $attributeData, string $key): EnvironmentAttribute
     {
         return
             (new EnvironmentAttribute())
@@ -89,14 +74,7 @@ class AttributeManager
         ;
     }
 
-    /**
-     * @param AbstractAttribute $attribute
-     * @param string $attributeType
-     * @param object $user
-     * @param object $object
-     * @return mixed
-     */
-    public function retrieveAttribute(AbstractAttribute $attribute, $user = null, $object = null, $getter_params = [])
+    public function retrieveAttribute(AbstractAttribute $attribute, $user = null, $object = null, array $getter_params = [])
     {
         switch ($attribute->getType()) {
             case 'user':
@@ -108,12 +86,7 @@ class AttributeManager
         }
     }
 
-    /**
-     * @param Attribute $attribute
-     * @param object $object
-     * @return mixed
-     */
-    private function retrieveClassicAttribute(Attribute $attribute, $object, $getter_params = [])
+    private function retrieveClassicAttribute(Attribute $attribute, $object, array $getter_params = [])
     {
         $propertyPath = explode('.', $attribute->getProperty());
         $propertyValue = $object;
@@ -134,21 +107,12 @@ class AttributeManager
         return $propertyValue;
     }
 
-    /**
-     *
-     * @param \PhpAbac\Model\EnvironmentAttribute $attribute
-     * @return mixed
-     */
     private function retrieveEnvironmentAttribute(EnvironmentAttribute $attribute)
     {
         return getenv($attribute->getVariableName());
     }
 
-    /*
-     * @param string $name
-     * @return string
-     */
-    public function slugify($name)
+    public function slugify(string $name): string
     {
         // replace non letter or digits by -
         $name = trim(preg_replace('~[^\\pL\d]+~u', '-', $name), '-');

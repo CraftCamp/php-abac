@@ -4,57 +4,27 @@ namespace PhpAbac\Comparison;
 
 class ArrayComparison extends AbstractComparison
 {
-    /**
-     * @param array $haystack
-     * @param mixed  $needle
-     *
-     * @return bool
-     */
-    public function isIn($haystack, $needle)
+    public function isIn(array $haystack, $needle): bool
     {
         return in_array($needle, $haystack);
     }
 
-    /**
-     * @param array $haystack
-     * @param mixed  $needle
-     *
-     * @return bool
-     */
-    public function isNotIn($haystack, $needle)
+    public function isNotIn(array $haystack, $needle): bool
     {
         return !$this->isIn($haystack, $needle);
     }
 
-    /**
-     * @param array $array1
-     * @param array $array2
-     *
-     * @return bool
-     */
-    public function intersect($array1, $array2)
+    public function intersect(array $array1, array $array2): bool
     {
         return count(array_intersect($array1, $array2)) > 0;
     }
 
-    /**
-     * @param array $array1
-     * @param array $array2
-     *
-     * @return bool
-     */
-    public function doNotIntersect($array1, $array2)
+    public function doNotIntersect(array $array1, array $array2): bool
     {
         return !$this->intersect($array1, $array2);
     }
 
-    /**
-     * @param array $policyRuleAttributes
-     * @param array $attributes
-     * @param array $extraData
-     * @return boolean
-     */
-    public function contains($policyRuleAttributes, $attributes, $extraData = [])
+    public function contains(array $policyRuleAttributes, array $attributes, array $extraData = []): bool
     {
         foreach ($extraData['attribute']->getValue() as $attribute) {
             $result = true;

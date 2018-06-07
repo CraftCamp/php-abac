@@ -19,45 +19,29 @@ class MemoryCacheItem implements CacheItemInterface
     /** @var string **/
     protected $driver = 'memory';
 
-    /**
-     * @param string $key
-     * @param int $ttl
-     */
-    public function __construct($key, $ttl = null)
+    public function __construct(string $key, int $ttl = null)
     {
         $this->key = $key;
         $this->expiresAfter($ttl);
     }
 
-    /**
-     * {@inheritdoc}
-     */
-    public function set($value)
+    public function set($value): MemoryCacheItem
     {
         $this->value = $value;
 
         return $this;
     }
 
-    /**
-     * {@inheritdoc}
-     */
-    public function isHit()
+    public function isHit(): bool
     {
         return $this->expiresAt >= new \DateTime();
     }
 
-    /**
-     * {@inheritdoc}
-     */
-    public function getKey()
+    public function getKey(): string
     {
         return $this->key;
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function get()
     {
         if (!$this->isHit()) {
@@ -66,10 +50,7 @@ class MemoryCacheItem implements CacheItemInterface
         return $this->value;
     }
 
-    /**
-     * {@inheritdoc}
-     */
-    public function expiresAfter($time)
+    public function expiresAfter($time): MemoryCacheItem
     {
         $lifetime = ($time !== null) ? $time : $this->defaultLifetime;
 
@@ -78,10 +59,7 @@ class MemoryCacheItem implements CacheItemInterface
         return $this;
     }
 
-    /**
-     * {@inheritdoc}
-     */
-    public function expiresAt($expiration)
+    public function expiresAt($expiration): MemoryCacheItem
     {
         $this->expiresAt =
             ($expiration === null)
@@ -91,18 +69,12 @@ class MemoryCacheItem implements CacheItemInterface
         return $this;
     }
 
-    /**
-     * @return \DateTime
-     */
-    public function getExpirationDate()
+    public function getExpirationDate(): \DateTime
     {
         return $this->expiresAt;
     }
 
-    /**
-     * @return string
-     */
-    public function getDriver()
+    public function getDriver(): string
     {
         return $this->driver;
     }

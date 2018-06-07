@@ -6,11 +6,11 @@ use PhpAbac\Manager\ComparisonManager;
 
 abstract class AbstractComparison
 {
-    /** @var \PhpAbac\Manager\ComparisonManager **/
+    /** @var ComparisonManager **/
     protected $comparisonManager;
     
     /**
-     * @param \PhpAbac\Manager\ComparisonManager $comparisonManager
+     * @param ComparisonManager $comparisonManager
      */
     public function __construct(ComparisonManager $comparisonManager)
     {

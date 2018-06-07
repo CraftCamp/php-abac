@@ -4,7 +4,7 @@ namespace PhpAbac\Model;
 
 class PolicyRuleAttribute
 {
-    /** @var \PhpAbac\Model\AbstractAttribute **/
+    /** @var AbstractAttribute **/
     protected $attribute;
     /** @var string **/
     protected $comparisonType;
@@ -17,114 +17,69 @@ class PolicyRuleAttribute
     /** @var array Extended parameter */
     protected $getter_params_a = [];
 
-    /**
-     * @param \PhpAbac\Model\AbstractAttribute $attribute
-     *
-     * @return \PhpAbac\Model\PolicyRuleAttribute
-     */
-    public function setAttribute(AbstractAttribute $attribute)
+    public function setAttribute(AbstractAttribute $attribute): PolicyRuleAttribute
     {
         $this->attribute = $attribute;
 
         return $this;
     }
 
-    /**
-     * @return \PhpAbac\Model\AbstractAttribute
-     */
-    public function getAttribute()
+    public function getAttribute(): AbstractAttribute
     {
         return $this->attribute;
     }
 
-    /**
-     * @param string $comparisonType
-     *
-     * @return \PhpAbac\Model\PolicyRuleAttribute
-     */
-    public function setComparisonType($comparisonType)
+    public function setComparisonType(string $comparisonType): PolicyRuleAttribute
     {
         $this->comparisonType = $comparisonType;
 
         return $this;
     }
 
-    /**
-     * @return string
-     */
-    public function getComparisonType()
+    public function getComparisonType(): string
     {
         return $this->comparisonType;
     }
 
-    /**
-     * @param string $comparison
-     *
-     * @return \PhpAbac\Model\PolicyRuleAttribute
-     */
-    public function setComparison($comparison)
+    public function setComparison(string $comparison): PolicyRuleAttribute
     {
         $this->comparison = $comparison;
 
         return $this;
     }
 
-    /**
-     * @return string
-     */
-    public function getComparison()
+    public function getComparison(): string
     {
         return $this->comparison;
     }
 
-    /**
-     * @param mixed $value
-     *
-     * @return \PhpAbac\Model\PolicyRuleAttribute
-     */
-    public function setValue($value)
+    public function setValue($value): PolicyRuleAttribute
     {
         $this->value = $value;
 
         return $this;
     }
 
-    /**
-     * @return mixed
-     */
     public function getValue()
     {
         return $this->value;
     }
     
-    /**
-     * @param array $extraData
-     * @return \PhpAbac\Model\PolicyRuleAttribute
-     */
-    public function setExtraData($extraData)
+    public function setExtraData(array $extraData): PolicyRuleAttribute
     {
         $this->extraData = $extraData;
         
         return $this;
     }
     
-    /**
-     * @param string $key
-     * @param string $value
-     * @return \PhpAbac\Model\PolicyRuleAttribute
-     */
-    public function addExtraData($key, $value)
+    public function addExtraData(string $key, $value): PolicyRuleAttribute
     {
         $this->extraData[$key] = $value;
         
         return $this;
     }
-            
-    /**
-     * @param string $key
-     * @return \PhpAbac\Model\PolicyRuleAttribute
-     */
-    public function removeExtraData($key)
+    
+    public function removeExtraData(string $key): PolicyRuleAttribute
     {
         if (isset($this->extraData[$key])) {
             unset($this->extraData[$key]);
@@ -132,30 +87,19 @@ class PolicyRuleAttribute
         return $this;
     }
     
-    /**
-     * @return array
-     */
-    public function getExtraData()
+    public function getExtraData(): array
     {
         return $this->extraData;
     }
     
-    /**
-     * @param array $value
-     *
-     * @return static
-     */
-    public function setGetterParams($value)
+    public function setGetterParams(array $value): PolicyRuleAttribute
     {
         $this->getter_params_a = $value;
         
         return $this;
     }
     
-    /**
-     * @return array
-     */
-    public function getGetterParams()
+    public function getGetterParams(): array
     {
         return $this->getter_params_a;
     }

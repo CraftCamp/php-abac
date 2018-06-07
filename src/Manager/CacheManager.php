@@ -2,7 +2,10 @@
 
 namespace PhpAbac\Manager;
 
-use Psr\Cache\CacheItemInterface;
+use Psr\Cache\{
+    CacheItemInterface,
+    CacheItemPoolInterface
+};
 
 class CacheManager
 {
@@ -13,29 +16,17 @@ class CacheManager
     /** @var array **/
     protected $options;
 
-    /**
-     * @param array $options
-     */
-    public function __construct($options = [])
+    public function __construct(array $options = [])
     {
         $this->options = $options;
     }
 
-    /**
-     * @param \Psr\Cache\CacheItemInterface $item
-     */
     public function save(CacheItemInterface $item)
     {
         $this->getItemPool($item->getDriver())->save($item);
     }
 
-    /**
-     * @param string $key
-     * @param string $driver
-     * @param int $ttl
-     * @return \Psr\Cache\CacheItemInterface
-     */
-    public function getItem($key, $driver = null, $ttl = null)
+    public function getItem(string $key, string $driver = null, int $ttl = null): CacheItemInterface
     {
         $finalDriver = ($driver !== null) ? $driver : $this->defaultDriver;
 
@@ -49,12 +40,7 @@ class CacheManager
         return $item;
     }
 
-    /**
-     *
-     * @param string $driver
-     * @return Psr\Cache\CacheItemPoolInterface
-     */
-    public function getItemPool($driver)
+    public function getItemPool(string $driver): CacheItemPoolInterface
     {
         if (!isset($this->pools[$driver])) {
             $poolClass = 'PhpAbac\\Cache\\Pool\\' . ucfirst($driver) . 'CacheItemPool';

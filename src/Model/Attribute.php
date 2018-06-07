@@ -7,21 +7,14 @@ class Attribute extends AbstractAttribute
     /** @var string **/
     protected $property;
     
-    /**
-     * @param string $property
-     * @return static
-     */
-    public function setProperty($property)
+    public function setProperty(string $property): Attribute
     {
         $this->property = $property;
         
         return $this;
     }
     
-    /**
-     * @return string
-     */
-    public function getProperty()
+    public function getProperty(): string
     {
         return $this->property;
     }
