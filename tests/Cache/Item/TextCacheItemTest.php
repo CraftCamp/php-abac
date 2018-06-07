@@ -4,7 +4,7 @@ namespace PhpAbac\Test\Cache\Item;
 
 use PhpAbac\Cache\Item\TextCacheItem;
 
-class TextCacheItemTest extends \PHPUnit_Framework_TestCase
+class TextCacheItemTest extends \PHPUnit\Framework\TestCase
 {
     /** @var \PhpAbac\Cache\Item\TextCacheItem **/
     protected $item;

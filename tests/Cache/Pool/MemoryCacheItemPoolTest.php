@@ -5,7 +5,7 @@ namespace PhpAbac\Test\Cache\Pool;
 use PhpAbac\Cache\Pool\MemoryCacheItemPool;
 use PhpAbac\Cache\Item\MemoryCacheItem;
 
-class MemoryCacheItemPoolTest extends \PHPUnit_Framework_TestCase
+class MemoryCacheItemPoolTest extends \PHPUnit\Framework\TestCase
 {
     protected $pool;
     

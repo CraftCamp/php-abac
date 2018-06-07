@@ -6,7 +6,7 @@ date_default_timezone_set('UTC');
 
 use PhpAbac\Abac;
 
-class AbacTest extends \PHPUnit_Framework_TestCase
+class AbacTest extends \PHPUnit\Framework\TestCase
 {
     /** @var Abac[] $abac_a * */
     protected $abac_a;

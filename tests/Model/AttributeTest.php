@@ -4,7 +4,7 @@ namespace PhpAbac\Test\Model;
 
 use PhpAbac\Model\Attribute;
 
-class AttributeTest extends \PHPUnit_Framework_TestCase
+class AttributeTest extends \PHPUnit\Framework\TestCase
 {
     public function testEntity()
     {

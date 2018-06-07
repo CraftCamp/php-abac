@@ -7,7 +7,7 @@ use PhpAbac\Comparison\BooleanComparison;
 use PhpAbac\Manager\ComparisonManager;
 use PhpAbac\Manager\AttributeManager;
 
-class BooleanComparisonTest extends \PHPUnit_Framework_TestCase
+class BooleanComparisonTest extends \PHPUnit\Framework\TestCase
 {
     /** @var BooleanComparison **/
     protected $comparison;
