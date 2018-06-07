@@ -29,5 +29,8 @@
             "PhpAbac\\Example\\": "example/",
             "PhpAbac\\Test\\": "tests/"
         }
+    },
+    "require-dev": {
+        "phpunit/phpunit": "^7.2"
     }
 }

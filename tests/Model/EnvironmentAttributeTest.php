@@ -4,7 +4,7 @@ namespace PhpAbac\Test\Model;
 
 use PhpAbac\Model\EnvironmentAttribute;
 
-class EnvironmentAttributeTest extends \PHPUnit_Framework_TestCase
+class EnvironmentAttributeTest extends \PHPUnit\Framework\TestCase
 {
     public function testEntity()
     {

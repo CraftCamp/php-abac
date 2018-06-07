@@ -6,7 +6,7 @@ use Symfony\Component\Config\FileLocator;
 
 use PhpAbac\Manager\ConfigurationManager;
 
-class ConfigurationManagerTest extends \PHPUnit_Framework_TestCase
+class ConfigurationManagerTest extends \PHPUnit\Framework\TestCase
 {
     public function setUp()
     {

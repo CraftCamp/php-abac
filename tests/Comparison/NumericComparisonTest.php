@@ -7,7 +7,7 @@ use PhpAbac\Comparison\NumericComparison;
 use PhpAbac\Manager\ComparisonManager;
 use PhpAbac\Manager\AttributeManager;
 
-class NumericComparisonTest extends \PHPUnit_Framework_TestCase
+class NumericComparisonTest extends \PHPUnit\Framework\TestCase
 {
     /** @var NumericComparison **/
     protected $comparison;

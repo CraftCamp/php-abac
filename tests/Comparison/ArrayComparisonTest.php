@@ -13,7 +13,7 @@ use PhpAbac\Model\Attribute;
 use PhpAbac\Example\User;
 use PhpAbac\Example\Visa;
 
-class ArrayComparisonTest extends \PHPUnit_Framework_TestCase
+class ArrayComparisonTest extends \PHPUnit\Framework\TestCase
 {
     /** @var ArrayComparison **/
     protected $comparison;

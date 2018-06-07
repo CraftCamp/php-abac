@@ -9,7 +9,7 @@ use PhpAbac\Manager\ConfigurationManager;
 
 use PhpAbac\Example\User;
 
-class AttributeManagerTest extends \PHPUnit_Framework_TestCase
+class AttributeManagerTest extends \PHPUnit\Framework\TestCase
 {
     /** @var \PhpAbac\Manager\AttributeManager **/
     private $manager;

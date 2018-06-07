@@ -7,7 +7,7 @@ use PhpAbac\Comparison\StringComparison;
 use PhpAbac\Manager\ComparisonManager;
 use PhpAbac\Manager\AttributeManager;
 
-class StringComparisonTest extends \PHPUnit_Framework_TestCase
+class StringComparisonTest extends \PHPUnit\Framework\TestCase
 {
     /** @var StringComparison **/
     protected $comparison;

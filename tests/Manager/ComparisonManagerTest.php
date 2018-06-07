@@ -7,7 +7,7 @@ use PhpAbac\Manager\ComparisonManager;
 use PhpAbac\Model\PolicyRuleAttribute;
 use PhpAbac\Model\Attribute;
 
-class ComparisonManagerTest extends \PHPUnit_Framework_TestCase
+class ComparisonManagerTest extends \PHPUnit\Framework\TestCase
 {
     /** @var \PhpAbac\Manager\ComparisonManager **/
     protected $manager;

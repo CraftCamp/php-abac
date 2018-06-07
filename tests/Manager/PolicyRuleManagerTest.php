@@ -13,7 +13,7 @@ use PhpAbac\Model\PolicyRuleAttribute;
 use PhpAbac\Model\Attribute;
 use PhpAbac\Model\EnvironmentAttribute;
 
-class PolicyRuleManagerTest extends \PHPUnit_Framework_TestCase
+class PolicyRuleManagerTest extends \PHPUnit\Framework\TestCase
 {
     /** @var \PhpAbac\Manager\PolicyRuleManager **/
     private $manager;

@@ -5,7 +5,7 @@ namespace PhpAbac\Test\Manager;
 use PhpAbac\Loader\YamlAbacLoader;
 use Symfony\Component\Config\FileLocator;
 
-class YamlAbacLoaderTest extends \PHPUnit_Framework_TestCase
+class YamlAbacLoaderTest extends \PHPUnit\Framework\TestCase
 {
     public function setUp()
     {

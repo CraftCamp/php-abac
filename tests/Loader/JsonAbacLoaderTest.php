@@ -5,7 +5,7 @@ namespace PhpAbac\Test\Manager;
 use PhpAbac\Loader\JsonAbacLoader;
 use Symfony\Component\Config\FileLocator;
 
-class JsonAbacLoaderTest extends \PHPUnit_Framework_TestCase
+class JsonAbacLoaderTest extends \PHPUnit\Framework\TestCase
 {
     public function setUp()
     {

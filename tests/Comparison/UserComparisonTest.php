@@ -16,7 +16,7 @@ use PhpAbac\Model\Attribute;
 use PhpAbac\Example\User;
 use PhpAbac\Example\Vehicle;
 
-class UserComparisonTest extends \PHPUnit_Framework_TestCase
+class UserComparisonTest extends \PHPUnit\Framework\TestCase
 {
     /** @var ArrayComparison **/
     protected $comparison;

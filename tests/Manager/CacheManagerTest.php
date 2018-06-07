@@ -4,7 +4,7 @@ namespace PhpAbac\Test\Manager;
 
 use PhpAbac\Manager\CacheManager;
 
-class CacheManagerTest extends \PHPUnit_Framework_TestCase
+class CacheManagerTest extends \PHPUnit\Framework\TestCase
 {
     /** @var \PhpAbac\Manager\CacheManager **/
     protected $cacheManager;
