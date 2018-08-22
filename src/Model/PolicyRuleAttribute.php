@@ -4,7 +4,7 @@ namespace PhpAbac\Model;
 
 class PolicyRuleAttribute
 {
-    /** @var PhpAbac\Model\AbstractAttribute **/
+    /** @var \PhpAbac\Model\AbstractAttribute **/
     protected $attribute;
     /** @var string **/
     protected $comparisonType;
@@ -13,7 +13,7 @@ class PolicyRuleAttribute
     /** @var mixed **/
     protected $value;
     /** @var array **/
-    protected $extraData;
+    protected $extraData = [];
     /** @var array Extended parameter */
     protected $getter_params_a = [];
 
