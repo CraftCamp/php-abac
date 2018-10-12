@@ -1,6 +1,6 @@
 <?php
 
-namespace PhpAbac\Manager;
+namespace PhpAbac\Configuration;
 
 use PhpAbac\Loader\{
     AbacLoader,
@@ -10,7 +10,7 @@ use PhpAbac\Loader\{
 
 use Symfony\Component\Config\FileLocatorInterface;
 
-class ConfigurationManager
+class Configuration
 {
     /** @var FileLocatorInterface * */
     protected $locator;

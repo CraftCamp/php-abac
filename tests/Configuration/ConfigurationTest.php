@@ -4,13 +4,13 @@ namespace PhpAbac\Test\Manager;
 
 use Symfony\Component\Config\FileLocator;
 
-use PhpAbac\Manager\ConfigurationManager;
+use PhpAbac\Configuration\Configuration;
 
-class ConfigurationManagerTest extends \PHPUnit\Framework\TestCase
+class ConfigurationTest extends \PHPUnit\Framework\TestCase
 {
     public function setUp()
     {
-        $this->manager = new ConfigurationManager(new FileLocator());
+        $this->manager = new Configuration(new FileLocator());
     }
     
     public function testParseConfigurationFile()
