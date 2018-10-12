@@ -2,19 +2,17 @@
 
 namespace PhpAbac\Loader;
 
-use Symfony\Component\Yaml\Yaml;
-
 use Symfony\Component\Config\Loader\FileLoader;
 
-class YamlAbacLoader extends FileLoader
+class JsonLoader extends FileLoader
 {
     public function load($resource, $type = null)
     {
-        return Yaml::parse(file_get_contents($resource));
+        return json_decode(file_get_contents($resource), true);
     }
 
     public function supports($resource, $type = null): bool
     {
-        return in_array(pathinfo($resource, PATHINFO_EXTENSION), ['yml','yaml']);
+        return pathinfo($resource, PATHINFO_EXTENSION) === 'json';
     }
 }
