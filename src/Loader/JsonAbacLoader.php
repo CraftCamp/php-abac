@@ -2,22 +2,17 @@
 
 namespace PhpAbac\Loader;
 
-use Symfony\Component\Serializer\Encoder\{
-    JsonDecode,
-    JsonEncoder
-};
+use Symfony\Component\Config\Loader\FileLoader;
 
-class JsonAbacLoader extends AbacLoader
+class JsonAbacLoader extends FileLoader
 {
-    protected static $allowedExtensions = ['json'];
-    
     public function load($resource, $type = null)
     {
-        return (new JsonDecode(true))->decode(file_get_contents($resource), JsonEncoder::FORMAT, [ 'json_decode_associative' => true ]) + ['path' => $resource];
+        return json_decode(file_get_contents($resource), true);
     }
 
-    public function supports($resource, $type = null)
+    public function supports($resource, $type = null): bool
     {
-        return is_string($resource) && self::supportsExtension($resource);
+        return pathinfo($resource, PATHINFO_EXTENSION) === 'json';
     }
 }

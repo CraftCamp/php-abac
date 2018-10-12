@@ -2,21 +2,19 @@
 
 namespace PhpAbac;
 
+use PhpAbac\Configuration\Configuration;
+
 use PhpAbac\Manager\{
     AttributeManager,
     CacheManager,
     ComparisonManager,
-    ConfigurationManager,
     PolicyRuleManager
 };
 use PhpAbac\Model\PolicyRuleAttribute;
 
-use Symfony\Component\Config\FileLocator;
-
-
 final class Abac
 {
-    /** @var ConfigurationManager **/
+    /** @var Configuration **/
     private $configuration;
     /** @var PolicyRuleManager **/
     private $policyRuleManager;
@@ -43,8 +41,7 @@ final class Abac
      */
     public function configure(array $configFiles, string $configDir = null)
     {
-        $this->configuration = new ConfigurationManager(new FileLocator($configDir));
-        $this->configuration->setConfigPathRoot($configDir);
+        $this->configuration = new Configuration($configDir);
         $this->configuration->parseConfigurationFile($configFiles);
     }
     
