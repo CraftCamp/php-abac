@@ -5,8 +5,8 @@ namespace PhpAbac\Configuration;
 use Symfony\Component\Config\FileLocator;
 use Symfony\Component\Config\Loader\LoaderInterface;
 
-use PhpAbac\Loader\JsonAbacLoader;
-use PhpAbac\Loader\YamlAbacLoader;
+use PhpAbac\Loader\JsonLoader;
+use PhpAbac\Loader\YamlLoader;
 
 class Configuration
 {
@@ -20,8 +20,8 @@ class Configuration
     protected $loadedFiles = [];
     
     const LOADERS = [
-        JsonAbacLoader::class,
-        YamlAbacLoader::class
+        JsonLoader::class,
+        YamlLoader::class
     ];
     
     public function __construct(string $configDir = null)
