@@ -8,7 +8,7 @@ use Symfony\Component\Config\Loader\LoaderInterface;
 use PhpAbac\Loader\JsonLoader;
 use PhpAbac\Loader\YamlLoader;
 
-class Configuration
+class Configuration implements ConfigurationInterface
 {
     /** @var AbacLoader[] * */
     protected $loaders = [];

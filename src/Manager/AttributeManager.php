@@ -10,7 +10,7 @@ use PhpAbac\Model\{
     EnvironmentAttribute
 };
 
-class AttributeManager
+class AttributeManager implements AttributeManagerInterface
 {
     /** @var array **/
     private $attributes;

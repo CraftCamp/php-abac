@@ -9,7 +9,7 @@ use PhpAbac\Model\{
     PolicyRuleAttribute
 };
 
-class PolicyRuleManager
+class PolicyRuleManager implements PolicyRuleManagerInterface
 {
     /** @var AttributeManager * */
     private $attributeManager;
