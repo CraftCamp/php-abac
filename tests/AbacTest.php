@@ -1,19 +1,12 @@
 <?php
 namespace PhpAbac\Test;
 
-use PhpAbac\Abac;
-
-use PhpAbac\Configuration\Configuration;
-
-use PhpAbac\Manager\PolicyRuleManager;
-use PhpAbac\Manager\AttributeManager;
-use PhpAbac\Manager\ComparisonManager;
-use PhpAbac\Manager\CacheManager;
+use PhpAbac\AbacFactory;
 
 class AbacTest extends \PHPUnit\Framework\TestCase
 {
     /** @var array * */
-    protected $bsicSet;
+    protected $basicSet;
     /** @var array * */
     protected $multipleRulesetSet;
     /** @var array **/
@@ -24,32 +17,21 @@ class AbacTest extends \PHPUnit\Framework\TestCase
     public function setUp()
     {
         $this->basicSet = [
-            $this->createAbac([__DIR__ . '/fixtures/policy_rules.yml']),
-            $this->createAbac([__DIR__ . '/fixtures/policy_rules.json']),
+            AbacFactory::getAbac([__DIR__ . '/fixtures/policy_rules.yml']),
+            AbacFactory::getAbac([__DIR__ . '/fixtures/policy_rules.json']),
         ];
         $this->multipleRulesetSet = [
-            $this->createAbac([__DIR__ . '/fixtures/policy_rules_with_array.yml']),
-            $this->createAbac([__DIR__ . '/fixtures/policy_rules_with_array.json']),
-            $this->createAbac(['policy_rules_with_array.yml'], __DIR__.'/fixtures/'),
-            $this->createAbac(['policy_rules_with_array.json'], __DIR__.'/fixtures/'),
+            AbacFactory::getAbac([__DIR__ . '/fixtures/policy_rules_with_array.yml']),
+            AbacFactory::getAbac([__DIR__ . '/fixtures/policy_rules_with_array.json']),
+            AbacFactory::getAbac(['policy_rules_with_array.yml'], __DIR__.'/fixtures/'),
+            AbacFactory::getAbac(['policy_rules_with_array.json'], __DIR__.'/fixtures/'),
         ];
         $this->getterParamsSet = [
-            $this->createAbac(['policy_rules_with_getter_params.yml'], __DIR__.'/fixtures/'),
+            AbacFactory::getAbac(['policy_rules_with_getter_params.yml'], __DIR__.'/fixtures/'),
         ];
         $this->importSet = [
-            $this->createAbac(['policy_rules_with_import.yml'], __DIR__.'/fixtures/'),
+            AbacFactory::getAbac(['policy_rules_with_import.yml'], __DIR__.'/fixtures/'),
         ];
-    }
-    
-    public function createAbac(array $configurationFiles, string $configDir = null)
-    {
-        $configuration = new Configuration($configurationFiles, $configDir);
-        $attributeManager = new AttributeManager($configuration);
-        $policyRuleManager = new PolicyRuleManager($configuration, $attributeManager);
-        $comparisonManager = new ComparisonManager($attributeManager);
-        $cacheManager = new CacheManager();
-        
-        return new Abac($policyRuleManager, $attributeManager, $comparisonManager, $cacheManager);
     }
 
     public function testEnforce()
