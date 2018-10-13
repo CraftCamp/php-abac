@@ -62,7 +62,7 @@ For example, we can code :
 ```php
 <?php
 
-use PhpAbac\Abac;
+use PhpAbac\AbacFactory;
 
 class User{
     protected $id;
@@ -87,7 +87,7 @@ class User{
 $user = new User();
 $user->setIsBanned(true);
 
-$abac = new Abac([
+$abac = AbacFactory::getAbac([
     'policy_rule_configuration.yml'
 ]);
 $abac->enforce('create-group', $user);
@@ -100,9 +100,9 @@ The attributes checked by the rule can be :
 
 **Example with both user and object attributes**
 ```php
-use PhpAbac\Abac;
+use PhpAbac\AbacFactory;
 
-$abac = new Abac([
+$abac = AbacFactory::getAbac([
     'policy_rule_configuration.yml'
 ]);
 $check = $abac->enforce('read-public-group', $user, $group);
@@ -118,9 +118,9 @@ The checked attributes can be :
 ```php
 <?php
 
-use PhpAbac\Abac;
+use PhpAbac\AbacFactory;
 
-$abac = new Abac([
+$abac = AbacFactory::getAbac([
     'policy_rule_configuration.yml'
 ]);
 $check = $abac->enforce('edit-group', $user, $group, [
@@ -162,9 +162,9 @@ And then the code :
 ```php
 <?php
 
-use PhpAbac\Abac;
+use PhpAbac\AbacFactory;
 
-$abac = new Abac([
+$abac = AbacFactory::getAbac([
     'policy_rule_configuration.yml'
 ]);
 $check = $abac->enforce('remove-group', $user, $group);
@@ -225,9 +225,9 @@ And then the code :
 ```php
 <?php
 
-use PhpAbac\Abac;
+use PhpAbac\AbacFactory;
 
-$abac = new Abac([
+$abac = AbacFactory::getAbac([
     'alcoollaw.yml'
 ]);
 $check = $abac->enforce('alcoollaw', $user);
@@ -244,17 +244,15 @@ The php code can be :
 ```php
 <?php
 
-use PhpAbac\Abac;
+use PhpAbac\AbacFactory;
 
-$abac = new Abac([
+$abac = AbacFactory::getAbac([
     'user_def.yml',
     'gunlaw.yml',
 ],[],'rest/conf/policy/');
 $check = $abac->enforce('gunlaw', $user);
  
 ```
-
-
 
 Contribute
 ----------
