@@ -44,6 +44,7 @@ Documentation
 ------------
 
 * [Configuration](doc/configuration.md)
+* [Dependency Injection](doc/dependency-injection.md)
 * [Access-control](doc/access-control.md)
 * [Comparisons](doc/comparisons.md)
 * [Caching](doc/caching.md)
