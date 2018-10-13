@@ -36,7 +36,6 @@ class ArrayComparison extends AbstractComparison
                 );
                 // If one field is not matched, the whole attribute is rejected
                 if (!$this->comparisonManager->compare($pra, true)) {
-                    //var_dump($attributeData->getName(), $attributeData->getValue(), $pra->getValue());
                     $result = false;
                     break;
                 }
