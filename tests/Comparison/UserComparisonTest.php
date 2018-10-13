@@ -4,13 +4,12 @@ namespace PhpAbac\Test\Comparison;
 
 use PhpAbac\Comparison\UserComparison;
 
-use Symfony\Component\Config\FileLocator;
-
 use PhpAbac\Manager\{
     AttributeManager,
-    ComparisonManager,
-    ConfigurationManager
+    ComparisonManager
 };
+use PhpAbac\Model\Attribute;
+
 use PhpAbac\Example\User;
 
 class UserComparisonTest extends \PHPUnit\Framework\TestCase
@@ -20,16 +19,11 @@ class UserComparisonTest extends \PHPUnit\Framework\TestCase
 
     public function setUp()
     {
-        $configuration = new ConfigurationManager(new FileLocator());
-        $configuration->parseConfigurationFile([__DIR__.'/../fixtures/policy_rules.yml']);
-
-        $this->comparison = new UserComparison(new ComparisonManager(new AttributeManager($configuration->getAttributes())));
+        $this->comparison = new UserComparison($this->getComparisonManagerMock());
     }
 
     public function testIsFieldEqual()
     {
-        $countries = include(__DIR__ . '/../fixtures/countries.php');
-        $visas = include(__DIR__ . '/../fixtures/visas.php');
         $extraData = [
             'user' =>
                 (new User())
@@ -38,5 +32,40 @@ class UserComparisonTest extends \PHPUnit\Framework\TestCase
         ];
         $this->assertFalse($this->comparison->isFieldEqual('main_user.parentNationality', 'FR', $extraData));
         $this->assertTrue($this->comparison->isFieldEqual('main_user.parentNationality', 'UK', $extraData));
+    }
+    
+    public function getComparisonManagerMock()
+    {
+        $comparisonManagerMock = $this
+            ->getMockBuilder(ComparisonManager::class)
+            ->disableOriginalConstructor()
+            ->getMock()
+        ;
+        $comparisonManagerMock
+            ->expects($this->any())
+            ->method('getAttributeManager')
+            ->willReturnCallback([$this, 'getAttributeManagerMock'])
+        ;
+        return $comparisonManagerMock;
+    }
+    
+    public function getAttributeManagerMock()
+    {
+        $attributeManagerMock = $this
+            ->getMockBuilder(AttributeManager::class)
+            ->disableOriginalConstructor()
+            ->getMock()
+        ;
+        $attributeManagerMock
+            ->expects($this->any())
+            ->method('getAttribute')
+            ->willReturn((new Attribute()))
+        ;
+        $attributeManagerMock
+            ->expects($this->any())
+            ->method('retrieveAttribute')
+            ->willReturn('UK')
+        ;
+        return $attributeManagerMock;
     }
 }
