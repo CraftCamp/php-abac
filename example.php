@@ -2,28 +2,14 @@
 
     require_once('vendor/autoload.php');
 
-    use PhpAbac\Abac;
-    
-    use PhpAbac\Configuration\Configuration;
-    
-    use PhpAbac\Manager\AttributeManager;
-    use PhpAbac\Manager\PolicyRuleManager;
-    use PhpAbac\Manager\CacheManager;
-    use PhpAbac\Manager\ComparisonManager;
+    use PhpAbac\AbacFactory;
 
     $countries = include('tests/fixtures/countries.php');
     $visas = include('tests/fixtures/visas.php');
     $users = include('tests/fixtures/users.php');
     $vehicles = include('tests/fixtures/vehicles.php');
     
-    $configuration = new Configuration([__DIR__.'/tests/fixtures/policy_rules.yml']);
-    
-    $attributeManager = new AttributeManager($configuration);
-    $policyRuleManager = new PolicyRuleManager($configuration, $attributeManager);
-    $comparisonManager = new ComparisonManager($attributeManager);
-    $cacheManager = new CacheManager();
-    
-    $abac = new Abac($policyRuleManager, $attributeManager, $comparisonManager, $cacheManager);
+    $abac = AbacFactory::getAbac([__DIR__.'/tests/fixtures/policy_rules.yml']);
     
     putenv('SERVICE_STATE=OPEN');
     
