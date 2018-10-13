@@ -4,10 +4,7 @@ namespace PhpAbac\Test\Comparison;
 
 use PhpAbac\Comparison\NumericComparison;
 
-use PhpAbac\Manager\{
-    AttributeManager,
-    ComparisonManager
-};
+use PhpAbac\Manager\ComparisonManager;
 
 class NumericComparisonTest extends \PHPUnit\Framework\TestCase
 {
@@ -16,7 +13,7 @@ class NumericComparisonTest extends \PHPUnit\Framework\TestCase
 
     public function setUp()
     {
-        $this->comparison = new NumericComparison(new ComparisonManager(new AttributeManager([])));
+        $this->comparison = new NumericComparison($this->getComparisonManagerMock());
     }
 
     public function testIsEqual()
@@ -49,5 +46,15 @@ class NumericComparisonTest extends \PHPUnit\Framework\TestCase
     {
         $this->assertTrue($this->comparison->isGreaterThanOrEqual(18, 18));
         $this->assertFalse($this->comparison->isGreaterThanOrEqual(21, 18));
+    }
+    
+    public function getComparisonManagerMock()
+    {
+        $comparisonManagerMock = $this
+            ->getMockBuilder(ComparisonManager::class)
+            ->disableOriginalConstructor()
+            ->getMock()
+        ;
+        return $comparisonManagerMock;
     }
 }

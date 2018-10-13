@@ -14,7 +14,7 @@ class JsonLoaderTest extends \PHPUnit\Framework\TestCase
     {
         $loader = new JsonLoader(new FileLocator(__DIR__.'/../fixtures/bad'));
         $loader->setCurrentDir(__DIR__.'/../fixtures/bad');
-        $loader->import('policy_rules.json');
+        $loader->import('unexisting_policy_rules.json');
     }
     
     public function testLoaderJsonValidJsonFile()

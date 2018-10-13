@@ -14,7 +14,7 @@ class YamlAbacLoaderTest extends \PHPUnit\Framework\TestCase
     {
         $loader = new YamlLoader(new FileLocator(__DIR__.'/../fixtures/bad'));
         $loader->setCurrentDir(__DIR__.'/../fixtures/bad');
-        $loader->import('policy_rules.yml');
+        $loader->import('unexisting_policy_rules.yml');
     }
     
     public function testLoaderYamlValidYamlFile()

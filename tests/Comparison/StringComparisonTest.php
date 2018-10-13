@@ -4,10 +4,7 @@ namespace PhpAbac\Test\Comparison;
 
 use PhpAbac\Comparison\StringComparison;
 
-use PhpAbac\Manager\{
-    AttributeManager,
-    ComparisonManager
-};
+use PhpAbac\Manager\ComparisonManager;
 
 class StringComparisonTest extends \PHPUnit\Framework\TestCase
 {
@@ -16,7 +13,7 @@ class StringComparisonTest extends \PHPUnit\Framework\TestCase
 
     public function setUp()
     {
-        $this->comparison = new StringComparison(new ComparisonManager(new AttributeManager([])));
+        $this->comparison = new StringComparison($this->getComparisonManagerMock());
     }
 
     public function testIsEqual()
@@ -29,5 +26,15 @@ class StringComparisonTest extends \PHPUnit\Framework\TestCase
     {
         $this->assertTrue($this->comparison->isNotEqual('john-doe', 'john-DOE'));
         $this->assertFalse($this->comparison->isNotEqual('john-doe', 'john-doe'));
+    }
+    
+    public function getComparisonManagerMock()
+    {
+        $comparisonManagerMock = $this
+            ->getMockBuilder(ComparisonManager::class)
+            ->disableOriginalConstructor()
+            ->getMock()
+        ;
+        return $comparisonManagerMock;
     }
 }

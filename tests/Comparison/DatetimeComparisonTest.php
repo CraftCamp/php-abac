@@ -4,10 +4,7 @@ namespace PhpAbac\Test\Comparison;
 
 use PhpAbac\Comparison\DatetimeComparison;
 
-use PhpAbac\Manager\{
-    AttributeManager,
-    ComparisonManager
-};
+use PhpAbac\Manager\ComparisonManager;
 
 class DattimeeComparisonTest extends \PHPUnit\Framework\TestCase
 {
@@ -16,7 +13,7 @@ class DattimeeComparisonTest extends \PHPUnit\Framework\TestCase
 
     public function setUp()
     {
-        $this->comparison = new DatetimeComparison(new ComparisonManager(new AttributeManager([])));
+        $this->comparison = new DatetimeComparison($this->getComparisonManagerMock());
     }
 
     public function testIsBetween()
@@ -38,5 +35,15 @@ class DattimeeComparisonTest extends \PHPUnit\Framework\TestCase
     {
         $this->assertTrue($this->comparison->isLessRecentThan('-2Y', new \DateTime('2010-01-02')));
         $this->assertFalse($this->comparison->isLessRecentThan('-2Y', new \DateTime()));
+    }
+    
+    public function getComparisonManagerMock()
+    {
+        $comparisonManagerMock = $this
+            ->getMockBuilder(ComparisonManager::class)
+            ->disableOriginalConstructor()
+            ->getMock()
+        ;
+        return $comparisonManagerMock;
     }
 }

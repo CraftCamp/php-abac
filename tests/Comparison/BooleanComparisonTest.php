@@ -4,10 +4,7 @@ namespace PhpAbac\Test\Comparison;
 
 use PhpAbac\Comparison\BooleanComparison;
 
-use PhpAbac\Manager\{
-    AttributeManager,
-    ComparisonManager
-};
+use PhpAbac\Manager\ComparisonManager;
 
 class BooleanComparisonTest extends \PHPUnit\Framework\TestCase
 {
@@ -16,7 +13,7 @@ class BooleanComparisonTest extends \PHPUnit\Framework\TestCase
 
     public function setUp()
     {
-        $this->comparison = new BooleanComparison(new ComparisonManager(new AttributeManager([])));
+        $this->comparison = new BooleanComparison($this->getComparisonManagerMock());
     }
 
     public function testBoolAnd()
@@ -43,5 +40,15 @@ class BooleanComparisonTest extends \PHPUnit\Framework\TestCase
     {
         $this->assertTrue($this->comparison->isNotNull(true, true));
         $this->assertFalse($this->comparison->isNotNull(true, null));
+    }
+    
+    public function getComparisonManagerMock()
+    {
+        $comparisonManagerMock = $this
+            ->getMockBuilder(ComparisonManager::class)
+            ->disableOriginalConstructor()
+            ->getMock()
+        ;
+        return $comparisonManagerMock;
     }
 }
