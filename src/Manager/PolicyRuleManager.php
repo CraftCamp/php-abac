@@ -2,6 +2,8 @@
 
 namespace PhpAbac\Manager;
 
+use PhpAbac\Configuration\Configuration;
+
 use PhpAbac\Model\{
     PolicyRule,
     PolicyRuleAttribute
@@ -11,13 +13,13 @@ class PolicyRuleManager
 {
     /** @var AttributeManager * */
     private $attributeManager;
-    /** @var array * */
-    private $rules;
+    /** @var array **/
+    private $rules = [];
 
-    public function __construct(AttributeManager $attributeManager, array $rules)
+    public function __construct(Configuration $configuration, AttributeManager $attributeManager)
     {
         $this->attributeManager = $attributeManager;
-        $this->rules = $rules;
+        $this->rules = $configuration->getRules();
     }
 
     public function getRule(string $ruleName, $user, $resource): array
@@ -26,6 +28,7 @@ class PolicyRuleManager
             throw new \InvalidArgumentException('The given rule "' . $ruleName . '" is not configured');
         }
 
+        // TODO check if this is really useful
         // force to treat always arrays
         if (array_key_exists('attributes', $this->rules[$ruleName])) {
             $this->rules[$ruleName] = [$this->rules[$ruleName]];
@@ -71,7 +74,7 @@ class PolicyRuleManager
     /**
      * This method is meant to set appropriated extra data to $pra depending on comparison type
      */
-    public function processRuleAttributeComparisonType(PolicyRuleAttribute $pra, $user, $resource)
+    protected function processRuleAttributeComparisonType(PolicyRuleAttribute $pra, $user, $resource)
     {
         switch ($pra->getComparisonType()) {
             case 'user':

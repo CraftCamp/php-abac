@@ -2,8 +2,6 @@
 
 namespace PhpAbac;
 
-use PhpAbac\Configuration\Configuration;
-
 use PhpAbac\Manager\{
     AttributeManager,
     CacheManager,
@@ -14,8 +12,6 @@ use PhpAbac\Model\PolicyRuleAttribute;
 
 final class Abac
 {
-    /** @var Configuration **/
-    private $configuration;
     /** @var PolicyRuleManager **/
     private $policyRuleManager;
     /** @var AttributeManager **/
@@ -27,22 +23,12 @@ final class Abac
     /** @var array **/
     private $errors;
     
-    public function __construct(array $configFiles, array $cacheOptions = [], string $configDir = null, array $options = [])
+    public function __construct(PolicyRuleManager $policyRuleManager, AttributeManager $attributeManager, ComparisonManager $comparisonManager, CacheManager $cacheManager)
     {
-        $this->configure($configFiles, $configDir);
-        $this->attributeManager = new AttributeManager($this->configuration->getAttributes(), $options);
-        $this->policyRuleManager = new PolicyRuleManager($this->attributeManager, $this->configuration->getRules());
-        $this->cacheManager      = new CacheManager($cacheOptions);
-        $this->comparisonManager = new ComparisonManager($this->attributeManager);
-    }
-    
-    /**
-     * Read the given files contained in $configDir
-     */
-    public function configure(array $configFiles, string $configDir = null)
-    {
-        $this->configuration = new Configuration($configDir);
-        $this->configuration->parseConfigurationFile($configFiles);
+        $this->attributeManager = $attributeManager;
+        $this->policyRuleManager = $policyRuleManager;
+        $this->cacheManager = $cacheManager;
+        $this->comparisonManager = $comparisonManager;
     }
     
     /**

@@ -24,12 +24,13 @@ class Configuration
         YamlLoader::class
     ];
     
-    public function __construct(string $configDir = null)
+    public function __construct(array $configurationFiles, string $configDir = null)
     {
         $this->initLoaders($configDir);
+        $this->parseFiles($configurationFiles);
     }
     
-    public function initLoaders(string $configDir = null)
+    protected function initLoaders(string $configDir = null)
     {
         $locator = new FileLocator($configDir);
         foreach (self::LOADERS as $loaderClass) {
@@ -39,7 +40,7 @@ class Configuration
         }
     }
     
-    public function parseConfigurationFile(array $configurationFiles)
+    protected function parseFiles(array $configurationFiles)
     {
         foreach ($configurationFiles as $configurationFile) {
             $config = $this->getLoader($configurationFile)->import($configurationFile, pathinfo($configurationFile, PATHINFO_EXTENSION));
@@ -51,20 +52,20 @@ class Configuration
             $this->loadedFiles[] = $configurationFile;
             
             if (isset($config['@import'])) {
-                $this->parseConfigurationFile($config['@import']);
+                $this->parseFiles($config['@import']);
                 unset($config['@import']);
             }
             
             if (isset($config['attributes'])) {
-                $this->attributes = array_merge($this->attributes, $config[ 'attributes' ]);
+                $this->attributes = array_merge($this->attributes, $config['attributes']);
             }
             if (isset($config['rules'])) {
-                $this->rules = array_merge($this->rules, $config[ 'rules' ]);
+                $this->rules = array_merge($this->rules, $config['rules']);
             }
         }
     }
     
-    private function getLoader(string $configurationFile): LoaderInterface
+    protected function getLoader(string $configurationFile): LoaderInterface
     {
         foreach ($this->loaders as $abacLoader) {
             if ($abacLoader->supports($configurationFile)) {
