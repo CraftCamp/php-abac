@@ -7,7 +7,7 @@ use Psr\Cache\{
     CacheItemPoolInterface
 };
 
-class CacheManager
+class CacheManager implements CacheManagerInterface
 {
     /** @var string **/
     protected $defaultDriver = 'memory';

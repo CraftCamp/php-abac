@@ -14,7 +14,7 @@ use PhpAbac\Comparison\{
     StringComparison
 };
 
-class ComparisonManager
+class ComparisonManager implements ComparisonManagerInterface
 {
     /** @var AttributeManager **/
     protected $attributeManager;
