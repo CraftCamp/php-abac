@@ -17,7 +17,9 @@ New options can be configured in the Abac ```__construct``` method as well, like
 **WARNING:** For now, do not set an ending slash in the cache_folder value.
 
 ```php
-$abac = new Abac(['policy_rules.yml', [
+use PhpAbac\AbacFactory;
+
+$abac = AbacFactory::getAbac(['policy_rules.yml'], null, [], [
     'cache_folder' => __DIR__ . '/cache'
 ]);
 $abac->enforce('my_rule', $user, $resource, [

@@ -12,7 +12,9 @@ The configurations will be merged.
 
 ```php
 <?php
-    $abac = new Abac([
+    use PhpAbac\AbacFactory;
+
+    $abac = AbacFactory::getAbac([
         __DIR__ . '/config/driving_licenses_policy_rules.yml',
         __DIR__ . '/config/vehicles_policy_rules.yml',
         __DIR__ . '/config/attributes.yml',
@@ -24,7 +26,9 @@ Configuration file can be yaml or json files, and format can be mixed.
 
 ```php
 <?php
-    $abac = new Abac([
+    use PhpAbac\AbacFactory;
+
+    $abac = AbacFactory::getAbac([
         __DIR__ . '/config/driving_licenses_policy_rules.json',
         __DIR__ . '/config/vehicles_policy_rules.yml',
         __DIR__ . '/config/attributes.json',
@@ -36,7 +40,9 @@ If all configuration file are in the same folder, you can add this folder in 3th
  
 ```php
 <?php
-    $abac = new Abac([
+    use PhpAbac\AbacFactory;
+
+    $abac = AbacFactory::getAbac([
         'driving_licenses_policy_rules.json',
         'vehicles_policy_rules.yml',
         'attributes.json',

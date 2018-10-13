@@ -14,9 +14,9 @@ Usage
 ---
 
 ```php
-use PhpAbac\Abac;
+use PhpAbac\AbacFactory;
 
-$abac = new Abac([...]);
+$abac = AbacFactory::getAbac(/** ... **/);
 
 $check = $abac->enforce('medical-reports-access', $user, $report);
 ```
@@ -38,7 +38,9 @@ This associative array will contain the targetted attribute's slug as key and th
 For example, it can be useful to check the ownership of a resource :
 
 ```php
-use PhpAbac\Abac;
+use PhpAbac\AbacFactory;
+
+$abac = AbacFactory::getAbac();
 
 $check = $abac->enforce('medical-reports-access', $user, $report, [
     'dynamic-attributes' => [
