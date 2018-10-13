@@ -2,6 +2,18 @@
 All notable changes to this project will be documented in this file.
 This project adheres to [Semantic Versioning](http://semver.org/).
 
+## [3.0.0] - 2018-10-13
+### Added
+- Abac class dependency injection
+- Abac factory
+- Support of PHP 7.x
+
+### Changed
+- Repository ownership
+
+### Removed
+- Support of PHP 5.x
+
 ## [2.1.2] - 2018-01-31
 ### Added
 - Support of Symfony 4 components
