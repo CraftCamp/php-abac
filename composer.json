@@ -1,5 +1,5 @@
 {
-  "name": "craftcamp/php-abac",
+  "name": "abolabo/php-abac",
   "description": "Library used to implement Attribute-Based Access Control in a PHP application",
   "type": "library",
   "keywords": [
