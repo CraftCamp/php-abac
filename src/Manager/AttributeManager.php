@@ -24,8 +24,11 @@ class AttributeManager implements AttributeManagerInterface
      *  Options list :
      *    'getter_prefix' => Prefix to add before getter name (default)'get'
      *    'getter_name_transformation_function' => Function to apply on the getter name ( before adding prefix ) (default)'ucfirst'
+     *
+     * @param ConfigurationInterface $configuration
+     * @param array $options
      */
-    public function __construct(Configuration $configuration, array $options = [])
+    public function __construct(ConfigurationInterface $configuration, array $options = [])
     {
         $this->attributes = $configuration->getAttributes();
     
