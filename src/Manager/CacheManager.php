@@ -2,6 +2,7 @@
 
 namespace PhpAbac\Manager;
 
+use PhpCsFixer\Cache\Cache;
 use Psr\Cache\{
     CacheItemInterface,
     CacheItemPoolInterface
@@ -21,6 +22,9 @@ class CacheManager implements CacheManagerInterface
         $this->options = $options;
     }
 
+    /**
+     * @param CacheItemInterface $item
+     */
     public function save(CacheItemInterface $item)
     {
         $this->getItemPool($item->getDriver())->save($item);

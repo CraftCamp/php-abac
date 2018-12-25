@@ -31,7 +31,7 @@ class ComparisonManager implements ComparisonManagerInterface
     /** @var array **/
     protected $rejectedAttributes = [];
 
-    public function __construct(AttributeManager $manager)
+    public function __construct(AttributeManagerInterface $manager)
     {
         $this->attributeManager = $manager;
     }

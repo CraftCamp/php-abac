@@ -6,13 +6,25 @@ use Symfony\Component\Config\Loader\FileLoader;
 
 class JsonLoader extends FileLoader
 {
-    public function load($resource, $type = null)
+    /**
+     * @param string $filename
+     * @param null $type
+     *
+     * @return mixed
+     */
+    public function load($filename, $type = null)
     {
-        return json_decode(file_get_contents($resource), true);
+        return json_decode(file_get_contents($filename), true);
     }
 
-    public function supports($resource, $type = null): bool
+    /**
+     * @param string $filename
+     * @param null $type
+     *
+     * @return bool
+     */
+    public function supports($filename, $type = null): bool
     {
-        return pathinfo($resource, PATHINFO_EXTENSION) === 'json';
+        return pathinfo($filename, PATHINFO_EXTENSION) === 'json';
     }
 }

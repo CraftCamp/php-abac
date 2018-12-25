@@ -2,8 +2,7 @@
 
 namespace PhpAbac\Manager;
 
-use PhpAbac\Configuration\Configuration;
-
+use PhpAbac\Configuration\ConfigurationInterface;
 use PhpAbac\Model\{
     AbstractAttribute,
     Attribute,
@@ -18,14 +17,18 @@ class AttributeManager implements AttributeManagerInterface
     private $getter_prefix = 'get';
     /** @var string Function to apply on the getter name ( before adding prefix ) (default)'ucfirst' */
     private $getter_name_transformation_function = 'ucfirst';
-    
+
     /**
      *  A List of option to configure This Abac Instance
      *  Options list :
      *    'getter_prefix' => Prefix to add before getter name (default)'get'
-     *    'getter_name_transformation_function' => Function to apply on the getter name ( before adding prefix ) (default)'ucfirst'
+     *    'getter_name_transformation_function' => Function to apply on
+     *      the getter name ( before adding prefix ) (default)'ucfirst'
+     *
+     * @param ConfigurationInterface $configuration
+     * @param array $options
      */
-    public function __construct(Configuration $configuration, array $options = [])
+    public function __construct(ConfigurationInterface $configuration, array $options = [])
     {
         $this->attributes = $configuration->getAttributes();
     
@@ -76,8 +79,12 @@ class AttributeManager implements AttributeManagerInterface
         ;
     }
 
-    public function retrieveAttribute(AbstractAttribute $attribute, $user = null, $object = null, array $getter_params = [])
-    {
+    public function retrieveAttribute(
+        AbstractAttribute $attribute,
+        $user = null,
+        $object = null,
+        array $getter_params = []
+    ){
         switch ($attribute->getType()) {
             case 'user':
                 return $this->retrieveClassicAttribute($attribute, $user, $getter_params);
@@ -96,7 +103,11 @@ class AttributeManager implements AttributeManagerInterface
             $getter = $this->getter_prefix.call_user_func($this->getter_name_transformation_function, $property);
             // Use is_callable, instead of method_exists, to deal with __call magic method
             if (!is_callable([$propertyValue,$getter])) {
-                throw new \InvalidArgumentException('There is no getter for the "'.$attribute->getProperty().'" attribute for object "'.get_class($propertyValue).'" with getter "'.$getter.'"');
+                throw new \InvalidArgumentException(
+                    'There is no getter for the "'
+                    .$attribute->getProperty().'" attribute for object "'
+                    .get_class($propertyValue).'" with getter "'.$getter.'"'
+                );
             }
             if (($propertyValue = call_user_func_array([
                     $propertyValue,

@@ -4,33 +4,60 @@ namespace PhpAbac;
 
 use PhpAbac\Manager\{
     AttributeManager,
+    AttributeManagerInterface,
     CacheManager,
+    CacheManagerInterface,
     ComparisonManager,
-    PolicyRuleManager
+    ComparisonManagerInterface,
+    PolicyRuleManager,
+    PolicyRuleManagerInterface
 };
+use PhpAbac\Model\PolicyRule;
 use PhpAbac\Model\PolicyRuleAttribute;
 
 final class Abac
 {
-    /** @var PolicyRuleManager **/
+    /**
+     * @var PolicyRuleManager|PolicyRuleManager
+     */
     private $policyRuleManager;
-    /** @var AttributeManager **/
+    /**
+     * @var AttributeManager|AttributeManagerInterface
+     */
     private $attributeManager;
-    /** @var CacheManager **/
+    /**
+     * @var CacheManager| CacheManagerInterface
+     */
     private $cacheManager;
-    /** @var ComparisonManager **/
+    /**
+     * @var ComparisonManager | ComparisonManagerInterface
+     */
     private $comparisonManager;
-    /** @var array **/
+    /**
+     * @var array
+     */
     private $errors;
-    
-    public function __construct(PolicyRuleManager $policyRuleManager, AttributeManager $attributeManager, ComparisonManager $comparisonManager, CacheManager $cacheManager)
-    {
+
+    /**
+     * Abac constructor.
+     *
+     * @param PolicyRuleManagerInterface $policyRuleManager
+     * @param AttributeManagerInterface $attributeManager
+     * @param ComparisonManagerInterface $comparisonManager
+     * @param CacheManagerInterface $cacheManager
+     */
+    public function __construct(
+        PolicyRuleManagerInterface $policyRuleManager,
+        AttributeManagerInterface $attributeManager,
+        ComparisonManagerInterface $comparisonManager,
+        CacheManagerInterface $cacheManager
+    ){
         $this->attributeManager = $attributeManager;
         $this->policyRuleManager = $policyRuleManager;
         $this->cacheManager = $cacheManager;
         $this->comparisonManager = $comparisonManager;
     }
-    
+
     /**
      * Return true if both user and object respects all the rules conditions
      * If the objectId is null, policy rules about its attributes will be ignored
@@ -45,6 +72,13 @@ final class Abac
      *
      * Available cache drivers are :
      * * memory
+     *
+     * @param string $ruleName
+     * @param object $user
+     * @param null|object $resource
+     * @param array $options
+     *
+     * @return bool
      */
     public function enforce(string $ruleName, $user, $resource = null, array $options = []): bool
     {
@@ -55,8 +89,14 @@ final class Abac
             $this->comparisonManager->setDynamicAttributes($options[ 'dynamic_attributes' ]);
         }
         // Retrieve cache value for the current rule and values if cache item is valid
-        if (($cacheResult = isset($options[ 'cache_result' ]) && $options[ 'cache_result' ] === true) === true) {
-            $cacheItem = $this->cacheManager->getItem("$ruleName-{$user->getId()}-" . (($resource !== null) ? $resource->getId() : ''), (isset($options[ 'cache_driver' ])) ? $options[ 'cache_driver' ] : null, (isset($options[ 'cache_ttl' ])) ? $options[ 'cache_ttl' ] : null);
+        $cacheResult = (isset($options[ 'cache_result' ]) && $options[ 'cache_result' ] === true);
+
+        if ($cacheResult === true) {
+            $cacheItem = $this->cacheManager->getItem(
+                "$ruleName-{$user->getId()}-" . (($resource !== null) ? $resource->getId() : ''),
+                (isset($options[ 'cache_driver' ])) ? $options[ 'cache_driver' ] : null,
+                (isset($options[ 'cache_ttl' ])) ? $options[ 'cache_ttl' ] : null
+            );
             // We check if the cache value s valid before returning it
             if (($cacheValue = $cacheItem->get()) !== null) {
                 return $cacheValue;
@@ -66,12 +106,17 @@ final class Abac
         
         foreach ($policyRules as $policyRule) {
             // For each policy rule attribute, we retrieve the attribute value and proceed configured extra data
+            /**
+             * @var PolicyRule $policyRule
+             */
             foreach ($policyRule->getPolicyRuleAttributes() as $pra) {
                 /** @var PolicyRuleAttribute $pra */
                 $attribute = $pra->getAttribute();
                 
                 $getter_params = $this->prepareGetterParams($pra->getGetterParams(), $user, $resource);
-                $attribute->setValue($this->attributeManager->retrieveAttribute($attribute, $user, $resource, $getter_params));
+                $attribute->setValue(
+                    $this->attributeManager->retrieveAttribute($attribute, $user, $resource, $getter_params)
+                );
                 if (count($pra->getExtraData()) > 0) {
                     $this->processExtraData($pra, $user, $resource);
                 }
@@ -97,7 +142,8 @@ final class Abac
     }
     
     /**
-     * Function to prepare Getter Params when getter require parameters ( this parameters must be specified in configuration file)
+     * Function to prepare Getter Params when getter require parameters
+     *      ( this parameters must be specified in configuration file)
      *
      * @param $getter_params
      * @param $user
@@ -116,7 +162,12 @@ final class Abac
                 if ('@' !== $param[ 'param_name' ][ 0 ]) {
                     $values[$getter_name][] = $param[ 'param_value' ];
                 } else {
-                    $values[$getter_name][] = $this->attributeManager->retrieveAttribute($this->attributeManager->getAttribute($param[ 'param_value' ]), $user, $resource);
+                    $values[$getter_name][] = $this->attributeManager
+                        ->retrieveAttribute(
+                            $this->attributeManager->getAttribute($param[ 'param_value' ]),
+                            $user,
+                            $resource
+                    );
                 }
             }
         }
@@ -134,8 +185,8 @@ final class Abac
                     // The "with" extra data is an array of attributes, which are objects
                     // Once we process it as policy rule attributes, we set it as the main policy rule attribute value
                     $subPolicyRuleAttributes = [];
-                    
-                    foreach ($this->policyRuleManager->processRuleAttributes($data, $user, $resource) as $subPolicyRuleAttribute) {
+                    $subs = $this->policyRuleManager->processRuleAttributes($data, $user, $resource);
+                    foreach ($subs as $subPolicyRuleAttribute) {
                         $subPolicyRuleAttributes[] = $subPolicyRuleAttribute;
                     }
                     $pra->setValue($subPolicyRuleAttributes);
@@ -147,4 +198,5 @@ final class Abac
             }
         }
     }
+
 }

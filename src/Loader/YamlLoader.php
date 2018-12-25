@@ -8,13 +8,25 @@ use Symfony\Component\Config\Loader\FileLoader;
 
 class YamlLoader extends FileLoader
 {
-    public function load($resource, $type = null)
+    /**
+     * @param string $filename
+     * @param null $type
+     *
+     * @return mixed
+     */
+    public function load($filename, $type = null)
     {
-        return Yaml::parse(file_get_contents($resource));
+        return Yaml::parse(file_get_contents($filename));
     }
 
-    public function supports($resource, $type = null): bool
+    /**
+     * @param string $filename
+     * @param null $type
+     *
+     * @return bool
+     */
+    public function supports($filename, $type = null): bool
     {
-        return in_array(pathinfo($resource, PATHINFO_EXTENSION), ['yml','yaml']);
+        return in_array(pathinfo($filename, PATHINFO_EXTENSION), ['yml', 'yaml']);
     }
 }
