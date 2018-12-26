@@ -10,20 +10,37 @@ use PhpAbac\Loader\YamlLoader;
 
 class Configuration implements ConfigurationInterface
 {
-    /** @var AbacLoader[] * */
+    /**
+     * @var array
+     */
     protected $loaders = [];
-    /** @var array * */
+    /**
+     * @var array
+     */
     protected $rules = [];
-    /** @var array * */
+    /**
+     * @var array
+     */
     protected $attributes = [];
-    /** @var array List of File Already Loaded */
+    /**
+     * @var array List of File Already Loaded
+     */
     protected $loadedFiles = [];
-    
+    //TODO: need to make it more flexible
     const LOADERS = [
         JsonLoader::class,
         YamlLoader::class
     ];
-    
+
+    /**
+     * Configuration constructor.
+     *
+     * @param array $configurationFiles
+     * @param string|null $configDir
+     *
+     * @throws \Symfony\Component\Config\Exception\FileLoaderImportCircularReferenceException
+     * @throws \Symfony\Component\Config\Exception\LoaderLoadException
+     */
     public function __construct(array $configurationFiles, string $configDir = null)
     {
         $this->initLoaders($configDir);
@@ -34,16 +51,29 @@ class Configuration implements ConfigurationInterface
     {
         $locator = new FileLocator($configDir);
         foreach (self::LOADERS as $loaderClass) {
+            /**
+             * @var YamlLoader|JsonLoader $loader
+             */
             $loader = new $loaderClass($locator);
             $loader->setCurrentDir($configDir);
             $this->loaders[] = $loader;
         }
     }
-    
+
+    /**
+     * @param array $configurationFiles
+     *
+     * @throws \Symfony\Component\Config\Exception\FileLoaderImportCircularReferenceException
+     * @throws \Symfony\Component\Config\Exception\LoaderLoadException
+     */
     protected function parseFiles(array $configurationFiles)
     {
         foreach ($configurationFiles as $configurationFile) {
-            $config = $this->getLoader($configurationFile)->import($configurationFile, pathinfo($configurationFile, PATHINFO_EXTENSION));
+            $config = $this->getLoader($configurationFile)
+                ->import(
+                    $configurationFile,
+                    pathinfo($configurationFile, PATHINFO_EXTENSION)
+                );
             
             if (in_array($configurationFile, $this->loadedFiles)) {
                 continue;
@@ -64,7 +94,13 @@ class Configuration implements ConfigurationInterface
             }
         }
     }
-    
+
+    /**
+     * @param string $configurationFile
+     *
+     * @return LoaderInterface|YamlLoader|JsonLoader
+     * @throws \Exception
+     */
     protected function getLoader(string $configurationFile): LoaderInterface
     {
         foreach ($this->loaders as $abacLoader) {
@@ -74,12 +110,18 @@ class Configuration implements ConfigurationInterface
         }
         throw new \Exception('Loader not found for the file ' . $configurationFile);
     }
-    
+
+    /**
+     * @return array
+     */
     public function getAttributes(): array
     {
         return $this->attributes;
     }
-    
+
+    /**
+     * @return array
+     */
     public function getRules(): array
     {
         return $this->rules;
