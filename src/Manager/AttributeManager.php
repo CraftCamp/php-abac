@@ -4,6 +4,7 @@ namespace PhpAbac\Manager;
 
 use PhpAbac\Configuration\Configuration;
 
+use PhpAbac\Configuration\ConfigurationInterface;
 use PhpAbac\Model\{
     AbstractAttribute,
     Attribute,
@@ -25,7 +26,7 @@ class AttributeManager implements AttributeManagerInterface
      *    'getter_prefix' => Prefix to add before getter name (default)'get'
      *    'getter_name_transformation_function' => Function to apply on the getter name ( before adding prefix ) (default)'ucfirst'
      */
-    public function __construct(Configuration $configuration, array $options = [])
+    public function __construct(ConfigurationInterface $configuration, array $options = [])
     {
         $this->attributes = $configuration->getAttributes();
     

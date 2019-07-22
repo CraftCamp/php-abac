@@ -2,8 +2,7 @@
 
 namespace PhpAbac\Manager;
 
-use PhpAbac\Configuration\Configuration;
-
+use PhpAbac\Configuration\ConfigurationInterface;
 use PhpAbac\Model\{
     PolicyRule,
     PolicyRuleAttribute
@@ -16,7 +15,7 @@ class PolicyRuleManager implements PolicyRuleManagerInterface
     /** @var array **/
     private $rules = [];
 
-    public function __construct(Configuration $configuration, AttributeManager $attributeManager)
+    public function __construct(ConfigurationInterface $configuration, AttributeManager $attributeManager)
     {
         $this->attributeManager = $attributeManager;
         $this->rules = $configuration->getRules();
