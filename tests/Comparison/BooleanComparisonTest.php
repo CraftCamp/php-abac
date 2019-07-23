@@ -11,7 +11,7 @@ class BooleanComparisonTest extends \PHPUnit\Framework\TestCase
     /** @var BooleanComparison **/
     protected $comparison;
 
-    public function setUp()
+    public function setUp(): void
     {
         $this->comparison = new BooleanComparison($this->getComparisonManagerMock());
     }

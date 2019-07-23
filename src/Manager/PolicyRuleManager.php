@@ -2,12 +2,10 @@
 
 namespace PhpAbac\Manager;
 
-use PhpAbac\Configuration\Configuration;
-
-use PhpAbac\Model\{
-    PolicyRule,
-    PolicyRuleAttribute
-};
+use InvalidArgumentException;
+use PhpAbac\Configuration\ConfigurationInterface;
+use PhpAbac\Model\PolicyRule;
+use PhpAbac\Model\PolicyRuleAttribute;
 
 class PolicyRuleManager implements PolicyRuleManagerInterface
 {
@@ -16,7 +14,7 @@ class PolicyRuleManager implements PolicyRuleManagerInterface
     /** @var array **/
     private $rules = [];
 
-    public function __construct(Configuration $configuration, AttributeManager $attributeManager)
+    public function __construct(ConfigurationInterface $configuration, AttributeManager $attributeManager)
     {
         $this->attributeManager = $attributeManager;
         $this->rules = $configuration->getRules();
@@ -25,7 +23,7 @@ class PolicyRuleManager implements PolicyRuleManagerInterface
     public function getRule(string $ruleName, $user, $resource): array
     {
         if (!isset($this->rules[$ruleName])) {
-            throw new \InvalidArgumentException('The given rule "' . $ruleName . '" is not configured');
+            throw new InvalidArgumentException('The given rule "' . $ruleName . '" is not configured');
         }
 
         // TODO check if this is really useful

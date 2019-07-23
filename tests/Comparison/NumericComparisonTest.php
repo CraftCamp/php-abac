@@ -11,7 +11,7 @@ class NumericComparisonTest extends \PHPUnit\Framework\TestCase
     /** @var NumericComparison **/
     protected $comparison;
 
-    public function setUp()
+    public function setUp(): void
     {
         $this->comparison = new NumericComparison($this->getComparisonManagerMock());
     }

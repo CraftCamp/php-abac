@@ -9,7 +9,7 @@ class MemoryCacheItemPoolTest extends \PHPUnit\Framework\TestCase
 {
     protected $pool;
     
-    public function setUp()
+    public function setUp(): void
     {
         $this->pool = new MemoryCacheItemPool();
     }

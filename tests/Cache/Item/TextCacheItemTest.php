@@ -9,7 +9,7 @@ class TextCacheItemTest extends \PHPUnit\Framework\TestCase
     /** @var TextCacheItem **/
     protected $item;
 
-    public function setUp()
+    public function setUp(): void
     {
         $this->item = new TextCacheItem('php_abac.test');
     }

@@ -9,7 +9,7 @@ class MemoryCacheItemTest extends \PHPUnit\Framework\TestCase
     /** @var MemoryCacheItem **/
     protected $item;
     
-    public function setUp()
+    public function setUp(): void
     {
         $this->item = new MemoryCacheItem('php_abac.test');
     }

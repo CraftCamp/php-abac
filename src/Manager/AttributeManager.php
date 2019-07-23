@@ -2,13 +2,11 @@
 
 namespace PhpAbac\Manager;
 
-use PhpAbac\Configuration\Configuration;
-
-use PhpAbac\Model\{
-    AbstractAttribute,
-    Attribute,
-    EnvironmentAttribute
-};
+use InvalidArgumentException;
+use PhpAbac\Configuration\ConfigurationInterface;
+use PhpAbac\Model\AbstractAttribute;
+use PhpAbac\Model\Attribute;
+use PhpAbac\Model\EnvironmentAttribute;
 
 class AttributeManager implements AttributeManagerInterface
 {
@@ -24,8 +22,11 @@ class AttributeManager implements AttributeManagerInterface
      *  Options list :
      *    'getter_prefix' => Prefix to add before getter name (default)'get'
      *    'getter_name_transformation_function' => Function to apply on the getter name ( before adding prefix ) (default)'ucfirst'
+     *
+     * @param ConfigurationInterface $configuration
+     * @param array $options
      */
-    public function __construct(Configuration $configuration, array $options = [])
+    public function __construct(ConfigurationInterface $configuration, array $options = [])
     {
         $this->attributes = $configuration->getAttributes();
     
@@ -96,7 +97,7 @@ class AttributeManager implements AttributeManagerInterface
             $getter = $this->getter_prefix.call_user_func($this->getter_name_transformation_function, $property);
             // Use is_callable, instead of method_exists, to deal with __call magic method
             if (!is_callable([$propertyValue,$getter])) {
-                throw new \InvalidArgumentException('There is no getter for the "'.$attribute->getProperty().'" attribute for object "'.get_class($propertyValue).'" with getter "'.$getter.'"');
+                throw new InvalidArgumentException('There is no getter for the "'.$attribute->getProperty().'" attribute for object "'.get_class($propertyValue).'" with getter "'.$getter.'"');
             }
             if (($propertyValue = call_user_func_array([
                     $propertyValue,

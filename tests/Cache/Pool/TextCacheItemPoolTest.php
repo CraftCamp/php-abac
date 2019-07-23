@@ -9,14 +9,14 @@ class TextCacheItemPoolTest extends \PHPUnit\Framework\TestCase
 {
     protected $pool;
 
-    public function setUp()
+    public function setUp(): void
     {
         $this->pool = new TextCacheItemPool([
             'cache_folder' => __DIR__ . '/../../../data/cache/test'
         ]);
     }
 
-    public function tearDown()
+    public function tearDown(): void
     {
         $this->pool->clear();
     }

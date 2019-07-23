@@ -19,7 +19,7 @@ class PolicyRuleManagerTest extends \PHPUnit\Framework\TestCase
     /** @var PolicyRuleManager **/
     private $manager;
 
-    public function setUp()
+    public function setUp(): void
     {
         $this->manager = new PolicyRuleManager(
             $this->getConfigurationMock(),

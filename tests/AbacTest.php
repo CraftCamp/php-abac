@@ -14,7 +14,7 @@ class AbacTest extends \PHPUnit\Framework\TestCase
     /** @var array **/
     protected $importSet;
 
-    public function setUp()
+    public function setUp(): void
     {
         $this->basicSet = [
             AbacFactory::getAbac([__DIR__ . '/fixtures/policy_rules.yml']),
