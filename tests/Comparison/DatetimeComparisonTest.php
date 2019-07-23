@@ -11,7 +11,7 @@ class DattimeeComparisonTest extends \PHPUnit\Framework\TestCase
     /** @var DateComparison **/
     protected $comparison;
 
-    public function setUp()
+    public function setUp(): void
     {
         $this->comparison = new DatetimeComparison($this->getComparisonManagerMock());
     }

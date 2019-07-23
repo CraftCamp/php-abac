@@ -16,7 +16,7 @@ class ComparisonManagerTest extends \PHPUnit\Framework\TestCase
     /** @var ComparisonManager **/
     protected $manager;
     
-    public function setUp()
+    public function setUp(): void
     {
         $this->manager = new ComparisonManager($this->getAttributeManagerMock());
     }

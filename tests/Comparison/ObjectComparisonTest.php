@@ -19,7 +19,7 @@ class ObjectComparisonTest extends \PHPUnit\Framework\TestCase
     /** @var ArrayComparison **/
     protected $comparison;
 
-    public function setUp()
+    public function setUp(): void
     {
         $this->comparison = new ObjectComparison($this->getComparisonManagerMock());
     }

@@ -14,7 +14,7 @@ class CacheManagerTest extends \PHPUnit\Framework\TestCase
     /** @var CacheManager **/
     protected $cacheManager;
     
-    public function setUp()
+    public function setUp(): void
     {
         $this->cacheManager = new CacheManager();
     }

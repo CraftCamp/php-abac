@@ -11,7 +11,7 @@ class StringComparisonTest extends \PHPUnit\Framework\TestCase
     /** @var StringComparison **/
     protected $comparison;
 
-    public function setUp()
+    public function setUp(): void
     {
         $this->comparison = new StringComparison($this->getComparisonManagerMock());
     }
